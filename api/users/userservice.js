@@ -11,5 +11,17 @@ const getUsers = (callBack) =>{
     });
 }
 
+const createUser = (values,callBack)=>{
+    const insertQuery = "INSERT INTO usuarios(nombres,apellidos,user,password) VALUES(?,?,?,?)";
+    dbconnection.query(insertQuery,values,(error,result)=>{
+        if(error){
+            callBack(error,result);
+            return;
+        }
+        return callBack(result);
 
-export {getUsers};
+    });
+}
+
+
+export {getUsers,createUser};

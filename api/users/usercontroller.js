@@ -1,4 +1,4 @@
-import { getUsers } from "./userservice.js";
+import { getUsers,createUser } from "./userservice.js";
 
 
 const getUsuarios = (req,res) =>{
@@ -11,5 +11,17 @@ const getUsuarios = (req,res) =>{
     });
 }
 
-export {getUsuarios};
+const createUsuario = (req,res)=>{
+    const values = Object.values(req.body);
+    createUser(values,(error,results)=>{
+        if(error){
+            console.log(error); 
+            return;
+        }
+        return res.json({success:'ok',data:results});
+    });
+}
+
+
+export {getUsuarios,createUsuario};
 
