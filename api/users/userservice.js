@@ -12,16 +12,28 @@ const getUsers = (callBack) =>{
 }
 
 const createUser = (values,callBack)=>{
-    const insertQuery = "INSERT INTO usuarios(nombres,apellidos,user,password) VALUES(?,?,?,?)";
+    const insertQuery = "INSERT INTO usuarios(nombres,apellidos,usuario,password) VALUES(?,?,?,?)";
     dbconnection.query(insertQuery,values,(error,result)=>{
         if(error){
             callBack(error,result);
             return;
         }
-        return callBack(result);
+        return callBack(null,result);
+    });
+}
 
+const loginUser = (values,callBack)=>{
+    const myLoginQuery = "SELECT nombres,apellidos,usuario,password FROM usuarios WHERE usuario = ?";
+    dbconnection.query(myLoginQuery,values,(error,result)=>{
+        if(error){
+            return callBack(error,null);
+        }else{
+           return callBack(null,result);
+        }
     });
 }
 
 
-export {getUsers,createUser};
+
+
+export {getUsers,createUser,loginUser};
