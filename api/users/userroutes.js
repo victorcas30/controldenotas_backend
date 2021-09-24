@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.get('/users',validatetoken,getUsuarios);
 
-router.post('/create',validatetoken,createUsuario);
+router.post('/users',validatetoken,createUsuario);
 
-router.post('/login',login);
+router.post('/users/login',login);
 
 export {router as userRouter};
