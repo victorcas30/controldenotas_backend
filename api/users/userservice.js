@@ -23,7 +23,7 @@ const createUser = (values,callBack)=>{
 }
 
 const loginUser = (values,callBack)=>{
-    const myLoginQuery = "SELECT nombres,apellidos,usuario,password FROM usuarios WHERE usuario = ?";
+    const myLoginQuery = "SELECT idusuario,nombres,apellidos,usuario,password FROM usuarios WHERE usuario = ?";
     dbconnection.query(myLoginQuery,values,(error,result)=>{
         if(error){
             return callBack(error,null);
