@@ -3,10 +3,9 @@ import { getDepartments } from "./departmentsservice.js";
 const getCyrDepartments = (req,res)=>{
     getDepartments((errors,result)=>{
         if(errors){
-            console.log(errors);
-            return;
+            return res.status(500).json({success:false,message:error});
         }else{
-           return res.json({success:1,cyrDeparments:result});
+           return res.status(200).json({success:1,cyrDeparments:result});
         }
     });
 }
