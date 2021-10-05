@@ -1,4 +1,4 @@
-import { correspondenceReceived,recieviedCorresponseByUser } from "./correspondenceservice.js";
+import { correspondenceReceived,recieviedCorresponseByUser,recieviedCorresponseById } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
     const values = Object.values(req.body);
@@ -25,4 +25,16 @@ const getCorrespondenceRecieviedByUser = (req,res) =>{
 
 }
 
-export {createCorrespondenceReceived,getCorrespondenceRecieviedByUser};
+const getCorrespondenceRecieviedById = (req,res) =>{
+    const values = Object.values(req.params);
+    recieviedCorresponseById(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al solicitar correspondencia'});
+        }else{
+            res.status(200).json({success:true,correspondence:result});
+        }
+    });
+
+}
+
+export {createCorrespondenceReceived,getCorrespondenceRecieviedByUser,getCorrespondenceRecieviedById};

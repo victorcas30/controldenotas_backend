@@ -28,21 +28,27 @@ const correspondenceReceived = (values,callBack) =>{
 
 const recieviedCorresponseByUser = (values,callBack) =>{
     const myQuery = `
-        SELECT 
-            tipodocumento,
-            DATE_FORMAT(fechasellodocumento,'%d-%m-%Y') as fechasellodocumento,
-            DATE_FORMAT(fechasellocyr,'%d-%m-%Y') as fechasellocyr,
-            horasellocyr,
-            recibidopor,
-            asegurado,
-            referencia,
+        SELECT
+            cr.idcorrespondencia_recibida as id, 
+            UPPER(td.descripcion) as tipodocumento,
+            DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%Y') as fechasellodocumento,
+            DATE_FORMAT(cr.fechasellocyr,'%d-%m-%Y') as fechasellocyr,
+            cr.horasellocyr,
+            UPPER(us.nombres) as recibidopor,
+            UPPER(cr.asegurado) as asegurado,
+            UPPER(cr.referencia) as referencia,
             DATE_FORMAT(fechavencimientorenov,'%d-%m-%Y') as fechavencimientorenov,
-            procedencia,
-            aseg_remi,
-            entregadoa,
-            formadeingreso
+            UPPER(cr.procedencia) as procedencia,
+            UPPER(cr.aseg_remi) as aseg_remi,
+            UPPER(ase.nombre) as aseguradora,
+            UPPER(de.nombre) as entregadoa,
+            UPPER(cr.formadeingreso) as formadeingreso
         FROM 
-            correspondencia_recibida
+            correspondencia_recibida cr
+        INNER JOIN tipo_documentos td on td.idtipo = cr.tipodocumento
+        INNER JOIN usuarios us on us.idusuario = cr.recibidopor
+        INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
+        LEFT JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
         WHERE 
             idusuarioregistra = ?
     `;
@@ -56,6 +62,36 @@ const recieviedCorresponseByUser = (values,callBack) =>{
     });
 }
 
+const recieviedCorresponseById = (values,callBack) =>{
+    const myQuery = `
+        SELECT
+            tipodocumento,
+            fechasellodocumento,
+            fechasellocyr,
+            horasellocyr,
+            recibidopor,
+            asegurado,
+            referencia,
+            fechavencimientorenov,
+            procedencia,
+            aseg_remi,
+            entregadoa,
+            formadeingreso,
+        FROM 
+            correspondencia_recibida 
+        WHERE 
+            idusuarioregistra = ? AND recibidajefe = 0
+    `;
+
+    dbconnection.query(myQuery,values,(error,result)=>{
+        if(error){
+            return callBack(error,null);
+        }else{
+            return callBack(null,result);
+        }
+    });
+}
 
 
-export {correspondenceReceived,recieviedCorresponseByUser};
+
+export {correspondenceReceived,recieviedCorresponseByUser,recieviedCorresponseById};
