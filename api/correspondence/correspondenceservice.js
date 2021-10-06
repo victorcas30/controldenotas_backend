@@ -66,21 +66,21 @@ const recieviedCorresponseById = (values,callBack) =>{
     const myQuery = `
         SELECT
             tipodocumento,
-            fechasellodocumento,
-            fechasellocyr,
+            DATE_FORMAT(fechasellodocumento,'%Y-%m-%d') as fechasellodocumento,
+            DATE_FORMAT(fechasellocyr,'%Y-%m-%d') as fechasellocyr,
             horasellocyr,
             recibidopor,
             asegurado,
             referencia,
-            fechavencimientorenov,
+            DATE_FORMAT(fechavencimientorenov,'%Y-%m-%d') as fechavencimientorenov,
             procedencia,
             aseg_remi,
             entregadoa,
-            formadeingreso,
+            formadeingreso
         FROM 
             correspondencia_recibida 
         WHERE 
-            idusuarioregistra = ? AND recibidajefe = 0
+            idcorrespondencia_recibida = ? AND recibidajefe = 0
     `;
 
     dbconnection.query(myQuery,values,(error,result)=>{

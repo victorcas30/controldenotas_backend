@@ -29,6 +29,7 @@ const getCorrespondenceRecieviedById = (req,res) =>{
     const values = Object.values(req.params);
     recieviedCorresponseById(values,(error,result)=>{
         if(error){
+            console.log(error);
             res.status(500).json({success:false,message:'Error al solicitar correspondencia'});
         }else{
             res.status(200).json({success:true,correspondence:result});
