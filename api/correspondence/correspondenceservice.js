@@ -51,6 +51,7 @@ const recieviedCorresponseByUser = (values,callBack) =>{
         LEFT JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
         WHERE 
             idusuarioregistra = ?
+        AND eliminado = 0
     `;
 
     dbconnection.query(myQuery,values,(error,result)=>{
@@ -92,6 +93,57 @@ const recieviedCorresponseById = (values,callBack) =>{
     });
 }
 
+const editCorrespondenceById = (values,callBack)=>{
+    const myQuery = `
+        UPDATE 
+            correspondencia_recibida
+        SET
+            tipodocumento         = ?,
+            fechasellodocumento   = ?,
+            fechasellocyr         = ?,
+            horasellocyr          = ?,
+            recibidopor           = ?,
+            asegurado             = ?,
+            referencia            = ?,
+            fechavencimientorenov = ?,
+            procedencia           = ?,
+            aseg_remi             = ?,
+            entregadoa            = ?,
+            formadeingreso        = ?  
+        WHERE idcorrespondencia_recibida = ?
+    `;
+    dbconnection.query(myQuery,values,(error,result)=>{
+        if(error){
+            return callBack(error,null);
+        }else{
+            return callBack(error,result);
+        }
+    });
+}
+
+const deleteCorrespondence = (values,callBack)=>{
+    myQuery = `
+        UPDATE 
+            correspondencia_recibida
+        SET 
+            eliminado = 1
+        WHERE 
+            idcorrespondencia_recibida = ?
+        AND
+            recibidajefe = 0
+    `;
+
+    dbconnection.query(myQuery,values,(error,result)=>{
+        if(error){
+            return callBack(error,null);
+        }else{
+            return callBack(error,result);
+        }
+    });
+}
 
 
-export {correspondenceReceived,recieviedCorresponseByUser,recieviedCorresponseById};
+
+
+
+export {correspondenceReceived,recieviedCorresponseByUser,recieviedCorresponseById,editCorrespondenceById,deleteCorrespondence};

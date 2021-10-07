@@ -1,4 +1,4 @@
-import { correspondenceReceived,recieviedCorresponseByUser,recieviedCorresponseById } from "./correspondenceservice.js";
+import { correspondenceReceived,recieviedCorresponseByUser,recieviedCorresponseById,editCorrespondenceById,deleteCorrespondence } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
     const values = Object.values(req.body);
@@ -29,7 +29,6 @@ const getCorrespondenceRecieviedById = (req,res) =>{
     const values = Object.values(req.params);
     recieviedCorresponseById(values,(error,result)=>{
         if(error){
-            console.log(error);
             res.status(500).json({success:false,message:'Error al solicitar correspondencia'});
         }else{
             res.status(200).json({success:true,correspondence:result});
@@ -38,4 +37,26 @@ const getCorrespondenceRecieviedById = (req,res) =>{
 
 }
 
-export {createCorrespondenceReceived,getCorrespondenceRecieviedByUser,getCorrespondenceRecieviedById};
+const setEditCorrespondenceById = (req,res)=>{
+    const values = Object.values(req.body);
+    editCorrespondenceById(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al guardar los cambios'});
+        }else{
+            res.status(200).json({success:true,message:'Se han guardado los cambios'});
+        }
+    });
+}
+
+const deleteCorrespondenceId = (req,res)=>{
+    const values = Object.values(req.body);
+    deleteCorrespondence(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al eliminar'});
+        }else{
+            res.status(200).json({success:true,message:'Registro Eliminado'});
+        }
+    })
+}
+
+export {createCorrespondenceReceived,getCorrespondenceRecieviedByUser,getCorrespondenceRecieviedById,setEditCorrespondenceById,deleteCorrespondenceId};
