@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `cyrcorrespondencia` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `cyrcorrespondencia`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: cyrcorrespondencia
@@ -69,7 +67,7 @@ CREATE TABLE `correspondencia_recibida` (
   `fecharecibidajefe` datetime DEFAULT NULL,
   `eliminado` char(1) DEFAULT '0',
   PRIMARY KEY (`idcorrespondencia_recibida`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,7 +76,7 @@ CREATE TABLE `correspondencia_recibida` (
 
 LOCK TABLES `correspondencia_recibida` WRITE;
 /*!40000 ALTER TABLE `correspondencia_recibida` DISABLE KEYS */;
-INSERT INTO `correspondencia_recibida` VALUES (1,1,'2021-10-05','2021-10-05','08:06',2,'rafael adalberto parada gomez','carta de inclusion','2021-10-05','aseguradora','3',1,'fisico','2021-10-05 08:06:13',1,'0',NULL,'0'),(2,4,'2021-10-05','2021-10-05','08:39',2,'rolando loza','carta de cesion de beneficios carlos perez','2021-10-05','asegurado','rolando cabrera lopez',8,'electronico','2021-10-05 08:41:40',1,'0',NULL,'0'),(3,3,'2021-10-05','2021-10-05','08:06',2,'rafael adalberto parada gomez','carta de inclusion','2021-10-05','aseguradora','2',2,'fisico','2021-10-07 08:28:51',1,'0',NULL,'0'),(4,3,'2021-10-14','2021-10-08','14:35',2,'salma hayek','inclusion de recien nacido carta 252343 del dia 24 de marzo','2021-10-07','aseguradora','2',8,'fisico','2021-10-07 14:35:35',1,'0',NULL,'0');
+INSERT INTO `correspondencia_recibida` VALUES (1,1,'2021-10-05','2021-10-05','08:06',2,'rafael adalberto parada gomez','carta de inclusion','2021-10-05','aseguradora','3',1,'fisico','2021-10-05 08:06:13',1,'0',NULL,'1'),(2,4,'2021-10-05','2021-10-05','08:39',2,'rolando loza','carta de cesion de beneficios carlos perez','2021-10-05','asegurado','rolando cabrera lopez',8,'electronico','2021-10-05 08:41:40',1,'0',NULL,'1'),(3,2,'2021-10-05','2021-10-05','08:06',2,'rafael adalberto parada gomez','carta de inclusion','2021-10-05','aseguradora','2',2,'electronico','2021-10-07 08:28:51',1,'0',NULL,'0'),(4,3,'2021-10-14','2021-10-08','14:35',2,'salma hayek','inclusion de recien nacido carta 252343 del dia 24 de marzo','2021-10-07','aseguradora','2',8,'fisico','2021-10-07 14:35:35',1,'0',NULL,'0'),(5,3,'2021-10-08','2021-10-08','09:51',1,'casilda','bonos de regalo para todos los empleados','2021-10-09','aseguradora','2',3,'fisico','2021-10-08 09:50:59',1,'1',NULL,'0');
 /*!40000 ALTER TABLE `correspondencia_recibida` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -169,4 +167,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-07 16:55:40
+-- Dump completed on 2021-10-08 17:03:55
