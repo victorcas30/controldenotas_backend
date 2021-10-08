@@ -54,7 +54,11 @@ const deleteCorrespondenceId = (req,res)=>{
         if(error){
             res.status(500).json({success:false,message:'Error al eliminar'});
         }else{
-            res.status(200).json({success:true,message:'Registro Eliminado'});
+            if(result.affectedRows > 0){
+                res.status(200).json({success:true,message:'Registro Eliminado'});
+            }else{
+                res.status(200).json({success:false,message:'No se puede eliminar el registro'});
+            }
         }
     })
 }

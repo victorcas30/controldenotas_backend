@@ -45,13 +45,17 @@ const recieviedCorresponseByUser = (values,callBack) =>{
             UPPER(cr.formadeingreso) as formadeingreso
         FROM 
             correspondencia_recibida cr
+            
         INNER JOIN tipo_documentos td on td.idtipo = cr.tipodocumento
         INNER JOIN usuarios us on us.idusuario = cr.recibidopor
         INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
         LEFT JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
         WHERE 
             idusuarioregistra = ?
-        AND eliminado = 0
+        AND 
+            eliminado = 0
+        AND 
+            recibidajefe = 0
     `;
 
     dbconnection.query(myQuery,values,(error,result)=>{
