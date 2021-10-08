@@ -122,7 +122,7 @@ const editCorrespondenceById = (values,callBack)=>{
 }
 
 const deleteCorrespondence = (values,callBack)=>{
-    myQuery = `
+    const myQuery = `
         UPDATE 
             correspondencia_recibida
         SET 
