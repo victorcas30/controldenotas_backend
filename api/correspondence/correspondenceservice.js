@@ -45,7 +45,7 @@ const recieviedCorresponseByUser = (values,callBack) =>{
             UPPER(cr.formadeingreso) as formadeingreso
         FROM 
             correspondencia_recibida cr
-            
+
         INNER JOIN tipo_documentos td on td.idtipo = cr.tipodocumento
         INNER JOIN usuarios us on us.idusuario = cr.recibidopor
         INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
@@ -55,7 +55,7 @@ const recieviedCorresponseByUser = (values,callBack) =>{
         AND 
             eliminado = 0
         AND 
-            recibidajefe = 0
+            estado = 1
     `;
 
     dbconnection.query(myQuery,values,(error,result)=>{
@@ -85,7 +85,7 @@ const recieviedCorresponseById = (values,callBack) =>{
         FROM 
             correspondencia_recibida 
         WHERE 
-            idcorrespondencia_recibida = ? AND recibidajefe = 0
+            idcorrespondencia_recibida = ? AND estado = 1
     `;
 
     dbconnection.query(myQuery,values,(error,result)=>{
@@ -134,7 +134,7 @@ const deleteCorrespondence = (values,callBack)=>{
         WHERE 
             idcorrespondencia_recibida = ?
         AND
-            recibidajefe = 0
+        estado = 1
     `;
 
     dbconnection.query(myQuery,values,(error,result)=>{
@@ -146,8 +146,50 @@ const deleteCorrespondence = (values,callBack)=>{
     });
 }
 
+const recieviedCorresponseByDepto = (values,callBack) =>{
+    const myQuery = `
+        SELECT
+            cr.idcorrespondencia_recibida as id, 
+            UPPER(td.descripcion) as tipodocumento,
+            DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%Y') as fechasellodocumento,
+            DATE_FORMAT(cr.fechasellocyr,'%d-%m-%Y') as fechasellocyr,
+            cr.horasellocyr,
+            UPPER(us.nombres) as recibidopor,
+            UPPER(cr.asegurado) as asegurado,
+            UPPER(cr.referencia) as referencia,
+            DATE_FORMAT(fechavencimientorenov,'%d-%m-%Y') as fechavencimientorenov,
+            UPPER(cr.procedencia) as procedencia,
+            UPPER(cr.aseg_remi) as aseg_remi,
+            UPPER(ase.nombre) as aseguradora,
+            UPPER(de.nombre) as entregadoa,
+            UPPER(cr.formadeingreso) as formadeingreso,
+            DATE_FORMAT(fecha_ingreso_sistema,'%d-%m-%Y') as fecha_ingreso_sistema
+        FROM 
+            correspondencia_recibida cr
+
+        INNER JOIN tipo_documentos td on td.idtipo = cr.tipodocumento
+        INNER JOIN usuarios us on us.idusuario = cr.recibidopor
+        INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
+        LEFT JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
+        WHERE 
+            entregadoa = ?
+        AND 
+            eliminado = 0
+        AND 
+            estado = 1
+    `;
+
+    dbconnection.query(myQuery,values,(error,result)=>{
+        if(error){
+            return callBack(error,null);
+        }else{
+            return callBack(null,result);
+        }
+    });
+}
 
 
 
 
-export {correspondenceReceived,recieviedCorresponseByUser,recieviedCorresponseById,editCorrespondenceById,deleteCorrespondence};
+
+export {correspondenceReceived,recieviedCorresponseByUser,recieviedCorresponseById,editCorrespondenceById,deleteCorrespondence,recieviedCorresponseByDepto};

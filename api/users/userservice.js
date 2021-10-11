@@ -24,21 +24,29 @@ const createUser = (values,callBack)=>{
 
 const loginUser = (values,callBack)=>{
     const myLoginQuery = `
-    SELECT 
-        idusuario,
-        nombres,
-        apellidos,
-        usuario,
-        aplica_reporte_trabajo_pendiente,
-        recibe correspondencia,
-        departamento,
-        password 
-    FROM 
-        usuarios 
-    WHERE 
-        usuario = ?
-    AND 
-        activo = 1`;
+        SELECT 
+            u.idusuario,
+            u.nombres,
+            u.apellidos,
+            u.usuario,
+            u.aplica_reporte_trabajo_pendiente,
+            u.recibe_correspondencia,
+            u.departamento as iddepto_pertenece,
+            u.password,
+            d.idcyr_departamento,
+            d.nombre as departamento,
+            d.jefe as idjefe_depto 
+        FROM 
+            usuarios u 
+        INNER JOIN 
+            cyr_departamentos d
+        ON 
+            u.departamento = d.idcyr_departamento
+        WHERE 
+            u.usuario = ?
+        AND 
+            u.activo = 1
+    `;
     dbconnection.query(myLoginQuery,values,(error,result)=>{
         if(error){
             return callBack(error,null);

@@ -1,4 +1,4 @@
-import { correspondenceReceived,recieviedCorresponseByUser,recieviedCorresponseById,editCorrespondenceById,deleteCorrespondence } from "./correspondenceservice.js";
+import { correspondenceReceived,recieviedCorresponseByUser,recieviedCorresponseById,editCorrespondenceById,deleteCorrespondence,recieviedCorresponseByDepto } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
     const values = Object.values(req.body);
@@ -63,4 +63,16 @@ const deleteCorrespondenceId = (req,res)=>{
     })
 }
 
-export {createCorrespondenceReceived,getCorrespondenceRecieviedByUser,getCorrespondenceRecieviedById,setEditCorrespondenceById,deleteCorrespondenceId};
+const getCorrespondenceRecieviedByDepto = (req,res) =>{
+    const values = Object.values(req.params);
+    recieviedCorresponseByDepto(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al solicitar correspondencia'});
+        }else{
+            res.status(200).json({success:true,correspondence:result});
+        }
+    });
+
+}
+
+export {createCorrespondenceReceived,getCorrespondenceRecieviedByUser,getCorrespondenceRecieviedById,setEditCorrespondenceById,deleteCorrespondenceId,getCorrespondenceRecieviedByDepto};
