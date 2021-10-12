@@ -1,6 +1,6 @@
 import dbconnection from "../../config/dbconnection.js";
 
-const correspondenceReceived = (values,callBack) =>{
+/*const correspondenceReceived = (values,callBack) =>{
     const myInsertQuery = `INSERT INTO correspondencia_recibida(
     tipodocumento,
     fechasellodocumento,
@@ -21,8 +21,40 @@ const correspondenceReceived = (values,callBack) =>{
         if(error){
             return callBack(error,result);
         }else{
+
             return callBack(null,result);
         }
+    });
+}*/
+const correspondenceReceived = (values,callBack) =>{
+    const myInsertQuery = `INSERT INTO correspondencia_recibida(
+    tipodocumento,
+    fechasellodocumento,
+    fechasellocyr,
+    horasellocyr,
+    recibidopor,
+    asegurado,
+    referencia,
+    fechavencimientorenov,
+    procedencia,
+    aseg_remi,
+    entregadoa,
+    formadeingreso,
+    fecha_ingreso_sistema,
+    idusuarioregistra
+    ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+    dbconnection.query(myInsertQuery,values,(error,result)=>{
+        const insertId = result.insertId;
+        const MyValues = [insertId,1,values[12],values[13]];
+        const myOtherQuery = `
+            INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(?,?,?,?)`;
+        dbconnection.query(myOtherQuery,MyValues,(error1,result1)=>{
+            if(error || error1){
+                return callBack(error+''+error1,result);
+            }else{
+                return callBack(null,result);
+            }
+        });
     });
 }
 
@@ -163,7 +195,8 @@ const recieviedCorresponseByDepto = (values,callBack) =>{
             UPPER(ase.nombre) as aseguradora,
             UPPER(de.nombre) as entregadoa,
             UPPER(cr.formadeingreso) as formadeingreso,
-            DATE_FORMAT(fecha_ingreso_sistema,'%d-%m-%Y') as fecha_ingreso_sistema
+            DATE_FORMAT(fecha_ingreso_sistema,'%d-%m-%Y') as fecha_ingreso_sistema,
+            cr.estado
         FROM 
             correspondencia_recibida cr
 
@@ -172,11 +205,11 @@ const recieviedCorresponseByDepto = (values,callBack) =>{
         INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
         LEFT JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
         WHERE 
-            entregadoa = ?
+            cr.entregadoa = ?
         AND 
-            eliminado = 0
+            cr.eliminado = 0
         AND 
-            estado = 1
+            cr.estado IN (1,2)
     `;
 
     dbconnection.query(myQuery,values,(error,result)=>{
@@ -188,8 +221,46 @@ const recieviedCorresponseByDepto = (values,callBack) =>{
     });
 }
 
+const asignCorrespondence = (values,callBack)=>{
+    const {idusuario,idcorrespondencia,fechaasignacion,idusuarioasigna} = values;
+    const myQuery = `
+        INSERT INTO asignaciones(idusuario,idcorrespondencia,fechaasignacion,idusuarioasigna) VALUES(${idusuario},${idcorrespondencia},'${fechaasignacion}',${idusuarioasigna});
+        INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${3},'${fechaasignacion}',${idusuarioasigna});
+        UPDATE correspondencia_recibida SET estado=3 WHERE idcorrespondencia_recibida = ${idcorrespondencia};
+    `;
+    dbconnection.query(myQuery,values,(error,result) =>{
+        if(error){
+            console.log(error);
+            return callBack(error,result);
+        }else{
+            return callBack(null,result);
+        }
+    });
+}
+
+const receiveCorrespondence = (values,callBack)=>{
+    const {idusuario,idcorrespondencia,fecharecibida} = values;
+    const myQuerys = `
+        INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${2},'${fecharecibida}',${idusuario});
+        UPDATE correspondencia_recibida SET estado=2 WHERE idcorrespondencia_recibida = ${idcorrespondencia};
+    `;
+    dbconnection.query(myQuerys,values,(error,result)=>{
+        if(error){
+            return callBack(error,result);
+        }else{
+            return callBack(null,result);
+        }
+    });
+}
 
 
-
-
-export {correspondenceReceived,recieviedCorresponseByUser,recieviedCorresponseById,editCorrespondenceById,deleteCorrespondence,recieviedCorresponseByDepto};
+export {
+    correspondenceReceived,
+    recieviedCorresponseByUser,
+    recieviedCorresponseById,
+    editCorrespondenceById,
+    deleteCorrespondence,
+    recieviedCorresponseByDepto,
+    asignCorrespondence,
+    receiveCorrespondence
+};

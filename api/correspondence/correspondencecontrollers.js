@@ -1,4 +1,13 @@
-import { correspondenceReceived,recieviedCorresponseByUser,recieviedCorresponseById,editCorrespondenceById,deleteCorrespondence,recieviedCorresponseByDepto } from "./correspondenceservice.js";
+import { 
+    correspondenceReceived,
+    recieviedCorresponseByUser,
+    recieviedCorresponseById,
+    editCorrespondenceById,
+    deleteCorrespondence,
+    recieviedCorresponseByDepto,
+    asignCorrespondence,
+    receiveCorrespondence
+ } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
     const values = Object.values(req.body);
@@ -75,4 +84,35 @@ const getCorrespondenceRecieviedByDepto = (req,res) =>{
 
 }
 
-export {createCorrespondenceReceived,getCorrespondenceRecieviedByUser,getCorrespondenceRecieviedById,setEditCorrespondenceById,deleteCorrespondenceId,getCorrespondenceRecieviedByDepto};
+const setAssignCorrespondence = (req,res) =>{
+    const values = req.body;
+    asignCorrespondence(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al Asignar la correspondencia'});
+        }else{
+            res.status(200).json({success:true,message:'Correspondencia asignada'});
+        }
+    });
+}
+
+const setReceiveCorrespondence = (req,res)=>{
+    const values = req.body;
+    receiveCorrespondence(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al recibir correspondencia'});
+        }else{
+            res.status(200).json({success:true,message:'Correspondencia recibida'});
+        }
+    });
+}
+
+export {
+    createCorrespondenceReceived,
+    getCorrespondenceRecieviedByUser,
+    getCorrespondenceRecieviedById,
+    setEditCorrespondenceById,
+    deleteCorrespondenceId,
+    getCorrespondenceRecieviedByDepto,
+    setAssignCorrespondence,
+    setReceiveCorrespondence
+};

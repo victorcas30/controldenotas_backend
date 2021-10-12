@@ -43,6 +43,32 @@ INSERT INTO `aseguradoras` VALUES (1,'ASESUISA','1'),(2,'ACSA','1'),(3,'SISA','1
 UNLOCK TABLES;
 
 --
+-- Table structure for table `asignaciones`
+--
+
+DROP TABLE IF EXISTS `asignaciones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `asignaciones` (
+  `idasignacion` int(11) NOT NULL AUTO_INCREMENT,
+  `idusuario` int(11) DEFAULT NULL,
+  `idcorrespondencia` int(11) DEFAULT NULL,
+  `fechaasignacion` datetime DEFAULT NULL,
+  `idusuarioasigna` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idasignacion`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `asignaciones`
+--
+
+LOCK TABLES `asignaciones` WRITE;
+/*!40000 ALTER TABLE `asignaciones` DISABLE KEYS */;
+/*!40000 ALTER TABLE `asignaciones` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `correspondencia_recibida`
 --
 
@@ -68,7 +94,7 @@ CREATE TABLE `correspondencia_recibida` (
   `estado` int(11) DEFAULT '1',
   `eliminado` char(1) DEFAULT '0',
   PRIMARY KEY (`idcorrespondencia_recibida`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -77,7 +103,7 @@ CREATE TABLE `correspondencia_recibida` (
 
 LOCK TABLES `correspondencia_recibida` WRITE;
 /*!40000 ALTER TABLE `correspondencia_recibida` DISABLE KEYS */;
-INSERT INTO `correspondencia_recibida` VALUES (1,1,'2021-10-05','2021-10-05','08:06',2,'rafael adalberto parada gomez','carta de inclusion','2021-10-05','aseguradora','3',1,'fisico','2021-10-05 08:06:13',1,1,'1'),(2,4,'2021-10-05','2021-10-05','08:39',2,'rolando loza','carta de cesion de beneficios carlos perez','2021-10-05','asegurado','rolando cabrera lopez',8,'electronico','2021-10-05 08:41:40',1,1,'1'),(3,2,'2021-10-05','2021-10-05','08:06',2,'rafael adalberto parada gomez','carta de inclusion','2021-10-05','aseguradora','2',2,'electronico','2021-10-07 08:28:51',1,1,'0'),(4,3,'2021-10-14','2021-10-08','14:35',2,'salma hayek','inclusion de recien nacido carta 252343 del dia 24 de marzo','2021-10-07','aseguradora','2',8,'fisico','2021-10-07 14:35:35',1,1,'0'),(5,3,'2021-10-08','2021-10-08','09:51',1,'casilda','bonos de regalo para todos los empleados','2021-10-09','aseguradora','2',3,'fisico','2021-10-08 09:50:59',1,1,'0'),(6,1,'2021-10-11','2021-10-11','11:12',1,'rene perez lopez','cheque por premio de participacion','2021-10-11','asegurado','salome perez',9,'fisico','2021-10-11 11:13:00',1,1,'0');
+INSERT INTO `correspondencia_recibida` VALUES (1,1,'2021-10-05','2021-10-05','08:06',2,'rafael adalberto parada gomez','carta de inclusion','2021-10-05','aseguradora','3',9,'fisico','2021-10-05 08:06:13',1,1,'0'),(2,4,'2021-10-05','2021-10-05','08:39',2,'rolando loza','carta de cesion de beneficios carlos perez','2021-10-05','asegurado','rolando cabrera lopez',9,'electronico','2021-10-05 08:41:40',1,1,'0'),(3,2,'2021-10-05','2021-10-05','08:06',2,'rafael adalberto parada gomez','carta de inclusion','2021-10-05','aseguradora','2',9,'electronico','2021-10-07 08:28:51',1,1,'0'),(4,3,'2021-10-14','2021-10-08','14:35',2,'salma hayek','inclusion de recien nacido carta 252343 del dia 24 de marzo','2021-10-07','aseguradora','2',9,'fisico','2021-10-07 14:35:35',1,1,'0'),(5,3,'2021-10-08','2021-10-08','09:51',1,'casilda','bonos de regalo para todos los empleados','2021-10-09','aseguradora','2',9,'fisico','2021-10-08 09:50:59',1,1,'0'),(6,1,'2021-10-11','2021-10-11','11:12',1,'rene perez lopez','cheque por premio de participacion','2021-10-11','asegurado','salome perez',9,'fisico','2021-10-11 11:13:00',1,1,'0'),(7,1,'2021-10-12','2021-10-12','10:23',1,'rene perez','carta de inclusion','2021-10-12','asegurado','carlos perez',9,'fisico','2021-10-12 10:23:06',1,1,'0'),(8,1,'2021-10-12','2021-10-12','13:34',1,'sonia lara','exclusion carro sonia lara','2021-10-12','aseguradora','1',9,'electronico','2021-10-12 13:35:13',1,1,'0'),(9,2,'2021-10-13','2021-10-12','13:35',1,'andres mendez','carta de reclamo de gastos medicos','2021-10-12','aseguradora','1',9,'fisico','2021-10-12 13:36:00',1,1,'0'),(10,2,'2021-10-13','2021-10-13','13:38',1,'monica liz','carta de solicitud de defuncion','2021-10-12','asegurado','catrino lopez',9,'fisico','2021-10-12 13:36:58',1,1,'0');
 /*!40000 ALTER TABLE `correspondencia_recibida` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,27 +215,30 @@ INSERT INTO `usuarios` VALUES (1,'Rafael Adalberto','Parada Gómez','rparada','$
 UNLOCK TABLES;
 
 --
--- Table structure for table `vida_correspondencia_estado`
+-- Table structure for table `vida_estado_correspondencia`
 --
 
-DROP TABLE IF EXISTS `vida_correspondencia_estado`;
+DROP TABLE IF EXISTS `vida_estado_correspondencia`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `vida_correspondencia_estado` (
-  `idvida_c` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `vida_estado_correspondencia` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idcorrespondencia` int(11) DEFAULT NULL,
   `estado` int(11) DEFAULT NULL,
-  `fecha` datetime DEFAULT NULL,
-  PRIMARY KEY (`idvida_c`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `fecharegistro` datetime DEFAULT NULL,
+  `idusuarioaccion` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `vida_correspondencia_estado`
+-- Dumping data for table `vida_estado_correspondencia`
 --
 
-LOCK TABLES `vida_correspondencia_estado` WRITE;
-/*!40000 ALTER TABLE `vida_correspondencia_estado` DISABLE KEYS */;
-/*!40000 ALTER TABLE `vida_correspondencia_estado` ENABLE KEYS */;
+LOCK TABLES `vida_estado_correspondencia` WRITE;
+/*!40000 ALTER TABLE `vida_estado_correspondencia` DISABLE KEYS */;
+INSERT INTO `vida_estado_correspondencia` VALUES (1,7,1,'2021-10-12 10:23:06',1),(2,7,2,'2021-10-12 12:17:41',1),(3,7,3,'2021-10-12 12:21:50',1),(4,6,3,'2021-10-12 12:22:13',1),(5,8,1,'2021-10-12 13:35:13',1),(6,9,1,'2021-10-12 13:36:00',1),(7,10,1,'2021-10-12 13:36:58',1),(8,10,3,'2021-10-12 13:47:44',1),(9,5,3,'2021-10-12 14:40:30',1),(10,5,3,'2021-10-12 14:40:41',1),(11,5,3,'2021-10-12 14:40:50',1),(12,5,3,'2021-10-12 14:41:16',1),(13,5,3,'2021-10-12 14:41:21',1),(14,4,3,'2021-10-12 14:41:37',1),(15,10,2,'2021-10-12 15:42:07',1),(16,10,2,'2021-10-12 15:42:13',1),(17,8,2,'2021-10-12 16:03:08',1),(18,9,2,'2021-10-12 16:03:19',1),(19,8,2,'2021-10-12 16:07:05',1),(20,8,3,'2021-10-12 16:07:48',1),(21,9,2,'2021-10-12 16:07:59',1),(22,9,3,'2021-10-12 16:15:19',1),(23,3,2,'2021-10-12 16:15:23',1),(24,4,2,'2021-10-12 16:15:28',1),(25,5,2,'2021-10-12 16:15:30',1),(26,6,2,'2021-10-12 16:15:32',1),(27,7,2,'2021-10-12 16:15:35',1),(28,10,2,'2021-10-12 16:15:38',1),(29,3,3,'2021-10-12 16:15:44',1),(30,4,3,'2021-10-12 16:15:49',1),(31,5,3,'2021-10-12 16:15:53',1),(32,6,3,'2021-10-12 16:15:57',1),(33,7,3,'2021-10-12 16:16:02',1),(34,10,3,'2021-10-12 16:16:05',1);
+/*!40000 ALTER TABLE `vida_estado_correspondencia` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -221,4 +250,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-11 17:13:25
+-- Dump completed on 2021-10-12 16:52:17
