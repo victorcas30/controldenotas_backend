@@ -253,6 +253,17 @@ const receiveCorrespondence = (values,callBack)=>{
     });
 }
 
+const returnCorrespondenceToanohterDepartment = (values,callBack) =>{
+    const myQuery = `UPDATE correspondencia_recibida SET entregadoa = ? WHERE idcorrespondencia_recibida = ?`;
+    dbconnection.query(myQuery,values,(error,result)=>{
+        if(error){
+            return callBack(error,result);
+        }else{
+            return callBack(null,result);
+        }
+    });
+}
+
 
 export {
     correspondenceReceived,
@@ -262,5 +273,6 @@ export {
     deleteCorrespondence,
     recieviedCorresponseByDepto,
     asignCorrespondence,
-    receiveCorrespondence
+    receiveCorrespondence,
+    returnCorrespondenceToanohterDepartment
 };

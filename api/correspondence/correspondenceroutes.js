@@ -8,7 +8,8 @@ import {
     deleteCorrespondenceId,
     getCorrespondenceRecieviedByDepto,
     setAssignCorrespondence,
-    setReceiveCorrespondence
+    setReceiveCorrespondence,
+    setReturnCorrespondenceToanohterDepartment
 } from './correspondencecontrollers.js';
 
 const router = express.Router();
@@ -22,5 +23,6 @@ router.put('/correspondence',validatetoken,setEditCorrespondenceById);
 router.put('/deleteCorrespondenceId',validatetoken,deleteCorrespondenceId);
 router.put('/assigncorrespondence',validatetoken,setAssignCorrespondence);
 router.put('/receivecorrespondence',validatetoken,setReceiveCorrespondence);
+router.put('/returncorrespondence',validatetoken,setReturnCorrespondenceToanohterDepartment);
 
 export {router as correspondenceRouter};

@@ -6,7 +6,8 @@ import {
     deleteCorrespondence,
     recieviedCorresponseByDepto,
     asignCorrespondence,
-    receiveCorrespondence
+    receiveCorrespondence,
+    returnCorrespondenceToanohterDepartment
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -106,6 +107,17 @@ const setReceiveCorrespondence = (req,res)=>{
     });
 }
 
+const setReturnCorrespondenceToanohterDepartment = (req,res)=>{
+    const values = Object.values(req.body);
+    returnCorrespondenceToanohterDepartment(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al devolver correspondencia'});
+        }else{
+            res.status(200).json({success:true,message:'Correspondencia devuelta'});
+        }
+    });
+}
+
 export {
     createCorrespondenceReceived,
     getCorrespondenceRecieviedByUser,
@@ -114,5 +126,6 @@ export {
     deleteCorrespondenceId,
     getCorrespondenceRecieviedByDepto,
     setAssignCorrespondence,
-    setReceiveCorrespondence
+    setReceiveCorrespondence,
+    setReturnCorrespondenceToanohterDepartment
 };
