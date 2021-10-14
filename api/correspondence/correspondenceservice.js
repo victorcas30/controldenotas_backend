@@ -1,31 +1,4 @@
 import dbconnection from "../../config/dbconnection.js";
-
-/*const correspondenceReceived = (values,callBack) =>{
-    const myInsertQuery = `INSERT INTO correspondencia_recibida(
-    tipodocumento,
-    fechasellodocumento,
-    fechasellocyr,
-    horasellocyr,
-    recibidopor,
-    asegurado,
-    referencia,
-    fechavencimientorenov,
-    procedencia,
-    aseg_remi,
-    entregadoa,
-    formadeingreso,
-    fecha_ingreso_sistema,
-    idusuarioregistra
-    ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
-    dbconnection.query(myInsertQuery,values,(error,result)=>{
-        if(error){
-            return callBack(error,result);
-        }else{
-
-            return callBack(null,result);
-        }
-    });
-}*/
 const correspondenceReceived = (values,callBack) =>{
     const myInsertQuery = `INSERT INTO correspondencia_recibida(
     tipodocumento,
@@ -264,6 +237,51 @@ const returnCorrespondenceToanohterDepartment = (values,callBack) =>{
     });
 }
 
+const correspondenceAsignedToUser = (values,callBack)=>{
+    const myQuery = `
+        SELECT
+        cr.idcorrespondencia_recibida as id, 
+        UPPER(td.descripcion) as tipodocumento,
+        DATE_FORMAT(cr.fecha_ingreso_sistema,'%d-%m-%Y') as fecha_ingreso_sistema,
+        DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%Y') as fechasellodocumento,
+        DATE_FORMAT(cr.fechasellocyr,'%d-%m-%Y') as fechasellocyr,
+        DATE_FORMAT(asig.fechaasignacion,'%d-%m-%Y') as fechaasignacion,
+        asig.fechaasignacion as fechaasignacioncomplete,
+        cr.horasellocyr,
+        UPPER(us.nombres) as recibidopor,
+        UPPER(cr.asegurado) as asegurado,
+        UPPER(cr.referencia) as referencia,
+        DATE_FORMAT(fechavencimientorenov,'%d-%m-%Y') as fechavencimientorenov,
+        UPPER(cr.procedencia) as procedencia,
+        UPPER(cr.aseg_remi) as aseg_remi,
+        UPPER(ase.nombre) as aseguradora,
+        UPPER(de.nombre) as entregadoa,
+        UPPER(cr.formadeingreso) as formadeingreso,
+        '' as tiempo
+    FROM 
+        correspondencia_recibida cr
+    
+    INNER JOIN tipo_documentos td on td.idtipo = cr.tipodocumento
+    INNER JOIN usuarios us on us.idusuario = cr.recibidopor
+    INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
+    INNER JOIN asignaciones asig on asig.idcorrespondencia = cr.idcorrespondencia_recibida
+    LEFT  JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
+    WHERE 
+        idusuarioregistra = ?
+    AND 
+        eliminado = 0
+    AND 
+        estado = 3
+    `;
+    dbconnection.query(myQuery,values,(error,result)=>{
+        if(error){
+            return callBack(error,result);
+        }else{
+            return callBack(error,result);
+        }
+    });
+}
+
 
 export {
     correspondenceReceived,
@@ -274,5 +292,6 @@ export {
     recieviedCorresponseByDepto,
     asignCorrespondence,
     receiveCorrespondence,
-    returnCorrespondenceToanohterDepartment
+    returnCorrespondenceToanohterDepartment,
+    correspondenceAsignedToUser
 };
