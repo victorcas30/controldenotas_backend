@@ -256,8 +256,7 @@ const correspondenceAsignedToUser = (values,callBack)=>{
         UPPER(cr.aseg_remi) as aseg_remi,
         UPPER(ase.nombre) as aseguradora,
         UPPER(de.nombre) as entregadoa,
-        UPPER(cr.formadeingreso) as formadeingreso,
-        '' as tiempo
+        UPPER(cr.formadeingreso) as formadeingreso
     FROM 
         correspondencia_recibida cr
     
@@ -267,11 +266,11 @@ const correspondenceAsignedToUser = (values,callBack)=>{
     INNER JOIN asignaciones asig on asig.idcorrespondencia = cr.idcorrespondencia_recibida
     LEFT  JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
     WHERE 
-        idusuarioregistra = ?
+        asig.idusuario = ?
     AND 
-        eliminado = 0
+        cr.eliminado = 0
     AND 
-        estado = 3
+        cr.estado = 3
     `;
     dbconnection.query(myQuery,values,(error,result)=>{
         if(error){
