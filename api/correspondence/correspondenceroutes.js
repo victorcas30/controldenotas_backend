@@ -10,7 +10,9 @@ import {
     setAssignCorrespondence,
     setReceiveCorrespondence,
     setReturnCorrespondenceToanohterDepartment,
-    getCorrespondenceAsignedToUser
+    getCorrespondenceAsignedToUser,
+    setRequestApproval,
+    getcorrespondenceToApproval
 } from './correspondencecontrollers.js';
 
 const router = express.Router();
@@ -20,11 +22,13 @@ router.post('/correspondence',validatetoken,createCorrespondenceReceived);
 router.get('/correspondence/:idusuario',validatetoken,getCorrespondenceRecieviedByUser);
 router.get('/correspondenceid/:idcorrespondencia',validatetoken,getCorrespondenceRecieviedById);
 router.get('/correspondencedepto/:iddepartment',validatetoken,getCorrespondenceRecieviedByDepto);
+router.get('/correspondencetoapproval/:iddepartamento/:idusuario/:estado',validatetoken,getcorrespondenceToApproval);
+router.get('/correspondence/status/:idusuario/:estado',validatetoken,getCorrespondenceAsignedToUser);
 router.put('/correspondence',validatetoken,setEditCorrespondenceById);
 router.put('/deleteCorrespondenceId',validatetoken,deleteCorrespondenceId);
 router.put('/assigncorrespondence',validatetoken,setAssignCorrespondence);
 router.put('/receivecorrespondence',validatetoken,setReceiveCorrespondence);
 router.put('/returncorrespondence',validatetoken,setReturnCorrespondenceToanohterDepartment);
-router.get('/correspondence/status/:idusuario/:estado',validatetoken,getCorrespondenceAsignedToUser);
+router.put('/requestapproval',validatetoken,setRequestApproval);
 
 export {router as correspondenceRouter};

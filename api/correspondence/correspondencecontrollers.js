@@ -8,7 +8,9 @@ import {
     asignCorrespondence,
     receiveCorrespondence,
     returnCorrespondenceToanohterDepartment,
-    correspondenceAsignedToUser
+    correspondenceAsignedToUser,
+    requestApproval,
+    correspondenceToApproval
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -130,6 +132,28 @@ const getCorrespondenceAsignedToUser = (req,res)=>{
     });
 }
 
+const setRequestApproval = (req,res)=>{
+    const values = req.body;
+    requestApproval(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al solicitar'});
+        }else{
+            res.status(200).json({success:true,message:'Solicitud enviada'});
+        }
+    });
+}
+
+const getcorrespondenceToApproval = (req,res)=>{
+    const values = Object.values(req.params);
+    correspondenceToApproval(values,(error,result)=>{
+        if(error){
+           res.status(500).json({success:false,message:'Error al traer correspondencia'});
+        }else{
+           res.status(200).json({success:true,correspondence:result});
+        }
+    });
+}
+
 export {
     createCorrespondenceReceived,
     getCorrespondenceRecieviedByUser,
@@ -140,5 +164,7 @@ export {
     setAssignCorrespondence,
     setReceiveCorrespondence,
     setReturnCorrespondenceToanohterDepartment,
-    getCorrespondenceAsignedToUser
+    getCorrespondenceAsignedToUser,
+    setRequestApproval,
+    getcorrespondenceToApproval
 };
