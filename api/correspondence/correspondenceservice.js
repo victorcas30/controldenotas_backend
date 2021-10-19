@@ -271,7 +271,7 @@ const correspondenceAsignedToUser = (values,callBack)=>{
     AND 
         cr.eliminado = 0
     AND 
-        cr.estado IN (3,4)
+        cr.estado IN (3,4,5)
     ORDER BY 
         fechaasignacioncomplete ASC
     `;
@@ -350,6 +350,22 @@ const correspondenceToApproval = (values,callBack)=>{
 }
 
 
+const approveCorrespondence = (values,callBack)=>{
+    const {idusuario,idcorrespondencia,fechaaprobacion} = values;
+    const myQuerys = `
+        INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${5},'${fechaaprobacion}',${idusuario});
+        UPDATE correspondencia_recibida SET estado= 5 WHERE idcorrespondencia_recibida = ${idcorrespondencia};
+    `;
+    dbconnection.query(myQuerys,values,(error,result)=>{
+        if(error){
+            return callBack(error,result);
+        }else{
+            return callBack(null,result);
+        }
+    });
+}
+
+
 
 
 export {
@@ -364,5 +380,6 @@ export {
     returnCorrespondenceToanohterDepartment,
     correspondenceAsignedToUser,
     requestApproval,
-    correspondenceToApproval
+    correspondenceToApproval,
+    approveCorrespondence
 };

@@ -10,7 +10,8 @@ import {
     returnCorrespondenceToanohterDepartment,
     correspondenceAsignedToUser,
     requestApproval,
-    correspondenceToApproval
+    correspondenceToApproval,
+    approveCorrespondence
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -154,6 +155,17 @@ const getcorrespondenceToApproval = (req,res)=>{
     });
 }
 
+const setApproveCorrespondence = (req,res)=>{
+    const values = req.body;
+    approveCorrespondence(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al aprobar la correspondencia'});
+        }else{
+            res.status(200).json({success:true,message:'Correspondencia aprobada'});
+        }
+    });
+}
+
 export {
     createCorrespondenceReceived,
     getCorrespondenceRecieviedByUser,
@@ -166,5 +178,6 @@ export {
     setReturnCorrespondenceToanohterDepartment,
     getCorrespondenceAsignedToUser,
     setRequestApproval,
-    getcorrespondenceToApproval
+    getcorrespondenceToApproval,
+    setApproveCorrespondence
 };
