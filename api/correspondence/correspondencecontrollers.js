@@ -11,7 +11,8 @@ import {
     correspondenceAsignedToUser,
     requestApproval,
     correspondenceToApproval,
-    approveCorrespondence
+    approveCorrespondence,
+    correspondenceSend
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -165,6 +166,16 @@ const setApproveCorrespondence = (req,res)=>{
         }
     });
 }
+const setCorrespondenceSend = (req,res)=>{
+    const values = req.body;
+    correspondenceSend(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al registrar envío de correspondencia'});
+        }else{
+            res.status(200).json({success:true,message:'Se ha registrado el envío'});
+        }
+    });
+}
 
 export {
     createCorrespondenceReceived,
@@ -179,5 +190,6 @@ export {
     getCorrespondenceAsignedToUser,
     setRequestApproval,
     getcorrespondenceToApproval,
-    setApproveCorrespondence
+    setApproveCorrespondence,
+    setCorrespondenceSend
 };

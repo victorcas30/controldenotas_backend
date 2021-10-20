@@ -365,6 +365,37 @@ const approveCorrespondence = (values,callBack)=>{
     });
 }
 
+const correspondenceSend = (values,callBack) =>{
+    const myvals = {...values,cbdevoluciondocs:(values?.cbdevoluciondocs === "" ||values?.cbdevoluciondocs === false ) ? 0:1,cbcc:(values?.cbcc ===false) ? 0:1,cbrutaespecial:(values?.cbrutaespecial===false) ? 0:1,};
+    console.log("El valor es "+values?.cbdevoluciondocs);
+    console.log(JSON.stringify(myvals,null,3));
+    const {idcorrespondencia,fecharegistro,idusuario} = values;
+    const myInsertQuery = `INSERT INTO correspondenciaenviada(
+        idcorrespondencia,
+        asegurado,
+        referencia,
+        destino,
+        aseguradora,
+        cbdevoluciondocs,
+        cbcc,
+        cbrutaespecial,
+        atencion,
+        destino_otro,
+        comentario,
+        idusuario,
+        fecharegistro
+    ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+    INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${6},${fecharegistro},${idusuario});
+    UPDATE correspondencia_recibida SET estado= 6 WHERE idcorrespondencia_recibida = ${idcorrespondencia};`;
+    dbconnection.query(myInsertQuery,myvals,(error,result)=>{
+        if(error){
+            return callBack(error,result);
+        }else{
+            return callBack(null,result);
+        }
+    });
+}
+
 
 
 
@@ -381,5 +412,6 @@ export {
     correspondenceAsignedToUser,
     requestApproval,
     correspondenceToApproval,
-    approveCorrespondence
+    approveCorrespondence,
+    correspondenceSend
 };

@@ -104,8 +104,42 @@ CREATE TABLE `correspondencia_recibida` (
 
 LOCK TABLES `correspondencia_recibida` WRITE;
 /*!40000 ALTER TABLE `correspondencia_recibida` DISABLE KEYS */;
-INSERT INTO `correspondencia_recibida` VALUES (1,1,'2021-10-05','2021-10-05','08:06',2,'rafael adalberto parada gomez','carta de inclusion','2021-10-05','aseguradora','3',9,'fisico','2021-10-05 08:06:13',1,3,'0'),(2,4,'2021-10-05','2021-10-05','08:39',2,'rolando loza','carta de cesion de beneficios carlos perez','2021-10-05','asegurado','rolando cabrera lopez',9,'electronico','2021-10-05 08:41:40',1,3,'0'),(3,2,'2021-10-05','2021-10-05','08:06',2,'rafael adalberto parada gomez','carta de inclusion','2021-10-05','aseguradora','2',9,'electronico','2021-10-07 08:28:51',1,4,'0'),(4,3,'2021-10-14','2021-10-08','14:35',2,'salma hayek','inclusion de recien nacido carta 252343 del dia 24 de marzo','2021-10-07','aseguradora','2',9,'fisico','2021-10-07 14:35:35',1,4,'0'),(5,3,'2021-10-08','2021-10-08','09:51',1,'casilda','bonos de regalo para todos los empleados','2021-10-09','aseguradora','2',9,'fisico','2021-10-08 09:50:59',1,4,'0'),(6,1,'2021-10-11','2021-10-11','11:12',1,'rene perez lopez','cheque por premio de participacion','2021-10-11','asegurado','salome perez',9,'fisico','2021-10-11 11:13:00',1,3,'0'),(7,1,'2021-10-12','2021-10-12','10:23',1,'rene perez','carta de inclusion','2021-10-12','asegurado','carlos perez',9,'fisico','2021-10-12 10:23:06',1,3,'0'),(8,1,'2021-10-12','2021-10-12','13:34',1,'sonia lara','exclusion carro sonia lara','2021-10-12','aseguradora','1',9,'electronico','2021-10-12 13:35:13',1,4,'0'),(9,2,'2021-10-13','2021-10-12','13:35',1,'andres mendez','carta de reclamo de gastos medicos','2021-10-12','aseguradora','1',9,'fisico','2021-10-12 13:36:00',1,4,'0'),(10,2,'2021-10-13','2021-10-13','13:38',1,'monica liz','carta de solicitud de defuncion','2021-10-12','asegurado','catrino lopez',9,'fisico','2021-10-12 13:36:58',1,3,'0'),(11,3,'2021-10-18','2021-10-18','08:24',1,'claudia perez','carta de inclusion de recien nacido con fecha 14 de enero de 2021, nacion en el hospital primero de mayo de sal salvador','2021-10-18','asegurado','andres lopez obrador',9,'fisico','2021-10-18 08:25:33',1,3,'0');
+INSERT INTO `correspondencia_recibida` VALUES (1,1,'2021-10-05','2021-10-05','08:06',2,'rafael adalberto parada gomez','carta de inclusion','2021-10-05','aseguradora','3',9,'fisico','2021-10-05 08:06:13',1,5,'0'),(2,4,'2021-10-05','2021-10-05','08:39',2,'rolando loza','carta de cesion de beneficios carlos perez','2021-10-05','asegurado','rolando cabrera lopez',9,'electronico','2021-10-05 08:41:40',1,5,'0'),(3,2,'2021-10-05','2021-10-05','08:06',2,'rafael adalberto parada gomez','carta de inclusion','2021-10-05','aseguradora','2',9,'electronico','2021-10-07 08:28:51',1,5,'0'),(4,3,'2021-10-14','2021-10-08','14:35',2,'salma hayek','inclusion de recien nacido carta 252343 del dia 24 de marzo','2021-10-07','aseguradora','2',9,'fisico','2021-10-07 14:35:35',1,4,'0'),(5,3,'2021-10-08','2021-10-08','09:51',1,'casilda','bonos de regalo para todos los empleados','2021-10-09','aseguradora','2',9,'fisico','2021-10-08 09:50:59',1,4,'0'),(6,1,'2021-10-11','2021-10-11','11:12',1,'rene perez lopez','cheque por premio de participacion','2021-10-11','asegurado','salome perez',9,'fisico','2021-10-11 11:13:00',1,5,'0'),(7,1,'2021-10-12','2021-10-12','10:23',1,'rene perez','carta de inclusion','2021-10-12','asegurado','carlos perez',9,'fisico','2021-10-12 10:23:06',1,4,'0'),(8,1,'2021-10-12','2021-10-12','13:34',1,'sonia lara','exclusion carro sonia lara','2021-10-12','aseguradora','1',9,'electronico','2021-10-12 13:35:13',1,5,'0'),(9,2,'2021-10-13','2021-10-12','13:35',1,'andres mendez','carta de reclamo de gastos medicos','2021-10-12','aseguradora','1',9,'fisico','2021-10-12 13:36:00',1,5,'0'),(10,2,'2021-10-13','2021-10-13','13:38',1,'monica liz','carta de solicitud de defuncion','2021-10-12','asegurado','catrino lopez',9,'fisico','2021-10-12 13:36:58',1,4,'0'),(11,3,'2021-10-18','2021-10-18','08:24',1,'claudia perez','carta de inclusion de recien nacido con fecha 14 de enero de 2021, nacion en el hospital primero de mayo de sal salvador','2021-10-18','asegurado','andres lopez obrador',9,'fisico','2021-10-18 08:25:33',1,4,'0');
 /*!40000 ALTER TABLE `correspondencia_recibida` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `correspondenciaenviada`
+--
+
+DROP TABLE IF EXISTS `correspondenciaenviada`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `correspondenciaenviada` (
+  `idcorrespondencia_env` int(11) NOT NULL AUTO_INCREMENT,
+  `idcorrespondencia` int(11) DEFAULT NULL,
+  `asegurado` varchar(100) DEFAULT NULL,
+  `referencia` varchar(500) DEFAULT NULL,
+  `destino` varchar(200) DEFAULT NULL,
+  `aseguradora` int(11) DEFAULT NULL,
+  `cbdevoluciondocs` char(1) DEFAULT NULL,
+  `cbcc` char(1) DEFAULT NULL,
+  `atencion` varchar(100) DEFAULT NULL,
+  `destino_otro` varchar(100) DEFAULT NULL,
+  `comentario` varchar(500) DEFAULT NULL,
+  `idusuario` int(11) DEFAULT NULL,
+  `fecharegistro` datetime DEFAULT NULL,
+  PRIMARY KEY (`idcorrespondencia_env`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `correspondenciaenviada`
+--
+
+LOCK TABLES `correspondenciaenviada` WRITE;
+/*!40000 ALTER TABLE `correspondenciaenviada` DISABLE KEYS */;
+/*!40000 ALTER TABLE `correspondenciaenviada` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -229,7 +263,7 @@ CREATE TABLE `vida_estado_correspondencia` (
   `fecharegistro` datetime DEFAULT NULL,
   `idusuarioaccion` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -238,7 +272,7 @@ CREATE TABLE `vida_estado_correspondencia` (
 
 LOCK TABLES `vida_estado_correspondencia` WRITE;
 /*!40000 ALTER TABLE `vida_estado_correspondencia` DISABLE KEYS */;
-INSERT INTO `vida_estado_correspondencia` VALUES (1,8,2,'2021-10-14 08:31:23',1),(2,9,2,'2021-10-14 08:31:28',1),(3,3,2,'2021-10-14 08:31:31',1),(4,4,2,'2021-10-14 08:31:32',1),(5,8,3,'2021-10-14 08:31:39',1),(6,9,3,'2021-10-14 08:31:51',1),(7,3,3,'2021-10-14 08:31:55',1),(8,4,3,'2021-10-14 08:31:59',1),(9,5,2,'2021-10-14 12:28:39',1),(10,5,3,'2021-10-14 12:28:43',1),(11,1,2,'2021-10-14 14:54:32',1),(12,1,3,'2021-10-14 14:54:37',1),(13,2,2,'2021-10-15 14:15:37',1),(14,2,3,'2021-10-15 14:15:41',1),(15,6,2,'2021-10-15 15:25:47',1),(16,6,3,'2021-10-15 15:25:51',1),(17,7,2,'2021-10-15 15:42:46',1),(18,7,3,'2021-10-15 15:42:51',1),(19,10,2,'2021-10-16 10:34:37',1),(20,10,3,'2021-10-16 10:34:41',1),(21,11,1,'2021-10-18 08:25:33',1),(22,11,2,'2021-10-18 08:29:14',1),(23,11,3,'2021-10-18 08:29:18',1),(24,8,4,'2021-10-18 11:10:12',1),(25,9,4,'2021-10-18 11:11:54',1),(26,3,4,'2021-10-18 11:12:13',1),(27,4,4,'2021-10-18 11:12:40',1),(28,5,4,'2021-10-18 11:12:44',1);
+INSERT INTO `vida_estado_correspondencia` VALUES (1,8,2,'2021-10-14 08:31:23',1),(2,9,2,'2021-10-14 08:31:28',1),(3,3,2,'2021-10-14 08:31:31',1),(4,4,2,'2021-10-14 08:31:32',1),(5,8,3,'2021-10-14 08:31:39',1),(6,9,3,'2021-10-14 08:31:51',1),(7,3,3,'2021-10-14 08:31:55',1),(8,4,3,'2021-10-14 08:31:59',1),(9,5,2,'2021-10-14 12:28:39',1),(10,5,3,'2021-10-14 12:28:43',1),(11,1,2,'2021-10-14 14:54:32',1),(12,1,3,'2021-10-14 14:54:37',1),(13,2,2,'2021-10-15 14:15:37',1),(14,2,3,'2021-10-15 14:15:41',1),(15,6,2,'2021-10-15 15:25:47',1),(16,6,3,'2021-10-15 15:25:51',1),(17,7,2,'2021-10-15 15:42:46',1),(18,7,3,'2021-10-15 15:42:51',1),(19,10,2,'2021-10-16 10:34:37',1),(20,10,3,'2021-10-16 10:34:41',1),(21,11,1,'2021-10-18 08:25:33',1),(22,11,2,'2021-10-18 08:29:14',1),(23,11,3,'2021-10-18 08:29:18',1),(24,8,4,'2021-10-18 11:10:12',1),(25,9,4,'2021-10-18 11:11:54',1),(26,3,4,'2021-10-18 11:12:13',1),(27,4,4,'2021-10-18 11:12:40',1),(28,5,4,'2021-10-18 11:12:44',1),(29,1,5,'2021-10-19 08:33:58',1),(30,2,5,'2021-10-19 08:42:19',1),(31,6,5,'2021-10-19 08:43:13',1),(32,6,5,'2021-10-19 08:44:07',1),(33,7,5,'2021-10-19 08:53:56',1),(34,7,4,'2021-10-19 09:12:36',1),(35,10,4,'2021-10-19 09:13:11',1),(36,11,4,'2021-10-19 09:22:43',1),(37,8,5,'2021-10-19 09:27:29',1),(38,9,5,'2021-10-19 09:27:54',1),(39,3,5,'2021-10-19 09:30:26',1);
 /*!40000 ALTER TABLE `vida_estado_correspondencia` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -251,4 +285,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-18 16:58:21
+-- Dump completed on 2021-10-20 16:58:21
