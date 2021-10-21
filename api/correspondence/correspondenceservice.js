@@ -354,7 +354,7 @@ const approveCorrespondence = (values,callBack)=>{
     const {idusuario,idcorrespondencia,fechaaprobacion} = values;
     const myQuerys = `
         INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${5},'${fechaaprobacion}',${idusuario});
-        UPDATE correspondencia_recibida SET estado= 5 WHERE idcorrespondencia_recibida = ${idcorrespondencia};
+        UPDATE correspondencia_recibida SET estado= 5 WHERE idcorrespondencia_recibida= ${idcorrespondencia};
     `;
     dbconnection.query(myQuerys,values,(error,result)=>{
         if(error){
@@ -367,28 +367,30 @@ const approveCorrespondence = (values,callBack)=>{
 
 const correspondenceSend = (values,callBack) =>{
     const myvals = {...values,cbdevoluciondocs:(values?.cbdevoluciondocs === "" ||values?.cbdevoluciondocs === false ) ? 0:1,cbcc:(values?.cbcc ===false) ? 0:1,cbrutaespecial:(values?.cbrutaespecial===false) ? 0:1,};
-    console.log("El valor es "+values?.cbdevoluciondocs);
-    console.log(JSON.stringify(myvals,null,3));
-    const {idcorrespondencia,fecharegistro,idusuario} = values;
-    const myInsertQuery = `INSERT INTO correspondenciaenviada(
-        idcorrespondencia,
-        asegurado,
-        referencia,
-        destino,
-        aseguradora,
-        cbdevoluciondocs,
-        cbcc,
-        cbrutaespecial,
-        atencion,
-        destino_otro,
-        comentario,
-        idusuario,
-        fecharegistro
-    ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?);
-    INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${6},${fecharegistro},${idusuario});
-    UPDATE correspondencia_recibida SET estado= 6 WHERE idcorrespondencia_recibida = ${idcorrespondencia};`;
-    dbconnection.query(myInsertQuery,myvals,(error,result)=>{
+    const singleVals = Object.values(values);
+    console.log(singleVals);
+    const myInsertQuery = `
+        INSERT INTO correspondenciaenviada(
+            idcorrespondencia,
+            asegurado,
+            referencia,
+            destino,
+            aseguradora,
+            cbdevoluciondocs,
+            cbcc,
+            cbrutaespecial,
+            atencion,
+            destino_otro,
+            comentario,
+            idusuario,
+            fecharegistro
+        ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);
+        INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${singleVals[0]},${6},'${singleVals[12]}',${singleVals[11]});
+        UPDATE correspondencia_recibida SET estado=6 WHERE idcorrespondencia_recibida= ${singleVals[0]};
+    `;
+    dbconnection.query(myInsertQuery,singleVals,(error,result)=>{
         if(error){
+            console.log(error);
             return callBack(error,result);
         }else{
             return callBack(null,result);
