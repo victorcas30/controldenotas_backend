@@ -12,7 +12,8 @@ import {
     requestApproval,
     correspondenceToApproval,
     approveCorrespondence,
-    correspondenceSend
+    correspondenceSend,
+    correspondenceToApprovalCobros
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -177,6 +178,17 @@ const setCorrespondenceSend = (req,res)=>{
     });
 }
 
+const getcorrespondenceToApprovalCobros = (req,res)=>{
+    const values = Object.values(req.params);
+    correspondenceToApprovalCobros(values,(error,result)=>{
+        if(error){
+           res.status(500).json({success:false,message:'Error al traer correspondencia'});
+        }else{
+           res.status(200).json({success:true,correspondence:result});
+        }
+    });
+}
+
 export {
     createCorrespondenceReceived,
     getCorrespondenceRecieviedByUser,
@@ -191,5 +203,6 @@ export {
     setRequestApproval,
     getcorrespondenceToApproval,
     setApproveCorrespondence,
-    setCorrespondenceSend
+    setCorrespondenceSend,
+    getcorrespondenceToApprovalCobros
 };

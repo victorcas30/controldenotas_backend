@@ -399,6 +399,70 @@ const correspondenceSend = (values,callBack) =>{
 }
 
 
+const correspondenceToApprovalCobros = (values,callBack)=>{
+    const myQuery = `
+        SELECT
+        cr.idcorrespondencia_recibida as id, 
+        UPPER(td.descripcion) as tipodocumento,
+        DATE_FORMAT(cr.fecha_ingreso_sistema,'%d-%m-%Y') as fecha_ingreso_sistema,
+        DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%Y') as fechasellodocumento,
+        DATE_FORMAT(cr.fechasellocyr,'%d-%m-%Y') as fechasellocyr,
+        DATE_FORMAT(asig.fechaasignacion,'%d-%m-%Y') as fechaasignacion,
+        asig.fechaasignacion as fechaasignacioncomplete,
+        cr.horasellocyr,
+        UPPER(us.nombres) as asignado_a,
+        UPPER(us.usuario) as usuario,
+        UPPER(cr.asegurado) as asegurado,
+        UPPER(cr.referencia) as referencia,
+        DATE_FORMAT(fechavencimientorenov,'%d-%m-%Y') as fechavencimientorenov,
+        UPPER(cr.procedencia) as procedencia,
+        UPPER(cr.aseg_remi) as aseg_remi,
+        UPPER(ase.nombre) as aseguradora,
+        UPPER(de.nombre) as entregadoa,
+        cr.estado,
+        de.idcyr_departamento as iddepartamento,
+        UPPER(cr.formadeingreso) as formadeingreso
+    FROM 
+        correspondencia_recibida cr
+    
+    INNER JOIN tipo_documentos td on td.idtipo = cr.tipodocumento
+    INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
+    INNER JOIN asignaciones asig on asig.idcorrespondencia = cr.idcorrespondencia_recibida
+    INNER JOIN usuarios us on us.idusuario = asig.idusuario
+    LEFT  JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
+    
+    WHERE 
+        cr.eliminado = 0
+    `;
+
+    const myQuery2 = `
+        AND 
+        de.idcyr_departamento = ?
+    `;
+
+    const myQuery3 = `
+        AND 
+        us.idusuario = ?
+    `;
+
+    const myQuery4 = `
+    AND 
+        cr.estado IN (4)
+    ORDER BY 
+        fechaasignacioncomplete ASC
+    `;
+    let miCuery = myQuery+((values[0] != 0) ? myQuery2:'')+((values[1]!=0) ? myQuery3:'')+myQuery4;
+
+    dbconnection.query(miCuery,values,(error,result)=>{
+        if(error){
+            return callBack(error,result);
+        }else{
+            return callBack(error,result);
+        }
+    });
+}
+
+
 
 
 export {
@@ -415,5 +479,6 @@ export {
     requestApproval,
     correspondenceToApproval,
     approveCorrespondence,
-    correspondenceSend
+    correspondenceSend,
+    correspondenceToApprovalCobros
 };
