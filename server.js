@@ -5,6 +5,7 @@ import { cyrdepartmentsRouter } from './api/departments/departmentsroutes.js';
 import { insuranceCompaniesRouter } from './api/insurancecompanies/insurrancecompaniesroutes.js';
 import { correspondenceRouter } from './api/correspondence/correspondenceroutes.js';
 import { documentstypeRouter } from './api/documentstype/documentstyperouters.js';
+import { mensajerosRouter } from './api/mensajeros/mensajerosroutes.js';
 import cors from 'cors';
 const app = express();
 dotenv.config();
@@ -18,6 +19,7 @@ app.use('/api',cyrdepartmentsRouter);
 app.use('/api',insuranceCompaniesRouter);
 app.use('/api',correspondenceRouter);
 app.use('/api',documentstypeRouter);
+app.use('/api',mensajerosRouter);
 
 app.listen(port,()=>{
     console.log('server running on port '+port);

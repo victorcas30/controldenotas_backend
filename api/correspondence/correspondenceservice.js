@@ -355,9 +355,11 @@ const approveCorrespondence = (values,callBack)=>{
     const myQuerys = `
         INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${5},'${fechaaprobacion}',${idusuario});
         UPDATE correspondencia_recibida SET estado= 5 WHERE idcorrespondencia_recibida= ${idcorrespondencia};
+        UPDATE asignaciones SET fechaaprobadacobros = '${fechaaprobacion}'  WHERE idcorrespondencia= ${idcorrespondencia};
     `;
     dbconnection.query(myQuerys,values,(error,result)=>{
         if(error){
+            console.log(error);
             return callBack(error,result);
         }else{
             return callBack(null,result);
@@ -447,15 +449,13 @@ const correspondenceToApprovalCobros = (values,callBack)=>{
 
     const myQuery4 = `
     AND 
-        cr.estado IN (4)
+        cr.estado IN (4,5)
     ORDER BY 
         fechaasignacioncomplete ASC
     `;
     let miCuery = myQuery+((values[0] != "0") ? myQuery2:'')+((values[1] != "0") ? myQuery3:'')+myQuery4;
 
     dbconnection.query(miCuery,values,(error,result)=>{
-        console.log(miCuery);
-        console.log(values);
         if(error){
             return callBack(error,result);
         }else{
