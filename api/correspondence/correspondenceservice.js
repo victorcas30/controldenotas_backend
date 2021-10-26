@@ -437,12 +437,12 @@ const correspondenceToApprovalCobros = (values,callBack)=>{
 
     const myQuery2 = `
         AND 
-        de.idcyr_departamento = ?
+        de.idcyr_departamento = ${values[0]}
     `;
 
     const myQuery3 = `
         AND 
-        us.idusuario = ?
+        us.idusuario = ${values[1]}
     `;
 
     const myQuery4 = `
@@ -451,9 +451,11 @@ const correspondenceToApprovalCobros = (values,callBack)=>{
     ORDER BY 
         fechaasignacioncomplete ASC
     `;
-    let miCuery = myQuery+((values[0] != 0) ? myQuery2:'')+((values[1]!=0) ? myQuery3:'')+myQuery4;
+    let miCuery = myQuery+((values[0] != "0") ? myQuery2:'')+((values[1] != "0") ? myQuery3:'')+myQuery4;
 
     dbconnection.query(miCuery,values,(error,result)=>{
+        console.log(miCuery);
+        console.log(values);
         if(error){
             return callBack(error,result);
         }else{
