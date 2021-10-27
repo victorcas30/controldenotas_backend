@@ -15,7 +15,8 @@ import {
     getcorrespondenceToApproval,
     setApproveCorrespondence,
     setCorrespondenceSend,
-    getcorrespondenceToApprovalCobros
+    getcorrespondenceToApprovalCobros,
+    setSendCorrespondence
 } from './correspondencecontrollers.js';
 
 const router = express.Router();
@@ -36,5 +37,6 @@ router.put('/receivecorrespondence',validatetoken,setReceiveCorrespondence);
 router.put('/returncorrespondence',validatetoken,setReturnCorrespondenceToanohterDepartment);
 router.put('/requestapproval',validatetoken,setRequestApproval);
 router.put('/approvecorrespondence',validatetoken,setApproveCorrespondence);
+router.put('/sendcorrespondence',validatetoken,setSendCorrespondence);
 
 export {router as correspondenceRouter};

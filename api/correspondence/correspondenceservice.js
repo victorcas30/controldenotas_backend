@@ -359,7 +359,6 @@ const approveCorrespondence = (values,callBack)=>{
     `;
     dbconnection.query(myQuerys,values,(error,result)=>{
         if(error){
-            console.log(error);
             return callBack(error,result);
         }else{
             return callBack(null,result);
@@ -370,7 +369,6 @@ const approveCorrespondence = (values,callBack)=>{
 const correspondenceSend = (values,callBack) =>{
     const myvals = {...values,cbdevoluciondocs:(values?.cbdevoluciondocs === "" ||values?.cbdevoluciondocs === false ) ? 0:1,cbcc:(values?.cbcc ===false) ? 0:1,cbrutaespecial:(values?.cbrutaespecial===false) ? 0:1,};
     const singleVals = Object.values(values);
-    console.log(singleVals);
     const myInsertQuery = `
         INSERT INTO correspondenciaenviada(
             idcorrespondencia,
@@ -392,7 +390,6 @@ const correspondenceSend = (values,callBack) =>{
     `;
     dbconnection.query(myInsertQuery,singleVals,(error,result)=>{
         if(error){
-            console.log(error);
             return callBack(error,result);
         }else{
             return callBack(null,result);
@@ -464,6 +461,24 @@ const correspondenceToApprovalCobros = (values,callBack)=>{
     });
 }
 
+const sendCorrespondence = (values,callBack)=>{
+    const {idusuario,idcorrespondencia,fechaaprobacion,idmensajero} = values;
+    const myQuerys = `
+        INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${6},'${fechaaprobacion}',${idusuario});
+        UPDATE correspondencia_recibida SET estado= 6 WHERE idcorrespondencia_recibida= ${idcorrespondencia};
+        UPDATE correspondenciaenviada SET idmensajero=${idmensajero} WHERE idcorrespondencia= ${idcorrespondencia};
+        UPDATE asignaciones SET fechadespachadacobros = '${fechaaprobacion}'  WHERE idcorrespondencia= ${idcorrespondencia};
+    `;
+    dbconnection.query(myQuerys,values,(error,result)=>{
+        if(error){
+            return callBack(error,result);
+        }else{
+            return callBack(null,result);
+        }
+    });
+}
+
+
 
 
 
@@ -482,5 +497,6 @@ export {
     correspondenceToApproval,
     approveCorrespondence,
     correspondenceSend,
-    correspondenceToApprovalCobros
+    correspondenceToApprovalCobros,
+    sendCorrespondence
 };

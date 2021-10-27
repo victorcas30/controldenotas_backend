@@ -13,7 +13,8 @@ import {
     correspondenceToApproval,
     approveCorrespondence,
     correspondenceSend,
-    correspondenceToApprovalCobros
+    correspondenceToApprovalCobros,
+    sendCorrespondence
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -189,6 +190,17 @@ const getcorrespondenceToApprovalCobros = (req,res)=>{
     });
 }
 
+const setSendCorrespondence = (req,res)=>{
+    const values = req.body;
+    sendCorrespondence(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al enviar la correspondencia'});
+        }else{
+            res.status(200).json({success:true,message:'Correspondencia registrada como despachada'});
+        }
+    });
+}
+
 export {
     createCorrespondenceReceived,
     getCorrespondenceRecieviedByUser,
@@ -204,5 +216,6 @@ export {
     getcorrespondenceToApproval,
     setApproveCorrespondence,
     setCorrespondenceSend,
-    getcorrespondenceToApprovalCobros
+    getcorrespondenceToApprovalCobros,
+    setSendCorrespondence
 };

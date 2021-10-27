@@ -6,7 +6,7 @@ const getMensajeros = (req,res) =>{
             console.log(error);
             return;
         }
-        return res.json({success:1,users:result});
+        return res.json({success:1,mensajeros:result});
     });
 }
 
