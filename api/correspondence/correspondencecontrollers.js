@@ -14,7 +14,10 @@ import {
     approveCorrespondence,
     correspondenceSend,
     correspondenceToApprovalCobros,
-    sendCorrespondence
+    sendCorrespondence,
+    correspondenceInRoute,
+    finishCorrespondence,
+    editMensajeroCorrespondence
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -201,6 +204,38 @@ const setSendCorrespondence = (req,res)=>{
     });
 }
 
+const getCorrespondenceInRoute = (req,res) =>{
+    const values = Object.values(req.params);
+    correspondenceInRoute(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al solicitar correspondencia'});
+        }else{
+            res.status(200).json({success:true,correspondenceinroute:result});
+        }
+    });
+}
+
+const setFinishCorrespondence = (req,res) =>{
+    const values = req.body;
+    finishCorrespondence(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al finalizar correspondencia'});
+        }else{
+            res.status(200).json({success:true,message:'Correspondencia finalizada'});
+        }
+    });
+}
+const setEditMensajeroCorrespondence = (req,res) =>{
+    const values = req.body;
+    finishCorrespondence(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al cambiar correspondencia'});
+        }else{
+            res.status(200).json({success:true,message:'Mensajero cambiado'});
+        }
+    });
+}
+
 export {
     createCorrespondenceReceived,
     getCorrespondenceRecieviedByUser,
@@ -217,5 +252,8 @@ export {
     setApproveCorrespondence,
     setCorrespondenceSend,
     getcorrespondenceToApprovalCobros,
-    setSendCorrespondence
+    setSendCorrespondence,
+    getCorrespondenceInRoute,
+    setFinishCorrespondence,
+    setEditMensajeroCorrespondence
 };

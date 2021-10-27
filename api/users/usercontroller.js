@@ -1,4 +1,4 @@
-import { getUsers,createUser,loginUser } from './userservice.js';
+import { getUsers,createUser,loginUser,usersByDepto } from './userservice.js';
 import {hashSync,genSaltSync,compareSync} from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -17,6 +17,17 @@ const createUsuario = (req,res)=>{
 
 const getUsuarios = (req,res) =>{
     getUsers((error,result)=>{
+        if(error){
+            console.log(error);
+            return;
+        }
+        return res.json({success:1,users:result});
+    });
+}
+
+const getUsersByDepto = (req,res) =>{
+    const values = Object.values(req.params);
+    usersByDepto(values,(error,result)=>{
         if(error){
             console.log(error);
             return;
@@ -52,5 +63,5 @@ const login = (req,res)=>{
 
 
 
-export {getUsuarios,createUsuario,login};
+export {getUsuarios,createUsuario,login,getUsersByDepto};
 

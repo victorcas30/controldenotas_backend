@@ -11,6 +11,17 @@ const getUsers = (callBack) =>{
     });
 }
 
+const usersByDepto = (values,callBack) =>{
+    const myQuery = 'SELECT idusuario,nombres,apellidos,UPPER(usuario) as usuario FROM usuarios WHERE departamento = ?';
+    dbconnection.query(myQuery,values,(error,result)=>{
+        if(!error){
+           return callBack(null,result);
+        }else{
+            return callBack(error);
+        }
+    });
+}
+
 const createUser = (values,callBack)=>{
     const insertQuery = "INSERT INTO usuarios(nombres,apellidos,usuario,password) VALUES(?,?,?,?)";
     dbconnection.query(insertQuery,values,(error,result)=>{
@@ -59,4 +70,4 @@ const loginUser = (values,callBack)=>{
 
 
 
-export {getUsers,createUser,loginUser};
+export {getUsers,createUser,loginUser,usersByDepto};

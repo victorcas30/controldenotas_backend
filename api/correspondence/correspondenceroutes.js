@@ -16,7 +16,10 @@ import {
     setApproveCorrespondence,
     setCorrespondenceSend,
     getcorrespondenceToApprovalCobros,
-    setSendCorrespondence
+    setSendCorrespondence,
+    getCorrespondenceInRoute,
+    setFinishCorrespondence,
+    setEditMensajeroCorrespondence
 } from './correspondencecontrollers.js';
 
 const router = express.Router();
@@ -28,6 +31,7 @@ router.get('/correspondencedepto/:iddepartment',validatetoken,getCorrespondenceR
 router.get('/correspondencetoapproval/:iddepartamento/:idusuario/:estado',validatetoken,getcorrespondenceToApproval);
 router.get('/correspondencetoapprovalcobros/:iddepartamento/:idusuario',validatetoken,getcorrespondenceToApprovalCobros);
 router.get('/correspondence/status/:idusuario/:estado',validatetoken,getCorrespondenceAsignedToUser);
+router.get('/correspondenceinroute/:idmensajero',validatetoken,getCorrespondenceInRoute);
 router.post('/correspondence',validatetoken,createCorrespondenceReceived);
 router.post('/sendcorrespondence',validatetoken,setCorrespondenceSend);
 router.put('/correspondence',validatetoken,setEditCorrespondenceById);
@@ -38,5 +42,7 @@ router.put('/returncorrespondence',validatetoken,setReturnCorrespondenceToanohte
 router.put('/requestapproval',validatetoken,setRequestApproval);
 router.put('/approvecorrespondence',validatetoken,setApproveCorrespondence);
 router.put('/sendcorrespondence',validatetoken,setSendCorrespondence);
+router.put('/finishcorrespondence',validatetoken,setFinishCorrespondence);
+router.put('/editmensajerocorrespondence',validatetoken,setEditMensajeroCorrespondence);
 
 export {router as correspondenceRouter};

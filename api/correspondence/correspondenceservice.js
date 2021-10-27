@@ -478,8 +478,83 @@ const sendCorrespondence = (values,callBack)=>{
     });
 }
 
+const correspondenceInRoute = (values,callBack)=>{
+    const myQuery = `
+        SELECT
+        cr.idcorrespondencia_recibida as id, 
+        UPPER(td.descripcion) as tipodocumento,
+        DATE_FORMAT(cr.fecha_ingreso_sistema,'%d-%m-%Y') as fecha_ingreso_sistema,
+        DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%Y') as fechasellodocumento,
+        DATE_FORMAT(cr.fechasellocyr,'%d-%m-%Y') as fechasellocyr,
+        DATE_FORMAT(asig.fechaasignacion,'%d-%m-%Y') as fechaasignacion,
+        asig.fechaasignacion as fechaasignacioncomplete,
+        asig.fechadespachadacobros,
+        cr.horasellocyr,
+        UPPER(us.usuario) as usuario,
+        UPPER(cr.asegurado) as asegurado,
+        UPPER(cr.referencia) as referencia,
+        DATE_FORMAT(fechavencimientorenov,'%d-%m-%Y') as fechavencimientorenov,
+        UPPER(cr.procedencia) as procedencia,
+        UPPER(cr.aseg_remi) as aseg_remi,
+        UPPER(ase.nombre) as aseguradora,
+        UPPER(de.nombre) as entregadoa,
+        UPPER(m.nombre) as mensajero,
+        cr.estado,
+        UPPER(cr.formadeingreso) as formadeingreso
+    FROM 
+        correspondencia_recibida cr
+    
+    INNER JOIN tipo_documentos td on td.idtipo = cr.tipodocumento
+    INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
+    INNER JOIN asignaciones asig on asig.idcorrespondencia = cr.idcorrespondencia_recibida
+    INNER JOIN usuarios us on us.idusuario = asig.idusuario
+    INNER JOIN correspondenciaenviada ce on asig.idcorrespondencia = ce.idcorrespondencia
+    INNER JOIN mensajeros m on m.idmensajero = ce.idmensajero
+    LEFT  JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
+    
+    WHERE 
+        cr.eliminado = 0
+    AND 
+        cr.estado IN (6)
+    ORDER BY 
+        fechaasignacioncomplete ASC
+    `;
+    dbconnection.query(myQuery,values,(error,result)=>{
+        if(error){
+            return callBack(error,result);
+        }else{
+            return callBack(error,result);
+        }
+    });
+}
 
+const finishCorrespondence = (values,callBack)=>{
+    const {idusuario,idcorrespondencia,fechafinalizada} = values;
+    const myQuerys = `
+        INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${7},'${fechafinalizada}',${idusuario});
+        UPDATE correspondencia_recibida SET estado= 7 WHERE idcorrespondencia_recibida= ${idcorrespondencia};
+        UPDATE asignaciones SET fechafinalizada = '${fechafinalizada}'  WHERE idcorrespondencia= ${idcorrespondencia};
+    `;
+    dbconnection.query(myQuerys,values,(error,result)=>{
+        if(error){
+            return callBack(error,result);
+        }else{
+            return callBack(null,result);
+        }
+    });
+}
 
+const editMensajeroCorrespondence = (values,callBack)=>{
+    const {idcorrespondencia,idmensajero} = values;
+    const myQuery = `UPDATE correspondenciaenviada SET idmensajero=${idmensajero} WHERE idcorrespondencia= ${idcorrespondencia};`;
+    dbconnection.query(myQuery,values,(error,result)=>{
+        if(error){
+            return callBack(error,result);
+        }else{
+            return callBack(null,result);
+        }
+    });
+}
 
 
 export {
@@ -498,5 +573,8 @@ export {
     approveCorrespondence,
     correspondenceSend,
     correspondenceToApprovalCobros,
-    sendCorrespondence
+    sendCorrespondence,
+    correspondenceInRoute,
+    finishCorrespondence,
+    editMensajeroCorrespondence
 };
