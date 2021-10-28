@@ -1,4 +1,4 @@
-import { getUsers,createUser,loginUser,usersByDepto } from './userservice.js';
+import { getUsers,createUser,loginUser,usersByDepto ,usersRecibenCorrespondencia} from './userservice.js';
 import {hashSync,genSaltSync,compareSync} from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -8,20 +8,20 @@ const createUsuario = (req,res)=>{
     const values = Object.values(req.body);
     createUser(values,(error,results)=>{
         if(error){
-            console.log(error); 
-            return;
+            res.status(500).json({success:false,message:'Error al crear usuario'});
+        }else{
+            res.status(200).json({success:true,message:'Usuario creado'});
         }
-        return res.json({success:'ok',data:results});
     });
 }
 
 const getUsuarios = (req,res) =>{
     getUsers((error,result)=>{
         if(error){
-            console.log(error);
-            return;
+            res.status(500).json({success:true,message:'Error al procesar la solicitud'});
+        }else{
+            res.status(200).json({success:true,users:result});
         }
-        return res.json({success:1,users:result});
     });
 }
 
@@ -29,10 +29,20 @@ const getUsersByDepto = (req,res) =>{
     const values = Object.values(req.params);
     usersByDepto(values,(error,result)=>{
         if(error){
-            console.log(error);
-            return;
+            res.status(500).json({success:false,message:'Error al procesar la solicitud'});
+        }else{
+            res.status(200).json({success:true,users:result});
         }
-        return res.json({success:1,users:result});
+    });
+}
+const getUsersRecibenCorrespondencia = (req,res) =>{
+    usersRecibenCorrespondencia((error,result)=>{
+        if(error){
+            console.log(error);
+            res.status(500).json({success:false,message:'Error al procesar la solicitud'});
+        }else{
+            res.status(200).json({success:1,users:result});
+        }
     });
 }
 
@@ -63,5 +73,11 @@ const login = (req,res)=>{
 
 
 
-export {getUsuarios,createUsuario,login,getUsersByDepto};
+export {
+    getUsuarios,
+    createUsuario,
+    login,
+    getUsersByDepto,
+    getUsersRecibenCorrespondencia
+};
 

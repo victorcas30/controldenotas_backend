@@ -227,7 +227,7 @@ const setFinishCorrespondence = (req,res) =>{
 }
 const setEditMensajeroCorrespondence = (req,res) =>{
     const values = req.body;
-    finishCorrespondence(values,(error,result)=>{
+    editMensajeroCorrespondence(values,(error,result)=>{
         if(error){
             res.status(500).json({success:false,message:'Error al cambiar correspondencia'});
         }else{

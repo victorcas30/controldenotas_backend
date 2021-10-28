@@ -271,7 +271,7 @@ const correspondenceAsignedToUser = (values,callBack)=>{
     AND 
         cr.eliminado = 0
     AND 
-        cr.estado IN (3,4,5)
+        cr.estado IN (3,4)
     ORDER BY 
         fechaasignacioncomplete ASC
     `;
@@ -385,8 +385,8 @@ const correspondenceSend = (values,callBack) =>{
             idusuario,
             fecharegistro
         ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);
-        INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${singleVals[0]},${6},'${singleVals[12]}',${singleVals[11]});
-        UPDATE correspondencia_recibida SET estado=6 WHERE idcorrespondencia_recibida= ${singleVals[0]};
+        INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${singleVals[0]},${4},'${singleVals[12]}',${singleVals[11]});
+        UPDATE correspondencia_recibida SET estado=4 WHERE idcorrespondencia_recibida= ${singleVals[0]};
     `;
     dbconnection.query(myInsertQuery,singleVals,(error,result)=>{
         if(error){
