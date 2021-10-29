@@ -1,4 +1,4 @@
-import { getUsers,createUser,loginUser,usersByDepto ,usersRecibenCorrespondencia} from './userservice.js';
+import { getUsers,createUser,loginUser,usersByDepto ,usersRecibenCorrespondencia,usersAplicaReporte} from './userservice.js';
 import {hashSync,genSaltSync,compareSync} from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -17,6 +17,15 @@ const createUsuario = (req,res)=>{
 
 const getUsuarios = (req,res) =>{
     getUsers((error,result)=>{
+        if(error){
+            res.status(500).json({success:true,message:'Error al procesar la solicitud'});
+        }else{
+            res.status(200).json({success:true,users:result});
+        }
+    });
+}
+const getUsuariosAplicaReporte = (req,res) =>{
+    usersAplicaReporte((error,result)=>{
         if(error){
             res.status(500).json({success:true,message:'Error al procesar la solicitud'});
         }else{
@@ -78,6 +87,7 @@ export {
     createUsuario,
     login,
     getUsersByDepto,
-    getUsersRecibenCorrespondencia
+    getUsersRecibenCorrespondencia,
+    getUsuariosAplicaReporte
 };
 
