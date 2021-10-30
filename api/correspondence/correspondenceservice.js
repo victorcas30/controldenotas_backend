@@ -556,6 +556,82 @@ const editMensajeroCorrespondence = (values,callBack)=>{
     });
 }
 
+const reporteCorrespondenciaPendiente = (callBack) =>{
+    const myQueryUsers = `
+        SELECT 
+            idusuario,
+            UPPER(nombres) as nombres,
+            UPPER(apellidos) as apellidos,
+            UPPER(usuario) as usuario,
+            UPPER(d.nombre) as departamento
+        FROM 
+            usuarios u 
+        INNER JOIN 
+            cyr_departamentos d ON d.idcyr_departamento = u.departamento
+        WHERE 
+            aplica_reporte_trabajo_pendiente = 1
+        `;
+
+    dbconnection.query(myQueryUsers,(error,result)=>{
+        const myQueryCorrespondence = `
+        SELECT
+            cr.idcorrespondencia_recibida as id, 
+            UPPER(td.descripcion) as tipodocumento,
+            DATE_FORMAT(cr.fecha_ingreso_sistema,'%d-%m-%Y') as fecha_ingreso_sistema,
+            DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%Y') as fechasellodocumento,
+            DATE_FORMAT(cr.fechasellocyr,'%d-%m-%Y') as fechasellocyr,
+            DATE_FORMAT(asig.fechaasignacion,'%d-%m-%Y') as fechaasignacion,
+            asig.fechaasignacion as fechaasignacioncomplete,
+            cr.horasellocyr,
+            UPPER(us.nombres) as recibidopor,
+            UPPER(cr.asegurado) as asegurado,
+            UPPER(cr.referencia) as referencia,
+            DATE_FORMAT(fechavencimientorenov,'%d-%m-%Y') as fechavencimientorenov,
+            UPPER(cr.procedencia) as procedencia,
+            UPPER(cr.aseg_remi) as aseg_remi,
+            UPPER(ase.nombre) as aseguradora,
+            UPPER(de.nombre) as entregadoa,
+            cr.estado,
+            UPPER(cr.formadeingreso) as formadeingreso
+        FROM 
+            correspondencia_recibida cr
+        INNER JOIN tipo_documentos td on td.idtipo = cr.tipodocumento
+        INNER JOIN usuarios us on us.idusuario = cr.recibidopor
+        INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
+        INNER JOIN asignaciones asig on asig.idcorrespondencia = cr.idcorrespondencia_recibida
+        LEFT  JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
+        WHERE 
+            asig.idusuario = ?
+        AND 
+            cr.eliminado = 0
+        AND 
+            cr.estado IN (3,4)
+        ORDER BY 
+            fechaasignacioncomplete ASC
+        `;
+
+        const data = result.map(res=>{
+            dbconnection.query(myQueryCorrespondence,res.idusuario,(error1,result1)=>{
+                if(error1){
+                   return [];
+                }else{
+                  return {...res,asignaciones:result1}
+                }
+            });
+        });
+
+        if(error){
+            return (error,data);
+        }else{
+            return (error,data);
+        }
+
+
+    });
+
+   
+}
+
 
 export {
     correspondenceReceived,
@@ -576,5 +652,6 @@ export {
     sendCorrespondence,
     correspondenceInRoute,
     finishCorrespondence,
-    editMensajeroCorrespondence
+    editMensajeroCorrespondence,
+    reporteCorrespondenciaPendiente
 };
