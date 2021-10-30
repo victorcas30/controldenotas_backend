@@ -238,8 +238,7 @@ const setEditMensajeroCorrespondence = (req,res) =>{
 }
 
 const getCorrespondencePendienteReport = (req,res) =>{
-    const values = Object.values(req.params);
-    reporteCorrespondenciaPendiente(values,(error,result)=>{
+    reporteCorrespondenciaPendiente((error,result)=>{
         if(error){
             res.status(500).json({success:false,message:'Error al solicitar correspondencia'});
         }else{
