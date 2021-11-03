@@ -6,6 +6,7 @@ import { insuranceCompaniesRouter } from './api/insurancecompanies/insurrancecom
 import { correspondenceRouter } from './api/correspondence/correspondenceroutes.js';
 import { documentstypeRouter } from './api/documentstype/documentstyperouters.js';
 import { mensajerosRouter } from './api/mensajeros/mensajerosroutes.js';
+import { recadosRouter } from './api/recados/recadosroutes.js';
 import cors from 'cors';
 const app = express();
 dotenv.config();
@@ -20,6 +21,7 @@ app.use('/api',insuranceCompaniesRouter);
 app.use('/api',correspondenceRouter);
 app.use('/api',documentstypeRouter);
 app.use('/api',mensajerosRouter);
+app.use('/api',recadosRouter);
 
 app.listen(port,()=>{
     console.log('server running on port '+port);

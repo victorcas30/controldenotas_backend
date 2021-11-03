@@ -1,4 +1,5 @@
-import mysql from 'mysql';
+import mysql from 'mysql2';
+
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -18,5 +19,6 @@ dbconnection.connect((ThereIsError)=>{
         console.log("Connection successful");
     }
 });
+
 
 export default dbconnection;

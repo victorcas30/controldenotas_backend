@@ -557,7 +557,7 @@ const editMensajeroCorrespondence = (values,callBack)=>{
 }
 
 const reporteCorrespondenciaPendiente = (callBack) =>{
-    let corres = [];
+    let corres = {};
     const myQueryUsers = `
         SELECT 
             idusuario,
@@ -572,9 +572,9 @@ const reporteCorrespondenciaPendiente = (callBack) =>{
         WHERE 
             aplica_reporte_trabajo_pendiente = 1
         `;
-
-    dbconnection.query(myQueryUsers,(error,result)=>{
-        const datam = result.map(res=>{
+   const qq= dbconnection.promise().query(myQueryUsers).then(([result,fields])=>{
+        let item = {};
+        for(let res of result){
             const myQueryCorrespondence = `
             SELECT
                 cr.idcorrespondencia_recibida as id, 
@@ -611,29 +611,32 @@ const reporteCorrespondenciaPendiente = (callBack) =>{
             ORDER BY 
                 fechaasignacioncomplete ASC
             `;
-
-            dbconnection.query(myQueryCorrespondence,(error1,result1)=>{
-                if(error1){
-                    console.log(error1);
-                }else{
-                    if(result1.length > 0){
-                        console.log(res,result1);
-                       return {...res,asignaciones:result1};
-                    }else{
-                        console.log(res,result1);
-                       return {...res,asignaciones:[]};
-                    }
-                }
+            const ee = dbconnection.promise().query(myQueryCorrespondence).then(([rows,fields])=>{
+               
+               // console.log(JSON.stringify({...res,asignaciones:rows},null,3));
+               //return {...res,asignaciones:rows}; 
+               return rows;
+                
             });
-        });
-
-       console.log(JSON.stringify({...corres},null,3));
-        if(error){
-            return callBack(error,corres);
-        }else{
-            return callBack(error,corres);
+          
+          return {...res,...rows};
         }
+        
+
+     //  console.log(JSON.stringify({...corres},null,3));
+       // if(error){
+           // }else{
+          // return callBack(false,ee);
+           // return callBack(error,corres);
+      //  }
     });
+
+    qq.then(ss=>{
+        console.log(ss);
+    });
+
+    
+  
 }
 
 

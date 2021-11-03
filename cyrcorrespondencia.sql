@@ -60,7 +60,7 @@ CREATE TABLE `asignaciones` (
   `fechadespachadacobros` datetime DEFAULT NULL,
   `fechafinalizada` datetime DEFAULT NULL,
   PRIMARY KEY (`idasignacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +69,7 @@ CREATE TABLE `asignaciones` (
 
 LOCK TABLES `asignaciones` WRITE;
 /*!40000 ALTER TABLE `asignaciones` DISABLE KEYS */;
-INSERT INTO `asignaciones` VALUES (1,1,1,'2021-10-28 11:14:56',1,NULL,'2021-10-28 11:20:37','2021-10-28 11:24:31','2021-10-28 11:30:13'),(2,1,2,'2021-10-28 12:20:52',1,NULL,'2021-10-28 12:22:43','2021-10-28 12:22:55','2021-10-28 14:28:53'),(3,1,3,'2021-10-28 13:49:31',1,NULL,'2021-10-28 14:29:00','2021-10-28 14:29:10','2021-10-28 14:29:15');
+INSERT INTO `asignaciones` VALUES (1,1,1,'2021-10-28 11:14:56',1,NULL,'2021-10-28 11:20:37','2021-10-28 11:24:31','2021-10-28 11:30:13'),(2,1,2,'2021-10-28 12:20:52',1,NULL,'2021-10-28 12:22:43','2021-10-28 12:22:55','2021-10-28 14:28:53'),(3,1,3,'2021-10-28 13:49:31',1,NULL,'2021-10-28 14:29:00','2021-10-28 14:29:10','2021-10-28 14:29:15'),(4,1,4,'2021-10-30 09:36:10',1,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `asignaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -99,7 +99,7 @@ CREATE TABLE `correspondencia_recibida` (
   `estado` int(11) DEFAULT '1',
   `eliminado` char(1) DEFAULT '0',
   PRIMARY KEY (`idcorrespondencia_recibida`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,7 +108,7 @@ CREATE TABLE `correspondencia_recibida` (
 
 LOCK TABLES `correspondencia_recibida` WRITE;
 /*!40000 ALTER TABLE `correspondencia_recibida` DISABLE KEYS */;
-INSERT INTO `correspondencia_recibida` VALUES (1,1,'2021-10-28','2021-10-28','11:12',6,'cristiano rolando perez','solicitud de cesion de beneficios del señor carlos lara','2021-10-28','asegurado','catrino lopez',9,'fisico','2021-10-28 11:14:40',1,7,'0'),(2,2,'2021-10-28','2021-10-28','12:19',7,'don filiberto lopez','carta de cesion de beneficios carlos perez','2021-10-28','aseguradora','1',9,'fisico','2021-10-28 12:20:37',1,7,'0'),(3,4,'2021-10-28','2021-10-28','13:48',7,'demo asegurado demo','exclusion carro sonia lara','2021-10-28','asegurado','rolando cabrera lopez',9,'fisico','2021-10-28 13:49:21',1,7,'0');
+INSERT INTO `correspondencia_recibida` VALUES (1,1,'2021-10-28','2021-10-28','11:12',6,'cristiano rolando perez','solicitud de cesion de beneficios del señor carlos lara','2021-10-28','asegurado','catrino lopez',9,'fisico','2021-10-28 11:14:40',1,7,'0'),(2,2,'2021-10-28','2021-10-28','12:19',7,'don filiberto lopez','carta de cesion de beneficios carlos perez','2021-10-28','aseguradora','1',9,'fisico','2021-10-28 12:20:37',1,7,'0'),(3,4,'2021-10-28','2021-10-28','13:48',7,'demo asegurado demo','exclusion carro sonia lara','2021-10-28','asegurado','rolando cabrera lopez',9,'fisico','2021-10-28 13:49:21',1,7,'0'),(4,1,'2021-10-30','2021-10-30','09:35',6,'cheque de gastos medicos devolucion de todas las cosas','demo demo demo demo demo demo','2021-10-30','asegurado','rolando cabrera lopez',9,'fisico','2021-10-30 09:36:02',1,3,'0');
 /*!40000 ALTER TABLE `correspondencia_recibida` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -187,7 +187,7 @@ CREATE TABLE `estados_correspondencia` (
   `estado` int(11) DEFAULT NULL,
   `descripcion` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`idestado`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -225,6 +225,40 @@ LOCK TABLES `mensajeros` WRITE;
 /*!40000 ALTER TABLE `mensajeros` DISABLE KEYS */;
 INSERT INTO `mensajeros` VALUES (1,'Martin Aguirre','maguirre','3adecd0ae6dadeca258bbb004f3a1c67','1'),(2,'Luis Martinez','lmartinez','3adecd0ae6dadeca258bbb004f3a1c67','1');
 /*!40000 ALTER TABLE `mensajeros` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `recados`
+--
+
+DROP TABLE IF EXISTS `recados`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `recados` (
+  `id_recado` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) NOT NULL,
+  `recado` varchar(160) COLLATE utf8_spanish_ci NOT NULL,
+  `fecha_registro` datetime NOT NULL,
+  `estado` varchar(15) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'No asignado',
+  `fecha_asignado` datetime DEFAULT NULL,
+  `asignado_a` varchar(25) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `fecha_completado` datetime DEFAULT NULL,
+  `id_user_asigno` varchar(45) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `idmensajero` int(11) DEFAULT NULL,
+  `activo` char(1) CHARACTER SET utf8 DEFAULT '1',
+  `urgente` char(1) COLLATE utf8_spanish_ci DEFAULT '0',
+  PRIMARY KEY (`id_recado`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `recados`
+--
+
+LOCK TABLES `recados` WRITE;
+/*!40000 ALTER TABLE `recados` DISABLE KEYS */;
+INSERT INTO `recados` VALUES (1,1,'Si funciona funciona debe de funcionar bien esta vaina','2021-11-01 11:59:10','Asignado',NULL,'1',NULL,NULL,2,'1','1'),(2,1,'pasar a comprar una pizza 4 estaciones para las personas que vengan','2021-11-01 12:01:39','No asignado',NULL,NULL,NULL,NULL,2,'0','1'),(3,1,'Pasar por cheque a nombre de rosendo lopez a la aseguradora asesuisa.','2021-11-01 12:03:28','No asignado',NULL,NULL,NULL,NULL,NULL,'0','1'),(4,1,'Pasar por cheque a nombre de rosendo lopez a la aseguradora asesuisa.','2021-11-01 12:15:22','Asignado',NULL,NULL,NULL,NULL,1,'1','1'),(5,1,'demo demo','2021-11-01 12:16:28','No asignado',NULL,NULL,NULL,NULL,NULL,'0','1'),(6,1,'demo demofgdgfgdgdfg','2021-11-01 12:16:47','Asignado',NULL,NULL,NULL,NULL,2,'1','1'),(7,1,'pasar a grupo sura a retirar poliza de doña elsa pato','2021-11-01 15:05:55','Asignado',NULL,NULL,NULL,NULL,1,'1','1'),(8,1,'Pasar a scotia a retirar compras','2021-11-01 15:06:32','Asignado',NULL,NULL,NULL,NULL,1,'1','1'),(9,1,'demo demo demo demo demo','2021-11-01 15:09:05','No asignado',NULL,NULL,NULL,NULL,NULL,'0','1'),(10,1,'sssss','2021-11-01 15:12:21','No asignado',NULL,NULL,NULL,NULL,NULL,'1','1'),(11,1,'ssdsdsdsd','2021-11-01 15:18:26','No asignado',NULL,NULL,NULL,NULL,NULL,'1','0'),(12,1,'si funciona','2021-11-01 16:05:46','No asignado',NULL,NULL,NULL,NULL,NULL,'1','1'),(13,1,'pasar a la aseguradora del pueblo a traer todas las cosas necesarias..., pero preguntar por don Casildo.','2021-11-03 09:04:43','No asignado',NULL,NULL,NULL,NULL,NULL,'1','0'),(14,1,'algo','2021-11-03 09:24:16','No asignado',NULL,NULL,NULL,NULL,NULL,'1','0'),(15,1,'recado de prueba','2021-11-03 10:37:04','No asignado',NULL,NULL,NULL,NULL,NULL,'1','1'),(16,1,'desde silvia','2021-11-03 10:57:17','No asignado',NULL,NULL,NULL,NULL,NULL,'1','1'),(17,1,'','2021-11-03 14:37:13','No asignado',NULL,NULL,NULL,NULL,NULL,'1','0'),(18,1,'','2021-11-03 14:37:15','No asignado',NULL,NULL,NULL,NULL,NULL,'1','0');
+/*!40000 ALTER TABLE `recados` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -297,7 +331,7 @@ CREATE TABLE `vida_estado_correspondencia` (
   `fecharegistro` datetime DEFAULT NULL,
   `idusuarioaccion` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -306,7 +340,7 @@ CREATE TABLE `vida_estado_correspondencia` (
 
 LOCK TABLES `vida_estado_correspondencia` WRITE;
 /*!40000 ALTER TABLE `vida_estado_correspondencia` DISABLE KEYS */;
-INSERT INTO `vida_estado_correspondencia` VALUES (1,1,1,'2021-10-28 11:14:40',1),(2,1,2,'2021-10-28 11:14:48',1),(3,1,3,'2021-10-28 11:14:56',1),(4,1,4,'2021-10-28 11:19:24',1),(5,1,5,'2021-10-28 11:20:37',1),(6,1,6,'2021-10-28 11:22:49',1),(9,1,7,'2021-10-28 11:30:13',1),(10,2,1,'2021-10-28 12:20:37',1),(11,2,2,'2021-10-28 12:20:46',1),(12,2,3,'2021-10-28 12:20:52',1),(13,2,4,'2021-10-28 12:21:29',1),(14,2,5,'2021-10-28 12:22:43',1),(15,2,6,'2021-10-28 12:22:55',1),(16,3,1,'2021-10-28 13:49:21',1),(17,3,2,'2021-10-28 13:49:28',1),(18,3,3,'2021-10-28 13:49:31',1),(19,3,4,'2021-10-28 13:49:49',1),(20,2,7,'2021-10-28 14:28:53',1),(21,3,5,'2021-10-28 14:29:00',1),(22,3,6,'2021-10-28 14:29:10',1),(23,3,7,'2021-10-28 14:29:15',1);
+INSERT INTO `vida_estado_correspondencia` VALUES (1,1,1,'2021-10-28 11:14:40',1),(2,1,2,'2021-10-28 11:14:48',1),(3,1,3,'2021-10-28 11:14:56',1),(4,1,4,'2021-10-28 11:19:24',1),(5,1,5,'2021-10-28 11:20:37',1),(6,1,6,'2021-10-28 11:22:49',1),(9,1,7,'2021-10-28 11:30:13',1),(10,2,1,'2021-10-28 12:20:37',1),(11,2,2,'2021-10-28 12:20:46',1),(12,2,3,'2021-10-28 12:20:52',1),(13,2,4,'2021-10-28 12:21:29',1),(14,2,5,'2021-10-28 12:22:43',1),(15,2,6,'2021-10-28 12:22:55',1),(16,3,1,'2021-10-28 13:49:21',1),(17,3,2,'2021-10-28 13:49:28',1),(18,3,3,'2021-10-28 13:49:31',1),(19,3,4,'2021-10-28 13:49:49',1),(20,2,7,'2021-10-28 14:28:53',1),(21,3,5,'2021-10-28 14:29:00',1),(22,3,6,'2021-10-28 14:29:10',1),(23,3,7,'2021-10-28 14:29:15',1),(24,4,1,'2021-10-30 09:36:02',1),(25,4,2,'2021-10-30 09:36:06',1),(26,4,3,'2021-10-30 09:36:10',1);
 /*!40000 ALTER TABLE `vida_estado_correspondencia` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -319,4 +353,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-29 17:01:27
+-- Dump completed on 2021-11-03 16:56:20
