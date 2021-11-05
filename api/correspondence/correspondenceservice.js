@@ -714,8 +714,7 @@ const reporteCorrespondenciaPendiente = (callBack) =>{
             if(!error1 && !error2){
                 data = users.map(u=>{
                     let cor = {};
-                    cor = corres.filter(c => c.idusuario=u.idusuario);
-                    console.log(cor);
+                    cor = corres.filter(c => c.idusuario===u.idusuario);
                     return {...u,asignaciones:cor};
                 });
                 return callBack(false,data);
