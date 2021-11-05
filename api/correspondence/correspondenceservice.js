@@ -215,7 +215,7 @@ const receiveCorrespondence = (values,callBack)=>{
     const {idusuario,idcorrespondencia,fecharecibida} = values;
     const myQuerys = `
         INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${2},'${fecharecibida}',${idusuario});
-        UPDATE correspondencia_recibida SET estado=2 WHERE idcorrespondencia_recibida = ${idcorrespondencia};
+        UPDATE correspondencia_recibida SET estado=2,fecha_recibida_jefe_depto='${fecharecibida}' WHERE idcorrespondencia_recibida = ${idcorrespondencia};
     `;
     dbconnection.query(myQuerys,values,(error,result)=>{
         if(error){
@@ -664,25 +664,21 @@ const getUsersToReport = (callBack) =>{
 const getCorresPending = (callBack) =>{
     const myQueryCorrespondence = `
     SELECT
-        cr.idcorrespondencia_recibida as id, 
-        UPPER(td.descripcion) as tipodocumento,
-        DATE_FORMAT(cr.fecha_ingreso_sistema,'%d-%m-%Y') as fecha_ingreso_sistema,
-        DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%Y') as fechasellodocumento,
-        DATE_FORMAT(cr.fechasellocyr,'%d-%m-%Y') as fechasellocyr,
-        DATE_FORMAT(asig.fechaasignacion,'%d-%m-%Y') as fechaasignacion,
-        asig.fechaasignacion as fechaasignacioncomplete,
         asig.idusuario,
-        cr.horasellocyr,
-        UPPER(us.nombres) as recibidopor,
+        DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%y') as fechasellodocumento,
+        DATE_FORMAT(cr.fecha_ingreso_sistema,'%d-%m-%y') as fecha_ingreso_sistema,
+        DATEDIFF(cr.fecha_ingreso_sistema,cr.fechasellodocumento) as d1,
+        DATE_FORMAT(cr.fecha_recibida_jefe_depto,'%d-%m-%y') as fecha_recib_jd,
+        DATEDIFF(cr.fecha_recibida_jefe_depto,cr.fecha_ingreso_sistema) as d2,
+        DATE_FORMAT(asig.fechaasignacion,'%d-%m-%y') as fechaasignacion,
+        DATEDIFF(asig.fechaasignacion,cr.fecha_ingreso_sistema) as d3,
         UPPER(cr.asegurado) as asegurado,
         UPPER(cr.referencia) as referencia,
-        DATE_FORMAT(fechavencimientorenov,'%d-%m-%Y') as fechavencimientorenov,
-        UPPER(cr.procedencia) as procedencia,
+        DATE_FORMAT(cr.fechavencimientorenov,'%d-%m-%y') as fechavencimientorenov,
+        DATEDIFF(cr.fechavencimientorenov,curdate()) as diasv,
         cr.aseg_remi as aseg_remi,
-        UPPER(ase.nombre) as aseguradora,
-        UPPER(de.nombre) as entregadoa,
-        cr.estado,
-        UPPER(cr.formadeingreso) as formadeingreso
+        DATEDIFF(curdate(),asig.fechaasignacion) as dias_asig,
+        DATEDIFF(curdate(),cr.fecha_ingreso_sistema) as total_dias
     FROM 
         correspondencia_recibida cr
     INNER JOIN tipo_documentos td on td.idtipo = cr.tipodocumento
@@ -695,7 +691,7 @@ const getCorresPending = (callBack) =>{
     AND 
         cr.estado IN (3,4)
     ORDER BY 
-        fechaasignacioncomplete ASC
+        fechaasignacion ASC
     `;
     
     dbconnection.query(myQueryCorrespondence,(error,result)=>{
@@ -713,12 +709,19 @@ const reporteCorrespondenciaPendiente = (callBack) =>{
         getCorresPending((error2,corres)=>{
             if(!error1 && !error2){
                 data = users.map(u=>{
-                    let cor = {};
+                    let cor = [];
+                    let mid = [];
                     cor = corres.filter(c => c.idusuario===u.idusuario);
-                    return {...u,asignaciones:cor};
+                    mid = cor.map(cc=>{
+                        delete cc.idusuario
+                        return cc;
+                    });
+                   console.log(JSON.stringify(mid,null,3));
+                    return {...u,asignaciones:mid};
                 });
                 return callBack(false,data);
             }else{
+                console.log(error2);
                 return callBack(true,[]);
             }
         });
