@@ -20,7 +20,8 @@ import {
     getCorrespondenceInRoute,
     setFinishCorrespondence,
     setEditMensajeroCorrespondence,
-    getCorrespondencePendienteReport
+    getCorrespondencePendienteReport,
+    setGetCorrespondencePendienteReport
 } from './correspondencecontrollers.js';
 
 const router = express.Router();
@@ -34,6 +35,7 @@ router.get('/correspondencetoapprovalcobros/:iddepartamento/:idusuario',validate
 router.get('/correspondence/status/:idusuario/:estado',validatetoken,getCorrespondenceAsignedToUser);
 router.get('/correspondenceinroute/:idmensajero',validatetoken,getCorrespondenceInRoute);
 router.get('/reportecorrespondenciapendiente',validatetoken,getCorrespondencePendienteReport);
+router.get('/correspondenciarecibida',validatetoken,setGetCorrespondencePendienteReport);
 router.post('/correspondence',validatetoken,createCorrespondenceReceived);
 router.post('/sendcorrespondence',validatetoken,setCorrespondenceSend);
 router.put('/correspondence',validatetoken,setEditCorrespondenceById);

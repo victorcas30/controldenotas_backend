@@ -665,6 +665,10 @@ const getCorresPending = (callBack) =>{
     const myQueryCorrespondence = `
     SELECT
         asig.idusuario,
+        UPPER(cr.procedencia) as procedencia,
+        cr.aseg_remi as aseg_remi,
+        UPPER(ase.nombre) as aseguradora,
+        cr.formadeingreso,
         DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%y') as fechasellodocumento,
         DATE_FORMAT(cr.fecha_ingreso_sistema,'%d-%m-%y') as fecha_ingreso_sistema,
         DATEDIFF(cr.fecha_ingreso_sistema,cr.fechasellodocumento) as d1,
@@ -676,7 +680,7 @@ const getCorresPending = (callBack) =>{
         UPPER(cr.referencia) as referencia,
         DATE_FORMAT(cr.fechavencimientorenov,'%d-%m-%y') as fechavencimientorenov,
         DATEDIFF(cr.fechavencimientorenov,curdate()) as diasv,
-        cr.aseg_remi as aseg_remi,
+        cr.aseg_remi,
         DATEDIFF(curdate(),asig.fechaasignacion) as dias_asig,
         DATEDIFF(curdate(),cr.fecha_ingreso_sistema) as total_dias
     FROM 
@@ -714,7 +718,23 @@ const reporteCorrespondenciaPendiente = (callBack) =>{
                     cor = corres.filter(c => c.idusuario===u.idusuario);
                     mid = cor.map(cc=>{
                         delete cc.idusuario
-                        return cc;
+                        let fi = cc.formadeingreso === "fisico" ? '(F) -  ':'(E) -  '; 
+                        return {
+                            fechasellodocumento:cc.fechasellodocumento,
+                            fecha_ingreso_sistema:cc.fecha_ingreso_sistema,
+                            d1:cc.d1,
+                            fecha_recib_jd:cc.fecha_recib_jd,
+                            d2:cc.d2,
+                            fechaasignacion:cc.fechaasignacion,
+                            d3:cc.d3,
+                            asegurado:cc.asegurado,
+                            referencia: `${fi} ${cc.referencia}`,
+                            fechavencimientorenov:cc.fechavencimientorenov,
+                            diasv:cc.diasv,
+                            remitente:(cc.procedencia==="ASEGURADORA")?cc.aseguradora:cc.aseg_remi.toUpperCase(),
+                            dias_asig:cc.dias_asig,
+                            total_dias:cc.total_dias
+                        };
                     });
                    console.log(JSON.stringify(mid,null,3));
                     return {...u,asignaciones:mid};
@@ -726,7 +746,60 @@ const reporteCorrespondenciaPendiente = (callBack) =>{
             }
         });
     })
+}
 
+const correspondenciaRecibida = (callBack) =>{
+    const myQueryCorrespondence = `
+    SELECT
+        UPPER(CONCAT(us.nombres,' ',us.apellidos)) as recibidopor,
+        UPPER(de.nombre) as departamento,
+        UPPER(cr.asegurado) as asegurado,
+        '' as firma_recibido,
+        UPPER(cr.referencia) as referencia,
+        UPPER(ase.nombre) as aseguradora,
+        cr.aseg_remi,
+        UPPER(cr.procedencia) as procedencia
+    FROM 
+        correspondencia_recibida cr
+    INNER JOIN usuarios us on us.idusuario = cr.recibidopor
+    INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
+    LEFT  JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
+    WHERE  
+        cr.eliminado = 0
+  
+    ORDER BY 
+        cr.fecha_ingreso_sistema ASC
+    `;
+    
+    dbconnection.query(myQueryCorrespondence,(error,result)=>{
+        if(!error){
+           return callBack(null,result);
+        }else{
+            return callBack(error);
+        }
+    });
+}
+
+const setcorrespondenciaRecibida = (callBack) =>{
+    correspondenciaRecibida((error,corres)=>{
+        if(!error){
+            let mid = [];
+            mid = corres.map(cc=>{
+                return {
+                    recibidopor:cc.recibidopor,
+                    departamento:cc.departamento,
+                    asegurado:cc.asegurado,
+                    firma_recibido:cc.firma_recibido,
+                    referencia:cc.referencia,
+                    remitente:(cc.procedencia==="ASEGURADORA")?cc.aseguradora:cc.aseg_remi.toUpperCase()
+                } 
+            });
+            return callBack(false,mid);
+        }else{
+            console.log(error);
+            return callBack(true,[]);
+        }
+    });
 }
 
 
@@ -752,5 +825,6 @@ export {
     correspondenceInRoute,
     finishCorrespondence,
     editMensajeroCorrespondence,
-    reporteCorrespondenciaPendiente
+    reporteCorrespondenciaPendiente,
+    setcorrespondenciaRecibida
 };
