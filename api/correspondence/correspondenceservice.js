@@ -748,12 +748,13 @@ const reporteCorrespondenciaPendiente = (callBack) =>{
     })
 }
 
-const correspondenciaRecibida = (callBack) =>{
+const correspondenciaRecibida = (values,callBack) =>{
     const myQueryCorrespondence = `
     SELECT
         UPPER(CONCAT(us.nombres,' ',us.apellidos)) as recibidopor,
         UPPER(de.nombre) as departamento,
         UPPER(cr.asegurado) as asegurado,
+        cr.formadeingreso,
         '' as firma_recibido,
         UPPER(cr.referencia) as referencia,
         UPPER(ase.nombre) as aseguradora,
@@ -766,7 +767,8 @@ const correspondenciaRecibida = (callBack) =>{
     LEFT  JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
     WHERE  
         cr.eliminado = 0
-  
+    AND DATE_FORMAT(cr.fecha_ingreso_sistema,'%Y-%m-%d')='${values[0]}'
+    AND DATE_FORMAT(fecha_ingreso_sistema,'%p') = '${values[1]}'
     ORDER BY 
         cr.fecha_ingreso_sistema ASC
     `;
@@ -780,17 +782,18 @@ const correspondenciaRecibida = (callBack) =>{
     });
 }
 
-const setcorrespondenciaRecibida = (callBack) =>{
-    correspondenciaRecibida((error,corres)=>{
+const setcorrespondenciaRecibida = (values,callBack) =>{
+    correspondenciaRecibida(values,(error,corres)=>{
         if(!error){
             let mid = [];
             mid = corres.map(cc=>{
+                let fi = cc.formadeingreso === "fisico" ? '(F) -  ':'(E) -  '; 
                 return {
                     recibidopor:cc.recibidopor,
                     departamento:cc.departamento,
                     asegurado:cc.asegurado,
                     firma_recibido:cc.firma_recibido,
-                    referencia:cc.referencia,
+                    referencia:`${fi} ${cc.referencia}`,
                     remitente:(cc.procedencia==="ASEGURADORA")?cc.aseguradora:cc.aseg_remi.toUpperCase()
                 } 
             });
@@ -826,5 +829,6 @@ export {
     finishCorrespondence,
     editMensajeroCorrespondence,
     reporteCorrespondenciaPendiente,
-    setcorrespondenciaRecibida
+    setcorrespondenciaRecibida,
+    getUsersToReport
 };

@@ -21,7 +21,8 @@ import {
     setFinishCorrespondence,
     setEditMensajeroCorrespondence,
     getCorrespondencePendienteReport,
-    setGetCorrespondencePendienteReport
+    setGetCorrespondencePendienteReport,
+    setGetUsersToReport
 } from './correspondencecontrollers.js';
 
 const router = express.Router();
@@ -35,7 +36,8 @@ router.get('/correspondencetoapprovalcobros/:iddepartamento/:idusuario',validate
 router.get('/correspondence/status/:idusuario/:estado',validatetoken,getCorrespondenceAsignedToUser);
 router.get('/correspondenceinroute/:idmensajero',validatetoken,getCorrespondenceInRoute);
 router.get('/reportecorrespondenciapendiente',validatetoken,getCorrespondencePendienteReport);
-router.get('/correspondenciarecibida',validatetoken,setGetCorrespondencePendienteReport);
+router.get('/correspondenciarecibida/:fecha/:ampm',validatetoken,setGetCorrespondencePendienteReport);
+router.get('/userstoreport',validatetoken,setGetUsersToReport);
 router.post('/correspondence',validatetoken,createCorrespondenceReceived);
 router.post('/sendcorrespondence',validatetoken,setCorrespondenceSend);
 router.put('/correspondence',validatetoken,setEditCorrespondenceById);

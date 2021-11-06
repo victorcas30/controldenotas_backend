@@ -19,7 +19,8 @@ import {
     finishCorrespondence,
     editMensajeroCorrespondence,
     reporteCorrespondenciaPendiente,
-    setcorrespondenciaRecibida
+    setcorrespondenciaRecibida,
+    getUsersToReport
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -249,7 +250,8 @@ const getCorrespondencePendienteReport = (req,res) =>{
 
 }
 const setGetCorrespondencePendienteReport = (req,res) =>{
-    setcorrespondenciaRecibida((error,result)=>{
+    const values = Object.values(req.params);
+    setcorrespondenciaRecibida(values,(error,result)=>{
         if(error){
             res.status(500).json({success:false,message:'Error al solicitar correspondencia'});
         }else{
@@ -257,6 +259,15 @@ const setGetCorrespondencePendienteReport = (req,res) =>{
         }
     });
 
+}
+const setGetUsersToReport = (req,res) =>{
+    getUsersToReport((error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al solicitar usuarios'});
+        }else{
+            res.status(200).json({success:true,users:result});
+        }
+    });
 }
 
 export {
@@ -280,5 +291,6 @@ export {
     setFinishCorrespondence,
     setEditMensajeroCorrespondence,
     getCorrespondencePendienteReport,
-    setGetCorrespondencePendienteReport
+    setGetCorrespondencePendienteReport,
+    setGetUsersToReport
 };
