@@ -736,7 +736,6 @@ const reporteCorrespondenciaPendiente = (callBack) =>{
                             total_dias:cc.total_dias
                         };
                     });
-                   console.log(JSON.stringify(mid,null,3));
                     return {...u,asignaciones:mid};
                 });
                 return callBack(false,data);
@@ -805,6 +804,84 @@ const setcorrespondenciaRecibida = (values,callBack) =>{
     });
 }
 
+const corresPendingByUserReport = (values,callBack) =>{
+    const myQueryCorrespondence = `
+    SELECT
+        asig.idusuario,
+        UPPER(cr.procedencia) as procedencia,
+        cr.aseg_remi as aseg_remi,
+        UPPER(ase.nombre) as aseguradora,
+        cr.formadeingreso,
+        DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%y') as fechasellodocumento,
+        DATE_FORMAT(cr.fecha_ingreso_sistema,'%d-%m-%y') as fecha_ingreso_sistema,
+        DATEDIFF(cr.fecha_ingreso_sistema,cr.fechasellodocumento) as d1,
+        DATE_FORMAT(cr.fecha_recibida_jefe_depto,'%d-%m-%y') as fecha_recib_jd,
+        DATEDIFF(cr.fecha_recibida_jefe_depto,cr.fecha_ingreso_sistema) as d2,
+        DATE_FORMAT(asig.fechaasignacion,'%d-%m-%y') as fechaasignacion,
+        DATEDIFF(asig.fechaasignacion,cr.fecha_ingreso_sistema) as d3,
+        UPPER(cr.asegurado) as asegurado,
+        UPPER(cr.referencia) as referencia,
+        DATE_FORMAT(cr.fechavencimientorenov,'%d-%m-%y') as fechavencimientorenov,
+        DATEDIFF(cr.fechavencimientorenov,curdate()) as diasv,
+        cr.aseg_remi,
+        DATEDIFF(curdate(),asig.fechaasignacion) as dias_asig,
+        DATEDIFF(curdate(),cr.fecha_ingreso_sistema) as total_dias
+    FROM 
+        correspondencia_recibida cr
+    INNER JOIN tipo_documentos td on td.idtipo = cr.tipodocumento
+    INNER JOIN usuarios us on us.idusuario = cr.recibidopor
+    INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
+    INNER JOIN asignaciones asig on asig.idcorrespondencia = cr.idcorrespondencia_recibida
+    LEFT  JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
+    WHERE  
+        cr.eliminado = 0
+    AND 
+        cr.estado IN (3,4)
+    AND 
+        asig.idusuario = ${values[0]}
+    ORDER BY 
+        fechaasignacion ASC
+    `;
+    
+    dbconnection.query(myQueryCorrespondence,(error,result)=>{
+        if(!error){
+           return callBack(null,result);
+        }else{
+            return callBack(error);
+        }
+    });
+}
+
+const getCorresPendingByUserReport = (values,callBack) =>{
+    corresPendingByUserReport(values,(error,corres)=>{
+        if(!error){
+            let mid = [];
+            mid = corres.map(cc=>{
+                let fi = cc.formadeingreso === "fisico" ? '(F) -  ':'(E) -  '; 
+                return {
+                    fechasellodocumento:cc.fechasellodocumento,
+                    fecha_ingreso_sistema:cc.fecha_ingreso_sistema,
+                    d1:cc.d1,
+                    fecha_recib_jd:cc.fecha_recib_jd,
+                    d2:cc.d2,
+                    fechaasignacion:cc.fechaasignacion,
+                    d3:cc.d3,
+                    asegurado:cc.asegurado,
+                    referencia: `${fi} ${cc.referencia}`,
+                    fechavencimientorenov:cc.fechavencimientorenov,
+                    diasv:cc.diasv,
+                    remitente:(cc.procedencia==="ASEGURADORA")?cc.aseguradora:cc.aseg_remi.toUpperCase(),
+                    dias_asig:cc.dias_asig,
+                    total_dias:cc.total_dias
+                };
+            });
+            return callBack(false,mid);
+        }else{
+            return callBack(true,[]);
+        }
+    });
+}
+
 
 
 
@@ -830,5 +907,6 @@ export {
     editMensajeroCorrespondence,
     reporteCorrespondenciaPendiente,
     setcorrespondenciaRecibida,
-    getUsersToReport
+    getUsersToReport,
+    getCorresPendingByUserReport
 };
