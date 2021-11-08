@@ -18,6 +18,30 @@ USE `cyrcorrespondencia`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `accesos`
+--
+
+DROP TABLE IF EXISTS `accesos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `accesos` (
+  `idacceso` int(11) NOT NULL AUTO_INCREMENT,
+  `idrol` int(11) DEFAULT NULL,
+  `idopcion` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idacceso`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `accesos`
+--
+
+LOCK TABLES `accesos` WRITE;
+/*!40000 ALTER TABLE `accesos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `accesos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `aseguradoras`
 --
 
@@ -229,6 +253,32 @@ INSERT INTO `mensajeros` VALUES (1,'Martin Aguirre','maguirre','3adecd0ae6dadeca
 UNLOCK TABLES;
 
 --
+-- Table structure for table `opciones`
+--
+
+DROP TABLE IF EXISTS `opciones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `opciones` (
+  `idopcion` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(250) DEFAULT NULL,
+  `icon` varchar(45) DEFAULT NULL,
+  `path` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`idopcion`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `opciones`
+--
+
+LOCK TABLES `opciones` WRITE;
+/*!40000 ALTER TABLE `opciones` DISABLE KEYS */;
+INSERT INTO `opciones` VALUES (1,'Home','ImHome3','/home'),(2,'En oficina','ImOffice','/inoffice'),(3,'Mis Asignaciones','ImList2','/misasignaciones'),(4,'Recados','CgUserList','/asignarmensajes'),(5,'Mis Recados','BiMessage','/misrecados'),(6,'Recibir Correspondencia','HiOutlineInboxIn','/recibir'),(7,'Aprovar correspondencia','RiMailSendLine','/aprovarcorrespondencia'),(8,'Reportes','VscFilePdf','/reportes'),(9,'Usuarios','FaUsersCog','/usuarios');
+/*!40000 ALTER TABLE `opciones` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `recados`
 --
 
@@ -260,6 +310,30 @@ LOCK TABLES `recados` WRITE;
 /*!40000 ALTER TABLE `recados` DISABLE KEYS */;
 INSERT INTO `recados` VALUES (1,1,'Si funciona funciona debe de funcionar bien esta vaina','2021-11-01 11:59:10','Asignado',NULL,'1',NULL,NULL,2,'1','1'),(2,1,'pasar a comprar una pizza 4 estaciones para las personas que vengan','2021-11-01 12:01:39','No asignado',NULL,NULL,NULL,NULL,2,'0','1'),(3,1,'Pasar por cheque a nombre de rosendo lopez a la aseguradora asesuisa.','2021-11-01 12:03:28','No asignado',NULL,NULL,NULL,NULL,NULL,'0','1'),(4,1,'Pasar por cheque a nombre de rosendo lopez a la aseguradora asesuisa.','2021-11-01 12:15:22','Asignado',NULL,NULL,NULL,NULL,2,'1','1'),(5,1,'demo demo','2021-11-01 12:16:28','No asignado',NULL,NULL,NULL,NULL,NULL,'0','1'),(6,1,'demo demofgdgfgdgdfg','2021-11-01 12:16:47','Asignado',NULL,NULL,NULL,NULL,2,'1','1'),(7,1,'pasar a grupo sura a retirar poliza de doña elsa pato','2021-11-01 15:05:55','Asignado',NULL,NULL,NULL,NULL,1,'1','1'),(8,1,'Pasar a scotia a retirar compras','2021-11-01 15:06:32','Asignado',NULL,NULL,NULL,NULL,1,'1','1'),(9,1,'demo demo demo demo demo','2021-11-01 15:09:05','No asignado',NULL,NULL,NULL,NULL,NULL,'0','1'),(10,1,'sssss','2021-11-01 15:12:21','No asignado',NULL,NULL,NULL,NULL,NULL,'1','1'),(11,1,'ssdsdsdsd','2021-11-01 15:18:26','No asignado',NULL,NULL,NULL,NULL,NULL,'1','0'),(12,1,'si funciona','2021-11-01 16:05:46','No asignado',NULL,NULL,NULL,NULL,NULL,'1','1'),(13,1,'pasar a la aseguradora del pueblo a traer todas las cosas necesarias..., pero preguntar por don Casildo.','2021-11-03 09:04:43','No asignado',NULL,NULL,NULL,NULL,NULL,'1','0'),(14,1,'algo','2021-11-03 09:24:16','No asignado',NULL,NULL,NULL,NULL,NULL,'1','0'),(15,1,'recado de prueba','2021-11-03 10:37:04','No asignado',NULL,NULL,NULL,NULL,NULL,'1','1'),(16,1,'desde silvia','2021-11-03 10:57:17','No asignado',NULL,NULL,NULL,NULL,NULL,'1','1'),(17,1,'','2021-11-03 14:37:13','No asignado',NULL,NULL,NULL,NULL,NULL,'1','0'),(18,1,'','2021-11-03 14:37:15','No asignado',NULL,NULL,NULL,NULL,NULL,'1','0');
 /*!40000 ALTER TABLE `recados` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `roles`
+--
+
+DROP TABLE IF EXISTS `roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `roles` (
+  `idrol` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`idrol`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `roles`
+--
+
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES (1,'Adminsitrador'),(2,'Jefe departamento'),(3,'Usuario Básico');
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -300,12 +374,13 @@ CREATE TABLE `usuarios` (
   `apellidos` varchar(45) DEFAULT NULL,
   `usuario` varchar(45) DEFAULT NULL,
   `password` varchar(200) DEFAULT NULL,
+  `idrol` int(11) DEFAULT NULL,
   `departamento` int(11) DEFAULT NULL,
   `recibe_correspondencia` char(1) DEFAULT '1',
   `aplica_reporte_trabajo_pendiente` char(1) DEFAULT '1',
   `activo` char(1) DEFAULT '1',
   PRIMARY KEY (`idusuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -314,7 +389,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'Rafael Adalberto','Parada Gómez','rparada','$2b$10$UdmN/XjK/VveWLdQ/rMRQ.fDjjrkskV4RaeIXX6W6IQEkyn7CCt12',9,'0','1','1'),(2,'Ana María','Blanco Méndez','amaria','$2b$10$DyUoHmre6gBQhSn6BkSyiejzXXVoL3/frjqLqWX5WXErS9OT8T.zu',1,'0','1','1'),(3,'Chimi','An','cherrera','$2b$10$WGJohKUdJvYrO0V1ehjY7uzm.BJakeDxYK7KYeWEF.8EWYM.3ytxi',2,'0','1','1'),(4,'Elena','Osorio','eosorio','$2b$10$NusqfvViyfvuuUYYjlCMPeFkzj3jrki02S3jWppikVCgT6.SS86rq',2,'0','1','1'),(5,'Ana','Pineda','apineda','$2b$10$6.s/8qIfF748ZTNNX77sJ.uMpurQlTj0Y0156q7VEoTvQMauLVeEK',2,'0','1','1'),(6,'Nora','de Loza','nloza','$2b$10$uOElnErirnnRHWEXyWzgcerzgbW0.5ZpyR7.B1Q1K5YDeLs.0yN0G',5,'1','1','1'),(7,'Claudia','Liquez','cliquez','$2b$10$EcQnILbLwC7vz3bK.7DMJuPTiNn0QZA1UDnoyPQJF0z8Wjs/.Awey',5,'1','1','1'),(8,'Evelin','Osegueda','eosegueda','$2b$10$Ep8g1d7AxZWFrjt9qOHuRu5RdemdKF2jdSZTR5PIUvo.vCkN1R93G',5,'0','1','1'),(9,'Yohana','Pérez','yperez','$2b$10$WKJ4x1FZr4G0.TlbsxzOHuv9H3bauAx/4XqyU.RMMCL.De/bIUZXG',7,'1','1','1'),(10,'Patricia','Alfaro','palfaro','$2b$10$3qehngwWUNk3VcITwoqYdu0WL6zMZOo2SH1zqY..bjO7LiXonuUf2',6,'0','1','1'),(11,'Nancy','Vasquez','nvasques','$2b$10$qJTTxItmCdAYUeojCu96fOzwGEujwtzNvoxXfzNPjWQwmhQuiVg.K',8,'0','1','1'),(12,'Jaqueline','Hernandez','jhernandez','$2b$10$BnR0Nq9KCy8JGFdypOLlTOqR8dR8E2z/0zPPZdJb.3oyFDn9w.THW',8,'0','1','1'),(13,'Delmy','Vasquez','dvasquez','$2b$10$za9VjAcSgQ3oP2ZhkcTpJeHwgT.fEm3d/qZbHnQQNZg.Eg0Eo9mw6',7,'0','1','1'),(14,'Erick','Giron','egiron','$2b$10$IBWKwRoHz2hKKvhZnfwI4.dUOMBHwXL3MNUgMbEcqYYXoM26if7ha',6,'0','1','1'),(15,'Sandra','Rivas','srivas','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',8,'0','1','1'),(16,'Lic. Carlos','Pineda','cjpineda','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',8,'1','0','1'),(17,'Ing. Carlos','Pineda','cpineda','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',8,'1','0','1'),(18,'Martin','Aguirre','maguirre','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',8,'1','1','1'),(19,'Luis','Martinez','lmartinez','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',8,'1','1','1'),(20,'Correo','Electronico',NULL,NULL,NULL,'1','1','1');
+INSERT INTO `usuarios` VALUES (1,'Rafael Adalberto','Parada Gómez','rparada','$2b$10$UdmN/XjK/VveWLdQ/rMRQ.fDjjrkskV4RaeIXX6W6IQEkyn7CCt12',NULL,9,'0','1','1'),(2,'Ana María','Blanco Méndez','amaria','$2b$10$DyUoHmre6gBQhSn6BkSyiejzXXVoL3/frjqLqWX5WXErS9OT8T.zu',NULL,1,'0','1','1'),(3,'Chimi','An','cherrera','$2b$10$WGJohKUdJvYrO0V1ehjY7uzm.BJakeDxYK7KYeWEF.8EWYM.3ytxi',NULL,2,'0','1','1'),(4,'Elena','Osorio','eosorio','$2b$10$NusqfvViyfvuuUYYjlCMPeFkzj3jrki02S3jWppikVCgT6.SS86rq',NULL,2,'0','1','1'),(5,'Ana','Pineda','apineda','$2b$10$6.s/8qIfF748ZTNNX77sJ.uMpurQlTj0Y0156q7VEoTvQMauLVeEK',NULL,2,'0','1','1'),(6,'Nora','de Loza','nloza','$2b$10$uOElnErirnnRHWEXyWzgcerzgbW0.5ZpyR7.B1Q1K5YDeLs.0yN0G',NULL,5,'1','1','1'),(7,'Claudia','Liquez','cliquez','$2b$10$EcQnILbLwC7vz3bK.7DMJuPTiNn0QZA1UDnoyPQJF0z8Wjs/.Awey',NULL,5,'1','1','1'),(8,'Evelin','Osegueda','eosegueda','$2b$10$Ep8g1d7AxZWFrjt9qOHuRu5RdemdKF2jdSZTR5PIUvo.vCkN1R93G',NULL,5,'0','1','1'),(9,'Yohana','Pérez','yperez','$2b$10$WKJ4x1FZr4G0.TlbsxzOHuv9H3bauAx/4XqyU.RMMCL.De/bIUZXG',NULL,7,'1','1','1'),(10,'Patricia','Alfaro','palfaro','$2b$10$3qehngwWUNk3VcITwoqYdu0WL6zMZOo2SH1zqY..bjO7LiXonuUf2',NULL,6,'0','1','1'),(11,'Nancy','Vasquez','nvasques','$2b$10$qJTTxItmCdAYUeojCu96fOzwGEujwtzNvoxXfzNPjWQwmhQuiVg.K',NULL,8,'0','1','1'),(12,'Jaqueline','Hernandez','jhernandez','$2b$10$BnR0Nq9KCy8JGFdypOLlTOqR8dR8E2z/0zPPZdJb.3oyFDn9w.THW',NULL,8,'0','1','1'),(13,'Delmy','Vasquez','dvasquez','$2b$10$za9VjAcSgQ3oP2ZhkcTpJeHwgT.fEm3d/qZbHnQQNZg.Eg0Eo9mw6',NULL,7,'0','1','1'),(14,'Erick','Giron','egiron','$2b$10$IBWKwRoHz2hKKvhZnfwI4.dUOMBHwXL3MNUgMbEcqYYXoM26if7ha',NULL,6,'0','1','1'),(15,'Sandra','Rivas','srivas','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',NULL,8,'0','1','1'),(16,'Lic. Carlos','Pineda','cjpineda','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',NULL,8,'1','0','1'),(17,'Ing. Carlos','Pineda','cpineda','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',NULL,8,'1','0','1'),(18,'Martin','Aguirre','maguirre','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',NULL,8,'1','1','1'),(19,'Luis','Martinez','lmartinez','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',NULL,8,'1','1','1');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -354,4 +429,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-05 23:39:23
+-- Dump completed on 2021-11-08 16:54:56

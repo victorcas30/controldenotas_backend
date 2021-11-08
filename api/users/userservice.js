@@ -54,6 +54,30 @@ const createUser = (values,callBack)=>{
     });
 }
 
+
+
+const users = (callBack) =>{
+    const myQuery = `
+        SELECT 
+            idusuario,
+            UPPER(nombres) as nombres,
+            UPPER(apellidos) as apellidos,
+            UPPER(usuario) as usuario,
+            idrol, 
+            departamento,
+            recibe_correspondencia,
+            aplica_reporte_trabajo_pendiente,
+            activo
+        FROM usuarios`;
+    dbconnection.query(myQuery,(error,result)=>{
+        if(!error){
+           return callBack(null,result);
+        }else{
+            return callBack(error);
+        }
+    });
+}
+
 const loginUser = (values,callBack)=>{
     const myLoginQuery = `
         SELECT 
@@ -88,6 +112,72 @@ const loginUser = (values,callBack)=>{
     });
 }
 
+const opcion = (values,callBack)=>{
+    const insertQuery = "INSERT INTO opciones(nombre,icon,path) VALUES(?,?,?)";
+    dbconnection.query(insertQuery,values,(error,result)=>{
+        if(error){
+            callBack(error,result);
+            return;
+        }
+        return callBack(null,result);
+    });
+}
+
+const opciones = (callBack) =>{
+    const myQuery = 'SELECT idopcion,nombre,icon,path FROM opciones';
+    dbconnection.query(myQuery,(error,result)=>{
+        if(!error){
+           return callBack(null,result);
+        }else{
+            return callBack(error);
+        }
+    });
+}
+
+const updateopcion = (values,callBack)=>{
+    const updateQuery = "UPDATE opciones SET nombre=?,icon=?,path=? WHERE idopcion = ?";
+    dbconnection.query(updateQuery,values,(error,result)=>{
+        if(error){
+            callBack(error,result);
+            return;
+        }
+        return callBack(null,result);
+    });
+}
+
+const rol = (values,callBack)=>{
+    const insertQuery = "INSERT INTO roles(nombre) VALUES(?)";
+    dbconnection.query(insertQuery,values,(error,result)=>{
+        if(error){
+            callBack(error,result);
+            return;
+        }
+        return callBack(null,result);
+    });
+}
+
+const roles = (callBack) =>{
+    const myQuery = 'SELECT idrol,nombre FROM roles';
+    dbconnection.query(myQuery,(error,result)=>{
+        if(!error){
+           return callBack(null,result);
+        }else{
+            return callBack(error);
+        }
+    });
+}
+
+const updateRol = (values,callBack)=>{
+    const updateQuery = "UPDATE roles SET nombre=? WHERE idrol = ?";
+    dbconnection.query(updateQuery,values,(error,result)=>{
+        if(error){
+            callBack(error,result);
+            return;
+        }
+        return callBack(null,result);
+    });
+}
+
 
 
 
@@ -97,5 +187,12 @@ export {
     loginUser,
     usersByDepto,
     usersRecibenCorrespondencia,
-    usersAplicaReporte
+    usersAplicaReporte,
+    users,
+    opcion,
+    opciones,
+    updateopcion,
+    rol,
+    roles,
+    updateRol
 };

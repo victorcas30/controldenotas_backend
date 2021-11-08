@@ -1,4 +1,18 @@
-import { getUsers,createUser,loginUser,usersByDepto ,usersRecibenCorrespondencia,usersAplicaReporte} from './userservice.js';
+import { 
+    getUsers,
+    createUser,
+    loginUser,
+    usersByDepto ,
+    usersRecibenCorrespondencia,
+    usersAplicaReporte,
+    users,
+    opcion,
+    opciones,
+    updateopcion,
+    rol,
+    roles,
+    updateRol
+} from './userservice.js';
 import {hashSync,genSaltSync,compareSync} from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -79,6 +93,80 @@ const login = (req,res)=>{
     });
 }
 
+const getUsuariosAdmin = (req,res) =>{
+    users((error,result)=>{
+        if(error){
+            res.status(500).json({success:true,message:'Error al consultar usuarios'});
+        }else{
+            res.status(200).json({success:true,users:result});
+        }
+    });
+}
+
+const createOpcion = (req,res)=>{
+    const values = Object.values(req.body);
+    opcion(values,(error,results)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al crear opción'});
+        }else{
+            res.status(200).json({success:true,message:'Opción creada'});
+        }
+    });
+}
+
+const getOpciones = (req,res) =>{
+    opciones((error,result)=>{
+        if(error){
+            res.status(500).json({success:true,message:'Error al procesar la solicitud'});
+        }else{
+            res.status(200).json({success:true,opciones:result});
+        }
+    });
+}
+
+const setUpdateOpciones = (req,res)=>{
+    const values = Object.values(req.body);
+    updateopcion(values,(error,results)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al actualizar opción'});
+        }else{
+            res.status(200).json({success:true,message:'Cambios guardados'});
+        }
+    });
+}
+
+const createRol = (req,res)=>{
+    const values = Object.values(req.body);
+    rol(values,(error,results)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al crear rol'});
+        }else{
+            res.status(200).json({success:true,message:'rol creado'});
+        }
+    });
+}
+
+const getRoles = (req,res) =>{
+    roles((error,result)=>{
+        if(error){
+            res.status(500).json({success:true,message:'Error al procesar la solicitud'});
+        }else{
+            res.status(200).json({success:true,roles:result});
+        }
+    });
+}
+
+const setUpdateRoles = (req,res)=>{
+    const values = Object.values(req.body);
+    updateRol(values,(error,results)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al actualizar rol'});
+        }else{
+            res.status(200).json({success:true,message:'Cambios guardados'});
+        }
+    });
+}
+
 
 
 
@@ -88,6 +176,13 @@ export {
     login,
     getUsersByDepto,
     getUsersRecibenCorrespondencia,
-    getUsuariosAplicaReporte
+    getUsuariosAplicaReporte,
+    getUsuariosAdmin,
+    createOpcion,
+    getOpciones,
+    setUpdateOpciones,
+    createRol,
+    getRoles,
+    setUpdateRoles
 };
 
