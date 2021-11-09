@@ -22,7 +22,8 @@ import {
     setcorrespondenciaRecibida,
     getUsersToReport,
     getCorresPendingByUserReport,
-    procesaraccesos
+    procesaraccesos,
+    addDeleteAccess
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -293,6 +294,17 @@ const getAccesosByRol = (req,res) =>{
     });
 }
 
+const setAddDeleteAccesos = (req,res)=>{
+    const values = Object.values(req.body);
+    addDeleteAccess(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al procesar la acción requerida'});
+        }else{
+            res.status(200).json({success:true,message:'Se ha registrado el envío'});
+        }
+    });
+}
+
 export {
     createCorrespondenceReceived,
     getCorrespondenceRecieviedByUser,
@@ -317,5 +329,6 @@ export {
     setGetCorrespondencePendienteReport,
     setGetUsersToReport,
     setGetCorresPendingByUserReport,
-    getAccesosByRol
+    getAccesosByRol,
+    setAddDeleteAccesos
 };

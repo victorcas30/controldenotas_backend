@@ -918,6 +918,19 @@ const procesaraccesos = (values,callBack) =>{
     });
 }
 
+const addDeleteAccess = (values,callBack)=>{
+    const queryAdd    = `INSERT INTO accesos(idrol,idopcion) VALUES(?,?)`;
+    const queryDelete = `DELETE FROM accesos WHERE idrol=? AND idopcion=?`;
+    const myQuery = (values[2]) ? queryAdd : queryDelete ;
+    dbconnection.query(myQuery,values,(error,result)=>{
+        if(error){
+            return callBack(error,null);
+        }else{
+            return callBack(error,result);
+        }
+    });
+}
+
 
 
 
@@ -947,5 +960,6 @@ export {
     setcorrespondenciaRecibida,
     getUsersToReport,
     getCorresPendingByUserReport,
-    procesaraccesos
+    procesaraccesos,
+    addDeleteAccess
 };

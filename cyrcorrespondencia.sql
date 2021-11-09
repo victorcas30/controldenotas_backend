@@ -29,7 +29,7 @@ CREATE TABLE `accesos` (
   `idrol` int(11) DEFAULT NULL,
   `idopcion` int(11) DEFAULT NULL,
   PRIMARY KEY (`idacceso`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,6 +38,7 @@ CREATE TABLE `accesos` (
 
 LOCK TABLES `accesos` WRITE;
 /*!40000 ALTER TABLE `accesos` DISABLE KEYS */;
+INSERT INTO `accesos` VALUES (2,1,1),(3,1,2);
 /*!40000 ALTER TABLE `accesos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -332,7 +333,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'Adminsitrador'),(2,'Jefe departamento'),(3,'Usuario Básico');
+INSERT INTO `roles` VALUES (1,'Adminsitradora'),(2,'Jefe departamento'),(3,'Usuario Básico');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -429,4 +430,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-08 16:54:56
+-- Dump completed on 2021-11-09 17:06:07
