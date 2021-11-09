@@ -21,7 +21,8 @@ import {
     reporteCorrespondenciaPendiente,
     setcorrespondenciaRecibida,
     getUsersToReport,
-    getCorresPendingByUserReport
+    getCorresPendingByUserReport,
+    procesaraccesos
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -281,6 +282,17 @@ const setGetCorresPendingByUserReport = (req,res) =>{
     });
 }
 
+const getAccesosByRol = (req,res) =>{
+    const values = Object.values(req.params);
+    procesaraccesos(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al solicitar accesos'});
+        }else{
+            res.status(200).json({success:true,accesos:result});
+        }
+    });
+}
+
 export {
     createCorrespondenceReceived,
     getCorrespondenceRecieviedByUser,
@@ -304,5 +316,6 @@ export {
     getCorrespondencePendienteReport,
     setGetCorrespondencePendienteReport,
     setGetUsersToReport,
-    setGetCorresPendingByUserReport
+    setGetCorresPendingByUserReport,
+    getAccesosByRol
 };

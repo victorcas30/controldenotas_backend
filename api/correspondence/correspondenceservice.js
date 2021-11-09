@@ -882,6 +882,44 @@ const getCorresPendingByUserReport = (values,callBack) =>{
     });
 }
 
+const accesosbyrol = (values,callBack) =>{
+    const queryopcionesyaccesosrol = `
+        SELECT o.idopcion,o.nombre,o.icon,o.path FROM opciones o;
+        SELECT o.idopcion,o.nombre,o.icon,o.path FROM opciones o
+        INNER JOIN accesos a on a.idopcion = o.idopcion
+        WHERE a.idrol = ?;
+    `;
+    dbconnection.query(queryopcionesyaccesosrol,values,(error,result)=>{
+        if(!error){
+           return callBack(null,result);
+        }else{
+            return callBack(error);
+        }
+    });
+}
+
+const procesaraccesos = (values,callBack) =>{
+    accesosbyrol(values,(error,accesos)=>{
+        if(!error){
+            const myAccess = accesos[0].map(acc =>{
+                let existe = (accesos[1].find(op => op.idopcion === acc.idopcion)) ? true : false;
+                return{
+                    idopcion:acc.idopcion,
+                    nombre: acc.nombre,
+                    icon: acc.icon,
+                    path: acc.path,
+                    existe:existe
+                }
+            });
+            return callBack(false,myAccess);
+        }else{
+            return callBack(true,[]);
+        }
+    });
+}
+
+
+
 
 
 
@@ -908,5 +946,6 @@ export {
     reporteCorrespondenciaPendiente,
     setcorrespondenciaRecibida,
     getUsersToReport,
-    getCorresPendingByUserReport
+    getCorresPendingByUserReport,
+    procesaraccesos
 };
