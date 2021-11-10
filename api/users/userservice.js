@@ -82,6 +82,7 @@ const loginUser = (values,callBack)=>{
     const myLoginQuery = `
         SELECT 
             u.idusuario,
+            u.idrol,
             u.nombres,
             u.apellidos,
             u.usuario,
@@ -103,12 +104,19 @@ const loginUser = (values,callBack)=>{
         AND 
             u.activo = 1
     `;
-    dbconnection.query(myLoginQuery,values,(error,result)=>{
-        if(error){
-            return callBack(error,null);
-        }else{
-           return callBack(null,result);
-        }
+    dbconnection.query(myLoginQuery,values,(error,user)=>{
+        const queryAccesos = `SELECT o.idopcion,o.nombre,o.icon,o.path FROM opciones o INNER JOIN accesos a ON a.idopcion=o.idopcion WHERE a.idrol = ${user[0].idrol};`;
+        dbconnection.query(queryAccesos,values,(error1,accesos)=>{
+
+            if(error || error1){
+                return callBack(error+' '+error1,null);
+            }else{
+               const userInfo = {...user,accesos:accesos}
+               return callBack(null,userInfo);
+            }
+
+        }); 
+       
     });
 }
 
