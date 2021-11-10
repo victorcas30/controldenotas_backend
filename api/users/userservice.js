@@ -107,7 +107,6 @@ const loginUser = (values,callBack)=>{
     dbconnection.query(myLoginQuery,values,(error,user)=>{
         const queryAccesos = `SELECT o.idopcion,o.nombre,o.icon,o.path FROM opciones o INNER JOIN accesos a ON a.idopcion=o.idopcion WHERE a.idrol = ${user[0].idrol};`;
         dbconnection.query(queryAccesos,values,(error1,accesos)=>{
-
             if(error || error1){
                 return callBack(error+' '+error1,null);
             }else{

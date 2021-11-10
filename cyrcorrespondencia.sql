@@ -29,7 +29,7 @@ CREATE TABLE `accesos` (
   `idrol` int(11) DEFAULT NULL,
   `idopcion` int(11) DEFAULT NULL,
   PRIMARY KEY (`idacceso`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE `accesos` (
 
 LOCK TABLES `accesos` WRITE;
 /*!40000 ALTER TABLE `accesos` DISABLE KEYS */;
-INSERT INTO `accesos` VALUES (2,1,1),(3,1,2);
+INSERT INTO `accesos` VALUES (2,1,1),(3,1,2),(4,1,3),(5,1,4),(11,2,1),(17,3,3),(18,3,4),(19,1,5),(20,1,6),(21,1,7),(22,1,8),(23,1,9),(24,2,2),(25,2,3),(26,2,5);
 /*!40000 ALTER TABLE `accesos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -333,7 +333,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'Adminsitradora'),(2,'Jefe departamento'),(3,'Usuario Básico');
+INSERT INTO `roles` VALUES (1,'Adminsitrador'),(2,'Jefe departamento'),(3,'Usuario Básico');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -390,7 +390,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'Rafael Adalberto','Parada Gómez','rparada','$2b$10$UdmN/XjK/VveWLdQ/rMRQ.fDjjrkskV4RaeIXX6W6IQEkyn7CCt12',NULL,9,'0','1','1'),(2,'Ana María','Blanco Méndez','amaria','$2b$10$DyUoHmre6gBQhSn6BkSyiejzXXVoL3/frjqLqWX5WXErS9OT8T.zu',NULL,1,'0','1','1'),(3,'Chimi','An','cherrera','$2b$10$WGJohKUdJvYrO0V1ehjY7uzm.BJakeDxYK7KYeWEF.8EWYM.3ytxi',NULL,2,'0','1','1'),(4,'Elena','Osorio','eosorio','$2b$10$NusqfvViyfvuuUYYjlCMPeFkzj3jrki02S3jWppikVCgT6.SS86rq',NULL,2,'0','1','1'),(5,'Ana','Pineda','apineda','$2b$10$6.s/8qIfF748ZTNNX77sJ.uMpurQlTj0Y0156q7VEoTvQMauLVeEK',NULL,2,'0','1','1'),(6,'Nora','de Loza','nloza','$2b$10$uOElnErirnnRHWEXyWzgcerzgbW0.5ZpyR7.B1Q1K5YDeLs.0yN0G',NULL,5,'1','1','1'),(7,'Claudia','Liquez','cliquez','$2b$10$EcQnILbLwC7vz3bK.7DMJuPTiNn0QZA1UDnoyPQJF0z8Wjs/.Awey',NULL,5,'1','1','1'),(8,'Evelin','Osegueda','eosegueda','$2b$10$Ep8g1d7AxZWFrjt9qOHuRu5RdemdKF2jdSZTR5PIUvo.vCkN1R93G',NULL,5,'0','1','1'),(9,'Yohana','Pérez','yperez','$2b$10$WKJ4x1FZr4G0.TlbsxzOHuv9H3bauAx/4XqyU.RMMCL.De/bIUZXG',NULL,7,'1','1','1'),(10,'Patricia','Alfaro','palfaro','$2b$10$3qehngwWUNk3VcITwoqYdu0WL6zMZOo2SH1zqY..bjO7LiXonuUf2',NULL,6,'0','1','1'),(11,'Nancy','Vasquez','nvasques','$2b$10$qJTTxItmCdAYUeojCu96fOzwGEujwtzNvoxXfzNPjWQwmhQuiVg.K',NULL,8,'0','1','1'),(12,'Jaqueline','Hernandez','jhernandez','$2b$10$BnR0Nq9KCy8JGFdypOLlTOqR8dR8E2z/0zPPZdJb.3oyFDn9w.THW',NULL,8,'0','1','1'),(13,'Delmy','Vasquez','dvasquez','$2b$10$za9VjAcSgQ3oP2ZhkcTpJeHwgT.fEm3d/qZbHnQQNZg.Eg0Eo9mw6',NULL,7,'0','1','1'),(14,'Erick','Giron','egiron','$2b$10$IBWKwRoHz2hKKvhZnfwI4.dUOMBHwXL3MNUgMbEcqYYXoM26if7ha',NULL,6,'0','1','1'),(15,'Sandra','Rivas','srivas','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',NULL,8,'0','1','1'),(16,'Lic. Carlos','Pineda','cjpineda','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',NULL,8,'1','0','1'),(17,'Ing. Carlos','Pineda','cpineda','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',NULL,8,'1','0','1'),(18,'Martin','Aguirre','maguirre','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',NULL,8,'1','1','1'),(19,'Luis','Martinez','lmartinez','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',NULL,8,'1','1','1');
+INSERT INTO `usuarios` VALUES (1,'Rafael Adalberto','Parada Gómez','rparada','$2b$10$UdmN/XjK/VveWLdQ/rMRQ.fDjjrkskV4RaeIXX6W6IQEkyn7CCt12',1,9,'0','1','1'),(2,'Ana María','Blanco Méndez','amaria','$2b$10$DyUoHmre6gBQhSn6BkSyiejzXXVoL3/frjqLqWX5WXErS9OT8T.zu',3,1,'0','1','1'),(3,'Chimi','An','cherrera','$2b$10$WGJohKUdJvYrO0V1ehjY7uzm.BJakeDxYK7KYeWEF.8EWYM.3ytxi',2,2,'0','1','1'),(4,'Elena','Osorio','eosorio','$2b$10$NusqfvViyfvuuUYYjlCMPeFkzj3jrki02S3jWppikVCgT6.SS86rq',3,2,'0','1','1'),(5,'Ana','Pineda','apineda','$2b$10$6.s/8qIfF748ZTNNX77sJ.uMpurQlTj0Y0156q7VEoTvQMauLVeEK',3,2,'0','1','1'),(6,'Nora','de Loza','nloza','$2b$10$uOElnErirnnRHWEXyWzgcerzgbW0.5ZpyR7.B1Q1K5YDeLs.0yN0G',3,5,'1','1','1'),(7,'Claudia','Liquez','cliquez','$2b$10$EcQnILbLwC7vz3bK.7DMJuPTiNn0QZA1UDnoyPQJF0z8Wjs/.Awey',3,5,'1','1','1'),(8,'Evelin','Osegueda','eosegueda','$2b$10$Ep8g1d7AxZWFrjt9qOHuRu5RdemdKF2jdSZTR5PIUvo.vCkN1R93G',2,5,'0','1','1'),(9,'Yohana','Pérez','yperez','$2b$10$WKJ4x1FZr4G0.TlbsxzOHuv9H3bauAx/4XqyU.RMMCL.De/bIUZXG',2,7,'1','1','1'),(10,'Patricia','Alfaro','palfaro','$2b$10$3qehngwWUNk3VcITwoqYdu0WL6zMZOo2SH1zqY..bjO7LiXonuUf2',3,6,'0','1','1'),(11,'Nancy','Vasquez','nvasques','$2b$10$qJTTxItmCdAYUeojCu96fOzwGEujwtzNvoxXfzNPjWQwmhQuiVg.K',3,8,'0','1','1'),(12,'Jaqueline','Hernandez','jhernandez','$2b$10$BnR0Nq9KCy8JGFdypOLlTOqR8dR8E2z/0zPPZdJb.3oyFDn9w.THW',3,8,'0','1','1'),(13,'Delmy','Vasquez','dvasquez','$2b$10$za9VjAcSgQ3oP2ZhkcTpJeHwgT.fEm3d/qZbHnQQNZg.Eg0Eo9mw6',3,7,'0','1','1'),(14,'Erick','Giron','egiron','$2b$10$IBWKwRoHz2hKKvhZnfwI4.dUOMBHwXL3MNUgMbEcqYYXoM26if7ha',3,6,'0','1','1'),(15,'Sandra','Rivas','srivas','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',2,8,'0','1','1'),(16,'Lic. Carlos','Pineda','cjpineda','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',2,8,'1','0','1'),(17,'Ing. Carlos','Pineda','cpineda','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',2,8,'1','0','1'),(18,'Martin','Aguirre','maguirre','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',3,8,'1','1','1'),(19,'Luis','Martinez','lmartinez','$2b$10$qqUJ17S6Ex9zB5ofNM8ZMOLyG8A9SCEqhFtVK08XK4306y3jUhJW.',3,8,'1','1','1');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -430,4 +430,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-09 17:06:07
+-- Dump completed on 2021-11-10 17:00:48
