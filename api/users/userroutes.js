@@ -12,7 +12,8 @@ import {
     setUpdateOpciones,
     createRol,
     getRoles,
-    setUpdateRoles
+    setUpdateRoles,
+    setUpdateUser
 } from './usercontroller.js';
 import { validatetoken } from './auth/validatetoken.js';
 const router = express.Router();
@@ -42,5 +43,7 @@ router.post('/roles',validatetoken,createRol);
 router.put('/opciones',validatetoken,setUpdateOpciones);
 
 router.put('/roles',validatetoken,setUpdateRoles);
+
+router.put('/users',validatetoken,setUpdateUser);
 
 export {router as userRouter};

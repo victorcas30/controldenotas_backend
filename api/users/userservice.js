@@ -44,11 +44,22 @@ const usersAplicaReporte = (callBack) =>{
 }
 
 const createUser = (values,callBack)=>{
-    const insertQuery = "INSERT INTO usuarios(nombres,apellidos,usuario,password) VALUES(?,?,?,?)";
+    const insertQuery = `
+    INSERT INTO 
+        usuarios(
+        nombres,
+        apellidos,
+        usuario,
+        password,
+        idrol,
+        departamento,
+        recibe_correspondencia,
+        aplica_reporte_trabajo_pendiente,
+        activo
+        ) VALUES(?,?,?,?,?,?,?,?,?);`;
     dbconnection.query(insertQuery,values,(error,result)=>{
         if(error){
-            callBack(error,result);
-            return;
+            return callBack(error,result);  
         }
         return callBack(null,result);
     });
@@ -75,6 +86,19 @@ const users = (callBack) =>{
         }else{
             return callBack(error);
         }
+    });
+}
+
+const updateuser= (values,callBack)=>{
+    const updateQuery = `
+        UPDATE usuarios 
+            SET nombre=?,icon=?,path=? WHERE idusuario = ?`;
+    dbconnection.query(updateQuery,values,(error,result)=>{
+        if(error){
+            callBack(error,result);
+            return;
+        }
+        return callBack(null,result);
     });
 }
 
@@ -201,5 +225,6 @@ export {
     updateopcion,
     rol,
     roles,
-    updateRol
+    updateRol,
+    updateuser
 };

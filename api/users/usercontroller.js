@@ -11,7 +11,8 @@ import {
     updateopcion,
     rol,
     roles,
-    updateRol
+    updateRol,
+    updateuser
 } from './userservice.js';
 import {hashSync,genSaltSync,compareSync} from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -19,6 +20,9 @@ import jwt from 'jsonwebtoken';
 const createUsuario = (req,res)=>{
     const salt = genSaltSync(10);
     req.body.password = hashSync(req.body.password,salt);
+    req.body.recibe_correspondencia = (req.body.recibe_correspondencia) ? '1':'0'; 
+    req.body.aplica_reporte_trabajo_pendiente = (req.body.aplica_reporte_trabajo_pendiente) ? '1':'0';
+    req.body.activo = (req.body.activo)? '1':'0';
     const values = Object.values(req.body);
     createUser(values,(error,results)=>{
         if(error){
@@ -166,6 +170,17 @@ const setUpdateRoles = (req,res)=>{
         }
     });
 }
+const setUpdateUser = (req,res)=>{
+    console.log(JSON.stringify(req.body,null,2));
+    const values = Object.values(req.body);
+    updateuser(values,(error,results)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al actualizar usuario'});
+        }else{
+            res.status(200).json({success:true,message:'Cambios guardados'});
+        }
+    });
+}
 
 
 
@@ -183,6 +198,7 @@ export {
     setUpdateOpciones,
     createRol,
     getRoles,
-    setUpdateRoles
+    setUpdateRoles,
+    setUpdateUser
 };
 
