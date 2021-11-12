@@ -171,8 +171,7 @@ const setUpdateRoles = (req,res)=>{
     });
 }
 const setUpdateUser = (req,res)=>{
-    console.log(JSON.stringify(req.body,null,2));
-    const values = Object.values(req.body);
+    const values = req.body;
     updateuser(values,(error,results)=>{
         if(error){
             res.status(500).json({success:false,message:'Error al actualizar usuario'});

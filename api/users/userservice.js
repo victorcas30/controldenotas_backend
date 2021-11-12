@@ -92,9 +92,19 @@ const users = (callBack) =>{
 const updateuser= (values,callBack)=>{
     const updateQuery = `
         UPDATE usuarios 
-            SET nombre=?,icon=?,path=? WHERE idusuario = ?`;
-    dbconnection.query(updateQuery,values,(error,result)=>{
+            SET 
+                nombres='${values.nombres}',
+                apellidos='${values.apellidos}',
+                usuario='${values.usuario}',
+                idrol=${values.idrol},
+                departamento=${values.departamento},
+                recibe_correspondencia=${values.recibe_correspondencia},
+                aplica_reporte_trabajo_pendiente=${values.aplica_reporte_trabajo_pendiente},
+                activo=${values.activo}
+            WHERE idusuario = ${values.idusuario};`;
+    dbconnection.query(updateQuery,(error,result)=>{
         if(error){
+            console.log(error);
             callBack(error,result);
             return;
         }
