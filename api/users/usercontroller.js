@@ -170,6 +170,7 @@ const setUpdateRoles = (req,res)=>{
         }
     });
 }
+
 const setUpdateUser = (req,res)=>{
     const values = req.body;
     updateuser(values,(error,results)=>{

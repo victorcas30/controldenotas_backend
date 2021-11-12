@@ -34,7 +34,7 @@ const router = express.Router();
 router.get('/correspondence/:idusuario',validatetoken,getCorrespondenceRecieviedByUser);
 router.get('/correspondenceid/:idcorrespondencia',validatetoken,getCorrespondenceRecieviedById);
 router.get('/correspondencedepto/:iddepartment',validatetoken,getCorrespondenceRecieviedByDepto);
-router.get('/correspondencetoapproval/:iddepartamento/:idusuario/:estado',validatetoken,getcorrespondenceToApproval);
+router.get('/correspondencetoapproval/:iddepartamento/:idusuario',validatetoken,getcorrespondenceToApproval);
 router.get('/correspondencetoapprovalcobros/:iddepartamento/:idusuario',validatetoken,getcorrespondenceToApprovalCobros);
 router.get('/correspondence/status/:idusuario/:estado',validatetoken,getCorrespondenceAsignedToUser);
 router.get('/correspondenceinroute/:idmensajero',validatetoken,getCorrespondenceInRoute);

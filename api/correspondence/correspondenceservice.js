@@ -336,7 +336,7 @@ const correspondenceToApproval = (values,callBack)=>{
     AND 
         cr.eliminado = 0
     AND 
-        cr.estado = ?
+        cr.estado IN (3,4)
     ORDER BY 
         fechaasignacioncomplete ASC
     `;
