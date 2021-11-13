@@ -23,7 +23,8 @@ import {
     getUsersToReport,
     getCorresPendingByUserReport,
     procesaraccesos,
-    addDeleteAccess
+    addDeleteAccess,
+    ayudarCorrespondence
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -173,10 +174,22 @@ const setApproveCorrespondence = (req,res)=>{
         if(error){
             res.status(500).json({success:false,message:'Error al procesar la solicitud'});
         }else{
+            res.status(200).json({success:true,message:'Correspondencia Aprovada'});
+        }
+    });
+}
+
+const setAyudaCorrespondence = (req,res)=>{
+    const values = req.body;
+    ayudarCorrespondence(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al procesar la solicitud'});
+        }else{
             res.status(200).json({success:true,message:'Ahora usted es el responsable de esta correspondencia'});
         }
     });
 }
+
 const setCorrespondenceSend = (req,res)=>{
     const values = req.body;
     correspondenceSend(values,(error,result)=>{
@@ -330,5 +343,6 @@ export {
     setGetUsersToReport,
     setGetCorresPendingByUserReport,
     getAccesosByRol,
-    setAddDeleteAccesos
+    setAddDeleteAccesos,
+    setAyudaCorrespondence
 };

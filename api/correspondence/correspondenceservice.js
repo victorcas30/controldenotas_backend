@@ -353,6 +353,27 @@ const correspondenceToApproval = (values,callBack)=>{
 
 
 const approveCorrespondence = (values,callBack)=>{
+    console.log('Lacarlito :(');
+    const {idcorrespondencia,fechaaprobacion,idusuario} = values;
+    const myQuerys = `
+        INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${5},'${fechaaprobacion}',${idusuario});
+        UPDATE correspondencia_recibida SET estado= 5 WHERE idcorrespondencia_recibida= ${idcorrespondencia};
+        UPDATE asignaciones SET fechaaprobadacobros = '${fechaaprobacion}'  WHERE idcorrespondencia= ${idcorrespondencia};
+    `;
+   /* const myQuerys = `
+        INSERT INTO reasignaciones(idasignacion,iduserantes,iduserhoy,fechareasignacion) VALUES(${idasignacion},${iduserantes},${iduserhoy},'${fechareasignacion}');
+        UPDATE asignaciones SET idusuario = ${iduserhoy}  WHERE idasignacion= ${idasignacion};
+    `;*/
+    dbconnection.query(myQuerys,values,(error,result)=>{
+        if(error){
+            return callBack(error,result);
+        }else{
+            return callBack(null,result);
+        }
+    });
+}
+
+const ayudarCorrespondence = (values,callBack)=>{
     const {idasignacion,iduserantes,iduserhoy,fechareasignacion} = values;
    /* const myQuerys = `
         INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${5},'${fechaaprobacion}',${idusuario});
@@ -968,5 +989,6 @@ export {
     getUsersToReport,
     getCorresPendingByUserReport,
     procesaraccesos,
-    addDeleteAccess
+    addDeleteAccess,
+    ayudarCorrespondence
 };

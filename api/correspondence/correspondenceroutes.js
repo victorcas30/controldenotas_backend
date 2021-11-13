@@ -25,7 +25,8 @@ import {
     setGetUsersToReport,
     setGetCorresPendingByUserReport,
     getAccesosByRol,
-    setAddDeleteAccesos
+    setAddDeleteAccesos,
+    setAyudaCorrespondence
 } from './correspondencecontrollers.js';
 
 const router = express.Router();
@@ -56,5 +57,6 @@ router.put('/sendcorrespondence',validatetoken,setSendCorrespondence);
 router.put('/finishcorrespondence',validatetoken,setFinishCorrespondence);
 router.put('/editmensajerocorrespondence',validatetoken,setEditMensajeroCorrespondence);
 router.put('/adddeleteacceso',validatetoken,setAddDeleteAccesos);
+router.put('/ayudarasignacion',validatetoken,setAyudaCorrespondence);
 
 export {router as correspondenceRouter};
