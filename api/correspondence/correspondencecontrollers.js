@@ -171,9 +171,9 @@ const setApproveCorrespondence = (req,res)=>{
     const values = req.body;
     approveCorrespondence(values,(error,result)=>{
         if(error){
-            res.status(500).json({success:false,message:'Error al aprobar la correspondencia'});
+            res.status(500).json({success:false,message:'Error al procesar la solicitud'});
         }else{
-            res.status(200).json({success:true,message:'Correspondencia aprobada'});
+            res.status(200).json({success:true,message:'Ahora usted es el responsable de esta correspondencia'});
         }
     });
 }
