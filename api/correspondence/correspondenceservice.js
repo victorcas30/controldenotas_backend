@@ -353,7 +353,6 @@ const correspondenceToApproval = (values,callBack)=>{
 
 
 const approveCorrespondence = (values,callBack)=>{
-    console.log('Lacarlito :(');
     const {idcorrespondencia,fechaaprobacion,idusuario} = values;
     const myQuerys = `
         INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${5},'${fechaaprobacion}',${idusuario});
@@ -383,6 +382,22 @@ const ayudarCorrespondence = (values,callBack)=>{
     const myQuerys = `
         INSERT INTO reasignaciones(idasignacion,iduserantes,iduserhoy,fechareasignacion) VALUES(${idasignacion},${iduserantes},${iduserhoy},'${fechareasignacion}');
         UPDATE asignaciones SET idusuario = ${iduserhoy}  WHERE idasignacion= ${idasignacion};
+    `;
+    dbconnection.query(myQuerys,values,(error,result)=>{
+        if(error){
+            return callBack(error,result);
+        }else{
+            return callBack(null,result);
+        }
+    });
+}
+
+const archivarCorrespondence = (values,callBack)=>{
+    const {idcorrespondencia,fecha,idusuario,tipoarchivada,comentarioarchivada,idasignacion} = values;
+    const myQuerys = `
+        INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${4},'${fecha}',${idusuario});
+        UPDATE asignaciones SET tipoarchivada = '${tipoarchivada}',comentarioarchivada='${comentarioarchivada}'  WHERE idasignacion= ${idasignacion};
+        UPDATE correspondencia_recibida SET estado= 4 WHERE idcorrespondencia_recibida= ${idcorrespondencia};
     `;
     dbconnection.query(myQuerys,values,(error,result)=>{
         if(error){
