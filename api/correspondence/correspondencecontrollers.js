@@ -29,6 +29,7 @@ import {
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
+    req.body.fechavencimientorenov = (req.body.tipodocumento === "11") ?  req.body.fechavencimientorenov : '0000-00-00';
     const values = Object.values(req.body);
     correspondenceReceived(values,(error,result)=>{
         if(error){
