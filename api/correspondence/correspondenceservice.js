@@ -158,8 +158,8 @@ const recieviedCorresponseByDepto = (values,callBack) =>{
             UPPER(td.descripcion) as tipodocumento,
             DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%Y') as fechasellodocumento,
             DATE_FORMAT(cr.fechasellocyr,'%d-%m-%Y') as fechasellocyr,
-            cr.horasellocyr,
-            UPPER(us.nombres) as recibidopor,
+            TIME_FORMAT(cr.horasellocyr,'%h:%i%p') as horasellocyr,
+            UPPER(CONCAT(us.nombres,' ',us.apellidos)) as recibidopor,
             UPPER(cr.asegurado) as asegurado,
             UPPER(cr.referencia) as referencia,
             DATE_FORMAT(fechavencimientorenov,'%d-%m-%Y') as fechavencimientorenov,
@@ -168,7 +168,8 @@ const recieviedCorresponseByDepto = (values,callBack) =>{
             UPPER(ase.nombre) as aseguradora,
             UPPER(de.nombre) as entregadoa,
             UPPER(cr.formadeingreso) as formadeingreso,
-            DATE_FORMAT(fecha_ingreso_sistema,'%d-%m-%Y') as fecha_ingreso_sistema,
+            DATE_FORMAT(cr.fecha_ingreso_sistema,'%d-%m-%Y') as fecha_ingreso_sistema,
+            DATE_FORMAT(cr.fecha_ingreso_sistema,'%h:%i%p') as horaregistrosis,
             cr.estado
         FROM 
             correspondencia_recibida cr
@@ -813,7 +814,7 @@ const correspondenciaRecibida = (values,callBack) =>{
     AND DATE_FORMAT(cr.fecha_ingreso_sistema,'%Y-%m-%d')='${values[0]}'
     AND DATE_FORMAT(fecha_ingreso_sistema,'%p') = '${values[1]}'
     ORDER BY 
-        cr.fecha_ingreso_sistema ASC
+        de.nombre ASC, cr.fecha_ingreso_sistema ASC
     `;
     
     dbconnection.query(myQueryCorrespondence,(error,result)=>{
