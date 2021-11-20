@@ -93,12 +93,13 @@ const editarRecados = (values,callBack)=>{
 }
 
 const asignareliminarRecados = (values,callBack)=>{
-    const {opcion,idRecado,urgente,idmensajero} = values;
-    const myQuery  = `UPDATE recados SET idmensajero = '${idmensajero}',urgente = ${urgente}, estado='Asignado' WHERE id_recado = ${idRecado};`;
+    const {opcion,idRecado,urgente,idmensajero,fecha_asignado} = values;
+    const myQuery  = `UPDATE recados SET idmensajero = '${idmensajero}',urgente = ${urgente}, estado='Asignado',fecha_asignado = '${fecha_asignado}' WHERE id_recado = ${idRecado};`;
     const myQuery1 = `UPDATE recados SET activo = '0' WHERE id_recado = ${idRecado} AND estado = '${'No Asignado'}';`;
     const activeQuery = (opcion === "a") ? myQuery : myQuery1 ;
     dbconnection.query(activeQuery,values,(error,result)=>{
         if(error){
+            console.log(error);
             return callBack(error,result);
         }else{
             return callBack(error,result);

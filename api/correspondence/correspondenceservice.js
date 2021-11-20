@@ -796,6 +796,7 @@ const correspondenciaRecibida = (values,callBack) =>{
     const myQueryCorrespondence = `
     SELECT
         UPPER(CONCAT(us.nombres,' ',us.apellidos)) as recibidopor,
+        usu.usuario as registrado_por,
         UPPER(de.nombre) as departamento,
         UPPER(cr.asegurado) as asegurado,
         cr.formadeingreso,
@@ -807,14 +808,15 @@ const correspondenciaRecibida = (values,callBack) =>{
     FROM 
         correspondencia_recibida cr
     INNER JOIN usuarios us on us.idusuario = cr.recibidopor
+    INNER JOIN usuarios usu on usu.idusuario = cr.idusuarioregistra
     INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
     LEFT  JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
     WHERE  
         cr.eliminado = 0
-    AND DATE_FORMAT(cr.fecha_ingreso_sistema,'%Y-%m-%d')='${values[0]}'
-    AND DATE_FORMAT(fecha_ingreso_sistema,'%p') = '${values[1]}'
+    AND DATE_FORMAT(cr.fechasellocyr,'%Y-%m-%d')='${values[0]}'
+    AND TIME_FORMAT(cr.horasellocyr,'%p') = '${values[1]}'
     ORDER BY 
-        de.nombre ASC, cr.fecha_ingreso_sistema ASC
+    usu.usuario ASC,de.nombre ASC, cr.fecha_ingreso_sistema ASC
     `;
     
     dbconnection.query(myQueryCorrespondence,(error,result)=>{
@@ -834,6 +836,7 @@ const setcorrespondenciaRecibida = (values,callBack) =>{
                 let fi = cc.formadeingreso === "fisico" ? '(F) -  ':'(E) -  '; 
                 return {
                     recibidopor:cc.recibidopor,
+                    registrado_por:cc.registrado_por.toUpperCase(),
                     departamento:cc.departamento,
                     asegurado:cc.asegurado,
                     firma_recibido:cc.firma_recibido,
