@@ -457,7 +457,7 @@ const correspondenceToApprovalCobros = (values,callBack)=>{
         asig.fechaasignacion as fechaasignacioncomplete,
         asig.idasignacion,
         asig.tipoarchivada,
-        asig.comentarioarchivada,
+        UPPER(asig.comentarioarchivada) as comentarioarchivada,
         cr.horasellocyr,
         UPPER(us.nombres) as asignado_a,
         UPPER(us.usuario) as usuario,
@@ -468,9 +468,15 @@ const correspondenceToApprovalCobros = (values,callBack)=>{
         UPPER(cr.aseg_remi) as aseg_remi,
         UPPER(ase.nombre) as aseguradora,
         UPPER(de.nombre) as entregadoa,
+        UPPER(ce.destino) as destino,
         cr.estado,
         de.idcyr_departamento as iddepartamento,
-        UPPER(cr.formadeingreso) as formadeingreso
+        UPPER(cr.formadeingreso) as formadeingreso,
+        UPPER(ase1.nombre) as asegdestino,
+        UPPER(ce.atencion) as atencion,
+        UPPER(ce.comentario) as comentario,
+        UPPER(ce.destino_otro) as destino_otro
+
     FROM 
         correspondencia_recibida cr
     
@@ -478,8 +484,9 @@ const correspondenceToApprovalCobros = (values,callBack)=>{
     INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
     INNER JOIN asignaciones asig on asig.idcorrespondencia = cr.idcorrespondencia_recibida
     INNER JOIN usuarios us on us.idusuario = asig.idusuario
+    LEFT  JOIN correspondenciaenviada ce ON asig.idcorrespondencia = ce.idcorrespondencia
     LEFT  JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
-    
+    LEFT  JOIN aseguradoras ase1 on ase1.idaseguradora = ce.aseguradora
     WHERE 
         cr.eliminado = 0
     `;
@@ -548,6 +555,11 @@ const correspondenceInRoute = (values,callBack)=>{
         UPPER(cr.aseg_remi) as aseg_remi,
         UPPER(ase.nombre) as aseguradora,
         UPPER(de.nombre) as entregadoa,
+        UPPER(ce.comentario) AS comentario,
+        UPPER(ce.destino_otro) AS destino_otro,
+        UPPER(ce.destino) AS destino,
+        UPPER(ce.atencion) AS atencion,
+        UPPER(ase1.nombre) AS asegdestino,
         UPPER(m.nombre) as mensajero,
         cr.estado,
         UPPER(cr.formadeingreso) as formadeingreso
@@ -561,6 +573,7 @@ const correspondenceInRoute = (values,callBack)=>{
     INNER JOIN correspondenciaenviada ce on asig.idcorrespondencia = ce.idcorrespondencia
     INNER JOIN mensajeros m on m.idmensajero = ce.idmensajero
     LEFT  JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
+    LEFT  JOIN aseguradoras ase1 on ase1.idaseguradora = ce.aseguradora
     
     WHERE 
         cr.eliminado = 0
