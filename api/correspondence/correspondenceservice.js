@@ -164,6 +164,7 @@ const recieviedCorresponseByDepto = (values,callBack) =>{
             UPPER(cr.referencia) as referencia,
             DATE_FORMAT(fechavencimientorenov,'%d-%m-%Y') as fechavencimientorenov,
             UPPER(cr.procedencia) as procedencia,
+            UPPER(cr.formadeingreso) as formadeingreso,
             UPPER(cr.aseg_remi) as aseg_remi,
             UPPER(ase.nombre) as aseguradora,
             UPPER(de.nombre) as entregadoa,
