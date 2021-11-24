@@ -160,7 +160,7 @@ const setRequestApproval = (req,res)=>{
 }
 
 const getcorrespondenceToApproval = (req,res)=>{
-    const values = Object.values(req.params);
+    const values = req.params;
     correspondenceToApproval(values,(error,result)=>{
         if(error){
            res.status(500).json({success:false,message:'Error al traer correspondencia'});

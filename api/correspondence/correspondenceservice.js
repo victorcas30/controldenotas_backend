@@ -156,10 +156,11 @@ const recieviedCorresponseByDepto = (values,callBack) =>{
         SELECT
             cr.idcorrespondencia_recibida as id, 
             UPPER(td.descripcion) as tipodocumento,
+            UPPER(usrp.usuario) as usuario,
             DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%Y') as fechasellodocumento,
             DATE_FORMAT(cr.fechasellocyr,'%d-%m-%Y') as fechasellocyr,
             TIME_FORMAT(cr.horasellocyr,'%h:%i%p') as horasellocyr,
-            UPPER(CONCAT(us.nombres,' ',us.apellidos)) as recibidopor,
+            UPPER(us.usuario) as recibidopor,
             UPPER(cr.asegurado) as asegurado,
             UPPER(cr.referencia) as referencia,
             DATE_FORMAT(fechavencimientorenov,'%d-%m-%Y') as fechavencimientorenov,
@@ -168,8 +169,8 @@ const recieviedCorresponseByDepto = (values,callBack) =>{
             UPPER(cr.aseg_remi) as aseg_remi,
             UPPER(ase.nombre) as aseguradora,
             UPPER(de.nombre) as entregadoa,
-            UPPER(cr.formadeingreso) as formadeingreso,
             DATE_FORMAT(cr.fecha_ingreso_sistema,'%d-%m-%Y') as fecha_ingreso_sistema,
+            cr.fecha_ingreso_sistema as fecha_ingreso_sistema_raw,
             DATE_FORMAT(cr.fecha_ingreso_sistema,'%h:%i%p') as horaregistrosis,
             cr.estado
         FROM 
@@ -177,17 +178,18 @@ const recieviedCorresponseByDepto = (values,callBack) =>{
 
         INNER JOIN tipo_documentos td on td.idtipo = cr.tipodocumento
         INNER JOIN usuarios us on us.idusuario = cr.recibidopor
+        INNER JOIN usuarios usrp on usrp.idusuario = cr.idusuarioregistra
         INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
         LEFT JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
         WHERE 
-            cr.entregadoa = ?
-        AND 
             cr.eliminado = 0
         AND 
             cr.estado IN (1,2)
     `;
 
-    dbconnection.query(myQuery,values,(error,result)=>{
+    const filter = ' AND cr.entregadoa = ?';
+    const finalQuery = (values[0] !== '0') ? myQuery+filter : myQuery;
+    dbconnection.query(finalQuery,values,(error,result)=>{
         if(error){
             return callBack(error,null);
         }else{
@@ -306,6 +308,7 @@ const requestApproval = (values,callBack)=>{
 }
 
 const correspondenceToApproval = (values,callBack)=>{
+   const {iddepartamento,idusuario} = values;
     const myQuery = `
         SELECT
         cr.idcorrespondencia_recibida as id, 
@@ -340,17 +343,20 @@ const correspondenceToApproval = (values,callBack)=>{
     INNER JOIN usuarios us on us.idusuario = asig.idusuario
     LEFT  JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
     WHERE 
-        de.idcyr_departamento = ?
-    AND 
-        asig.idusuario = ?
-    AND 
         cr.eliminado = 0
     AND 
         cr.estado IN (3,4)
-    ORDER BY 
-        fechaasignacioncomplete ASC
     `;
-    dbconnection.query(myQuery,values,(error,result)=>{
+    const filterDepto =  ` AND de.idcyr_departamento = ${iddepartamento}`;
+    const filterUser  =  ` AND asig.idusuario = ${idusuario}`;
+    const endQUery    =  ` ORDER BY fechaasignacioncomplete ASC`;
+    let finalQuery  = '';
+    if(iddepartamento !== '0' && idusuario !== '0') finalQuery = myQuery + filterDepto + filterUser;
+    if(iddepartamento !== '0' && idusuario === '0') finalQuery = myQuery + filterDepto;
+    if(iddepartamento === '0' && idusuario !== '0') finalQuery = myQuery + filterUser;
+    finalQuery   = finalQuery+endQUery;
+    dbconnection.query(finalQuery,values,(error,result)=>{
+        console.log(finalQuery);
         if(error){
             return callBack(error,result);
         }else{
