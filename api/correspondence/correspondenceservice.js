@@ -323,7 +323,7 @@ const correspondenceToApproval = (values,callBack)=>{
         asig.idasignacion,
         asig.idusuario as iduserasignado,
         cr.horasellocyr,
-        UPPER(us.nombres) as asignado_a,
+        UPPER(us.usuario) as asignado_a,
         UPPER(cr.asegurado) as asegurado,
         UPPER(cr.referencia) as referencia,
         DATE_FORMAT(fechavencimientorenov,'%d-%m-%Y') as fechavencimientorenov,
@@ -331,6 +331,7 @@ const correspondenceToApproval = (values,callBack)=>{
         UPPER(cr.aseg_remi) as aseg_remi,
         UPPER(ase.nombre) as aseguradora,
         UPPER(de.nombre) as entregadoa,
+        UPPER(usReg.usuario) as usuarioregistro,
         cr.estado,
         de.idcyr_departamento as iddepartamento,
         UPPER(cr.formadeingreso) as formadeingreso
@@ -341,6 +342,7 @@ const correspondenceToApproval = (values,callBack)=>{
     INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
     INNER JOIN asignaciones asig on asig.idcorrespondencia = cr.idcorrespondencia_recibida
     INNER JOIN usuarios us on us.idusuario = asig.idusuario
+    INNER JOIN usuarios usReg on usReg.idusuario = cr.idusuarioregistra
     LEFT  JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
     WHERE 
         cr.eliminado = 0
@@ -354,9 +356,9 @@ const correspondenceToApproval = (values,callBack)=>{
     if(iddepartamento !== '0' && idusuario !== '0') finalQuery = myQuery + filterDepto + filterUser;
     if(iddepartamento !== '0' && idusuario === '0') finalQuery = myQuery + filterDepto;
     if(iddepartamento === '0' && idusuario !== '0') finalQuery = myQuery + filterUser;
+    if(iddepartamento === '0' && idusuario === '0') finalQuery = myQuery;
     finalQuery   = finalQuery+endQUery;
     dbconnection.query(finalQuery,values,(error,result)=>{
-        console.log(finalQuery);
         if(error){
             return callBack(error,result);
         }else{
