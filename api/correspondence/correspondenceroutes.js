@@ -27,7 +27,8 @@ import {
     getAccesosByRol,
     setAddDeleteAccesos,
     setAyudaCorrespondence,
-    SetArchivarCorrespondence
+    SetArchivarCorrespondence,
+    getCorrespondenciaPendienteAprobacionConsultaGeneral
 } from './correspondencecontrollers.js';
 
 const router = express.Router();
@@ -37,9 +38,10 @@ router.get('/correspondence/:idusuario',validatetoken,getCorrespondenceRecievied
 router.get('/correspondenceid/:idcorrespondencia',validatetoken,getCorrespondenceRecieviedById);
 router.get('/correspondencedepto/:iddepartment',validatetoken,getCorrespondenceRecieviedByDepto);
 router.get('/correspondencetoapproval/:iddepartamento/:idusuario',validatetoken,getcorrespondenceToApproval);
+router.get('/correspondenciapendienteaprobacioncg/:iddepartamento/:idusuario',validatetoken,getCorrespondenciaPendienteAprobacionConsultaGeneral);
 router.get('/correspondencetoapprovalcobros/:iddepartamento/:idusuario',validatetoken,getcorrespondenceToApprovalCobros);
 router.get('/correspondence/status/:idusuario/:estado',validatetoken,getCorrespondenceAsignedToUser);
-router.get('/correspondenceinroute/:idmensajero',validatetoken,getCorrespondenceInRoute);
+router.get('/correspondenceinroute/:idmensajero/:iddepartamento/:idusuario',validatetoken,getCorrespondenceInRoute);
 router.get('/reportecorrespondenciapendiente',validatetoken,getCorrespondencePendienteReport);
 router.get('/correspondenciarecibida/:fecha/:ampm',validatetoken,setGetCorrespondencePendienteReport);
 router.get('/trabajopendienteporuser/:idusuario',validatetoken,setGetCorresPendingByUserReport);

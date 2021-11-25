@@ -25,7 +25,8 @@ import {
     procesaraccesos,
     addDeleteAccess,
     ayudarCorrespondence,
-    archivarCorrespondence
+    archivarCorrespondence,
+    correspondenciaPendienteAprobacionConsultaGeneral
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -226,7 +227,7 @@ const setSendCorrespondence = (req,res)=>{
 }
 
 const getCorrespondenceInRoute = (req,res) =>{
-    const values = Object.values(req.params);
+    const values = req.params;
     correspondenceInRoute(values,(error,result)=>{
         if(error){
             res.status(500).json({success:false,message:'Error al solicitar correspondencia'});
@@ -330,6 +331,16 @@ const SetArchivarCorrespondence = (req,res)=>{
         }
     });
 }
+const getCorrespondenciaPendienteAprobacionConsultaGeneral = (req,res)=>{
+    const values = req.params;
+    correspondenciaPendienteAprobacionConsultaGeneral(values,(error,result)=>{
+        if(error){
+           res.status(500).json({success:false,message:'Error al traer correspondencia'});
+        }else{
+           res.status(200).json({success:true,correspondencia:result});
+        }
+    });
+}
 
 export {
     createCorrespondenceReceived,
@@ -358,5 +369,6 @@ export {
     getAccesosByRol,
     setAddDeleteAccesos,
     setAyudaCorrespondence,
-    SetArchivarCorrespondence
+    SetArchivarCorrespondence,
+    getCorrespondenciaPendienteAprobacionConsultaGeneral
 };

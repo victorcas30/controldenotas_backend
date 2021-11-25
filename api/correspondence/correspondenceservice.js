@@ -349,7 +349,7 @@ const correspondenceToApproval = (values,callBack)=>{
     AND 
         cr.estado IN (3,4)
     `;
-    const filterDepto =  ` AND de.idcyr_departamento = ${iddepartamento}`;
+    const filterDepto =  ` AND de.idcyr_departamento = ${iddepartamento}`;//rafa
     const filterUser  =  ` AND asig.idusuario = ${idusuario}`;
     const endQUery    =  ` ORDER BY fechaasignacioncomplete ASC`;
     let finalQuery  = '';
@@ -410,7 +410,7 @@ const archivarCorrespondence = (values,callBack)=>{
     const {idcorrespondencia,fecha,idusuario,tipoarchivada,comentarioarchivada,idasignacion} = values;
     const myQuerys = `
         INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${4},'${fecha}',${idusuario});
-        UPDATE asignaciones SET tipoarchivada = '${tipoarchivada}',comentarioarchivada='${comentarioarchivada}'  WHERE idasignacion= ${idasignacion};
+        UPDATE asignaciones SET tipoarchivada = '${tipoarchivada}',fechaterminada='${fecha}',comentarioarchivada='${comentarioarchivada}'  WHERE idasignacion= ${idasignacion};
         UPDATE correspondencia_recibida SET estado= 4 WHERE idcorrespondencia_recibida= ${idcorrespondencia};
     `;
     dbconnection.query(myQuerys,values,(error,result)=>{
@@ -443,6 +443,7 @@ const correspondenceSend = (values,callBack) =>{
         ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);
         INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${singleVals[0]},${4},'${singleVals[12]}',${singleVals[11]});
         UPDATE correspondencia_recibida SET estado=4 WHERE idcorrespondencia_recibida= ${singleVals[0]};
+        UPDATE asignaciones SET fechaterminada = '${singleVals[12]}' WHERE idasignacion= ${singleVals[13]};
     `;
     dbconnection.query(myInsertQuery,singleVals,(error,result)=>{
         if(error){
@@ -546,17 +547,21 @@ const sendCorrespondence = (values,callBack)=>{
     });
 }
 
-const correspondenceInRoute = (values,callBack)=>{
+const correspondenceInRoute = (values,callBack)=>{//rafa
+    const {idmensajero,iddepartamento,idusuario} = values;
     const myQuery = `
         SELECT
         cr.idcorrespondencia_recibida as id, 
         UPPER(td.descripcion) as tipodocumento,
         DATE_FORMAT(cr.fecha_ingreso_sistema,'%d-%m-%Y') as fecha_ingreso_sistema,
+        DATE_FORMAT(asig.fechadespachadacobros,'%d-%m-%Y') as fechadespachadacobros,
+        DATE_FORMAT(asig.fechadespachadacobros,'%h:%i %p') as horadespachadacobros,
+        DATE_FORMAT(cr.fecha_ingreso_sistema,'%h:%i %p') as hora_ingreso_sistema,
         DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%Y') as fechasellodocumento,
         DATE_FORMAT(cr.fechasellocyr,'%d-%m-%Y') as fechasellocyr,
         DATE_FORMAT(asig.fechaasignacion,'%d-%m-%Y') as fechaasignacion,
         asig.fechaasignacion as fechaasignacioncomplete,
-        asig.fechadespachadacobros,
+        asig.fechadespachadacobros as fechadespachadacobrosfl,
         cr.horasellocyr,
         UPPER(us.usuario) as usuario,
         UPPER(cr.asegurado) as asegurado,
@@ -590,10 +595,20 @@ const correspondenceInRoute = (values,callBack)=>{
         cr.eliminado = 0
     AND 
         cr.estado IN (6)
-    ORDER BY 
-        fechaasignacioncomplete ASC
     `;
-    dbconnection.query(myQuery,values,(error,result)=>{
+
+    const filterMensa =  ` AND ce.idmensajero = ${idmensajero}`;
+    const filterDepto =  ` AND de.idcyr_departamento = ${iddepartamento}`;
+    const filterUser  =  ` AND asig.idusuario = ${idusuario}`;
+    const endQUery    =  ` ORDER BY fechaasignacioncomplete ASC`;
+    let finalQuery    = '';
+    if(idmensajero !== '0' && iddepartamento === '0' && idusuario === '0') finalQuery = myQuery + filterMensa;
+    if(idmensajero === '0' && iddepartamento !== '0' && idusuario === '0') finalQuery = myQuery + filterDepto;
+    if(idmensajero === '0' && iddepartamento === '0' && idusuario !== '0') finalQuery = myQuery + filterUser;
+    if(idmensajero === '0' && iddepartamento === '0' && idusuario === '0') finalQuery = myQuery;
+    finalQuery   = finalQuery+endQUery;
+
+    dbconnection.query(finalQuery,values,(error,result)=>{
         if(error){
             return callBack(error,result);
         }else{
@@ -697,10 +712,6 @@ const reporteCorrespondenciaPendiente1 = () =>{
     }
         
     )
-  
-
-    //callBack(false,users);
-  
 }
 
 const reporteCorrespondenciaPendienste = (callBack) =>{
@@ -1008,9 +1019,73 @@ const addDeleteAccess = (values,callBack)=>{
     });
 }
 
-
-
-
+const correspondenciaPendienteAprobacionConsultaGeneral = (values,callBack)=>{
+    const {iddepartamento,idusuario} = values;
+    const myQuery = `
+        SELECT
+        cr.idcorrespondencia_recibida as id, 
+        UPPER(td.descripcion) as tipodocumento,
+        DATE_FORMAT(cr.fecha_ingreso_sistema,'%d-%m-%Y') as fecha_ingreso_sistema,
+        DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%Y') as fechasellodocumento,
+        DATE_FORMAT(cr.fechasellocyr,'%d-%m-%Y') as fechasellocyr,
+        DATE_FORMAT(asig.fechaasignacion,'%d-%m-%Y') as fechaasignacion,
+        DATE_FORMAT(asig.fechaterminada,'%d-%m-%Y') as fechaterminada,
+        DATE_FORMAT(asig.fechaterminada,'%h:%i %p') as horaterminada,
+        asig.fechaasignacion as fechaasignacioncomplete,
+        asig.fechaterminada as fechaterminadafull,
+        DATE_FORMAT(asig.fechaasignacion,'%h:%i %p') as hora_asignacion,
+        DATE_FORMAT(cr.fecha_ingreso_sistema,'%h:%i %p') as hora_ingreso_sistema,
+        asig.idasignacion,
+        asig.idusuario as iduserasignado,
+        cr.horasellocyr,
+        UPPER(us.usuario) as asignado_a,
+        UPPER(cr.asegurado) as asegurado,
+        UPPER(cr.referencia) as referencia,
+        DATE_FORMAT(fechavencimientorenov,'%d-%m-%Y') as fechavencimientorenov,
+        UPPER(cr.procedencia) as procedencia,
+        UPPER(cr.aseg_remi) as aseg_remi,
+        UPPER(ase.nombre) as aseguradora,
+        UPPER(de.nombre) as entregadoa,
+        UPPER(ce.comentario) as comentario,
+        UPPER(asig.comentarioarchivada) as comentarioarchivada,
+        UPPER(usReg.usuario) as usuarioregistro,
+        cr.estado,
+        de.idcyr_departamento as iddepartamento,
+        UPPER(cr.formadeingreso) as formadeingreso,
+        asig.tipoarchivada
+        FROM 
+        correspondencia_recibida cr
+        INNER JOIN tipo_documentos td on td.idtipo = cr.tipodocumento
+        INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
+        INNER JOIN asignaciones asig on asig.idcorrespondencia = cr.idcorrespondencia_recibida
+        INNER JOIN usuarios us on us.idusuario = asig.idusuario
+        INNER JOIN usuarios usReg on usReg.idusuario = cr.idusuarioregistra
+        
+        LEFT  JOIN correspondenciaenviada ce ON asig.idcorrespondencia = ce.idcorrespondencia
+        LEFT  JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
+        LEFT  JOIN aseguradoras ase1 on ase1.idaseguradora = ce.aseguradora
+        WHERE 
+        cr.eliminado = 0
+        AND 
+        cr.estado = 4
+     `;
+    const filterDepto =  ` AND de.idcyr_departamento = ${iddepartamento}`;
+    const filterUser  =  ` AND asig.idusuario = ${idusuario}`;
+    const endQUery    =  ` ORDER BY fechaterminadafull ASC`;
+    let finalQuery  = '';
+    if(iddepartamento !== '0' && idusuario !== '0') finalQuery = myQuery + filterDepto + filterUser;
+    if(iddepartamento !== '0' && idusuario === '0') finalQuery = myQuery + filterDepto;
+    if(iddepartamento === '0' && idusuario !== '0') finalQuery = myQuery + filterUser;
+    if(iddepartamento === '0' && idusuario === '0') finalQuery = myQuery;
+    finalQuery   = finalQuery+endQUery;
+    dbconnection.query(finalQuery,values,(error,result)=>{
+        if(error){
+            return callBack(error,result);
+        }else{
+            return callBack(error,result);
+        }
+    });
+}
 
 
 export {
@@ -1040,5 +1115,6 @@ export {
     procesaraccesos,
     addDeleteAccess,
     ayudarCorrespondence,
-    archivarCorrespondence
+    archivarCorrespondence,
+    correspondenciaPendienteAprobacionConsultaGeneral
 };
