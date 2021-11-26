@@ -26,7 +26,8 @@ import {
     addDeleteAccess,
     ayudarCorrespondence,
     archivarCorrespondence,
-    correspondenciaPendienteAprobacionConsultaGeneral
+    correspondenciaPendienteAprobacionConsultaGeneral,
+    devolverCorrespondence
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -342,6 +343,17 @@ const getCorrespondenciaPendienteAprobacionConsultaGeneral = (req,res)=>{
     });
 }
 
+const setDevolverCorrespondence = (req,res)=>{
+    const values = req.body;
+    devolverCorrespondence(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al devolver la correspondencia'});
+        }else{
+            res.status(200).json({success:true,message:'Correspondencia devuelta'});
+        }
+    });
+}
+
 export {
     createCorrespondenceReceived,
     getCorrespondenceRecieviedByUser,
@@ -370,5 +382,6 @@ export {
     setAddDeleteAccesos,
     setAyudaCorrespondence,
     SetArchivarCorrespondence,
-    getCorrespondenciaPendienteAprobacionConsultaGeneral
+    getCorrespondenciaPendienteAprobacionConsultaGeneral,
+    setDevolverCorrespondence
 };

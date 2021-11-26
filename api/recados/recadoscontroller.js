@@ -44,12 +44,17 @@ const setEditarRecado = (req,res)=>{
 
 const setAsignarEliminarRecados = (req,res)=>{
     const values = req.body;
+    let msg = "";
     asignareliminarRecados(values,(error,result)=>{
         if(error){
-            const msg = (values.opcion === "a") ? 'Error al asignar recado a mensajero':'Error al eliminar el recado';
+            if(values.opcion === "a") msg = "Error al asignar el recado";
+            if(values.opcion === "e") msg = "Error al eliminar el recado";
+            if(values.opcion === "d") msg = "Error al devolver el recado";
             res.status(500).json({success:false,message:msg});
         }else{
-            const msg = (values.opcion === "a") ? 'Recado asignado':'Recado eliminado';
+            if(values.opcion === "a") msg = "Recado asignado";
+            if(values.opcion === "e") msg = "Recado eliminado";
+            if(values.opcion === "d") msg = "Recado devuelto";
             res.status(200).json({success:true,message:msg});
         }
     });

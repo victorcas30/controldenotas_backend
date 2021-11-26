@@ -255,6 +255,8 @@ const correspondenceAsignedToUser = (values,callBack)=>{
         DATE_FORMAT(asig.fechaasignacion,'%h:%i %p') as hora_asignacion,
         asig.fechaasignacion as fechaasignacioncomplete,
         asig.idasignacion,
+        asig.devuelta,
+        asig.comentariodevuelta,
         cr.horasellocyr,
         UPPER(us.nombres) as recibidopor,
         UPPER(cr.asegurado) as asegurado,
@@ -388,11 +390,6 @@ const approveCorrespondence = (values,callBack)=>{
 
 const ayudarCorrespondence = (values,callBack)=>{
     const {idasignacion,iduserantes,iduserhoy,fechareasignacion} = values;
-   /* const myQuerys = `
-        INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${5},'${fechaaprobacion}',${idusuario});
-        UPDATE correspondencia_recibida SET estado= 5 WHERE idcorrespondencia_recibida= ${idcorrespondencia};
-        UPDATE asignaciones SET fechaaprobadacobros = '${fechaaprobacion}'  WHERE idcorrespondencia= ${idcorrespondencia};
-    `;*/
     const myQuerys = `
         INSERT INTO reasignaciones(idasignacion,iduserantes,iduserhoy,fechareasignacion) VALUES(${idasignacion},${iduserantes},${iduserhoy},'${fechareasignacion}');
         UPDATE asignaciones SET idusuario = ${iduserhoy}  WHERE idasignacion= ${idasignacion};
@@ -443,7 +440,7 @@ const correspondenceSend = (values,callBack) =>{
         ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);
         INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${singleVals[0]},${4},'${singleVals[12]}',${singleVals[11]});
         UPDATE correspondencia_recibida SET estado=4 WHERE idcorrespondencia_recibida= ${singleVals[0]};
-        UPDATE asignaciones SET fechaterminada = '${singleVals[12]}' WHERE idasignacion= ${singleVals[13]};
+        UPDATE asignaciones SET fechaterminada = '${singleVals[12]}',devuelta=0,comentariodevuelta=null,fechadevuelta=null WHERE idasignacion= ${singleVals[13]};
     `;
     dbconnection.query(myInsertQuery,singleVals,(error,result)=>{
         if(error){
@@ -1091,6 +1088,26 @@ const correspondenciaPendienteAprobacionConsultaGeneral = (values,callBack)=>{
     });
 }
 
+const devolverCorrespondence = (values,callBack)=>{
+    const {idcorrespondencia,idusuario,tipo,fechadevuelta,comentario,idasignacion} = values;
+    const estado = (tipo === "1" || tipo === "2") ? 9 : 5;
+    const myQuerys = `
+        DELETE FROM vida_estado_correspondencia WHERE idcorrespondencia = ${idcorrespondencia} AND estado = ${estado};
+        DELETE FROM correspondenciaenviada WHERE idcorrespondencia = ${idcorrespondencia};
+        UPDATE correspondencia_recibida SET estado= 3 WHERE idcorrespondencia_recibida= ${idcorrespondencia};
+        UPDATE asignaciones SET devuelta = 1,comentariodevuelta='${comentario}',fechaterminada=null WHERE idasignacion= ${idasignacion};
+        INSERT INTO devoluciones(idasignacion,fechadevolucion,comentario) VALUES(${idasignacion},'${fechadevuelta}','${comentario}');
+    `;
+    dbconnection.query(myQuerys,values,(error,result)=>{
+        if(error){
+            console.log(error);
+            return callBack(error,result);
+        }else{
+            return callBack(null,result);
+        }
+    });
+}
+
 
 export {
     correspondenceReceived,
@@ -1120,5 +1137,6 @@ export {
     addDeleteAccess,
     ayudarCorrespondence,
     archivarCorrespondence,
-    correspondenciaPendienteAprobacionConsultaGeneral
+    correspondenciaPendienteAprobacionConsultaGeneral,
+    devolverCorrespondence
 };

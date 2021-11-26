@@ -16,7 +16,7 @@ const myRecados = (values,callBack)=>{
         SELECT 
             r.id_recado, 
             r.id_user, 
-            r.recado, 
+            UPPER(r.recado) as recado, 
             DATE_FORMAT(r.fecha_registro,'%d-%m-%Y') as fecha_registro, 
             DATE_FORMAT(r.fecha_registro,'%h:%i:%s %p') as hora_registro, 
             UPPER(r.estado) as estado, 
@@ -25,7 +25,9 @@ const myRecados = (values,callBack)=>{
             r.id_user_asigno, 
             r.activo, 
             r.urgente,
-            UPPER(m.nombre) as mensajero
+            UPPER(m.nombre) as mensajero,
+            r.devuelto,
+            UPPER(r.comentariodevuelto) as comentariodevuelto
         FROM recados r
         LEFT JOIN mensajeros m ON r.idmensajero = m.idmensajero
         WHERE id_user = ${idusuario}
@@ -79,7 +81,9 @@ const editarRecados = (values,callBack)=>{
             recados 
             SET 
             recado = '${recado}',
-            urgente = ${urgente}
+            urgente = ${urgente},
+            devuelto=0,
+            comentariodevuelto=null
                 WHERE 
                 id_recado = ${idRecado} AND estado = '${'No Asignado'}';`;
     
@@ -93,10 +97,14 @@ const editarRecados = (values,callBack)=>{
 }
 
 const asignareliminarRecados = (values,callBack)=>{
-    const {opcion,idRecado,urgente,idmensajero,fecha_asignado} = values;
-    const myQuery  = `UPDATE recados SET idmensajero = '${idmensajero}',urgente = ${urgente}, estado='Asignado',fecha_asignado = '${fecha_asignado}' WHERE id_recado = ${idRecado};`;
-    const myQuery1 = `UPDATE recados SET activo = '0' WHERE id_recado = ${idRecado} AND estado = '${'No Asignado'}';`;
-    const activeQuery = (opcion === "a") ? myQuery : myQuery1 ;
+    const {opcion,idRecado,urgente,idmensajero,fecha_asignado,comentarioDev} = values;
+    const myQuery          = `UPDATE recados SET idmensajero = '${idmensajero}',urgente = ${urgente}, estado='Asignado',fecha_asignado = '${fecha_asignado}',devuelto=0,comentariodevuelto=null WHERE id_recado = ${idRecado};`;
+    const myQuery1         = `UPDATE recados SET activo = '0' WHERE id_recado = ${idRecado} AND estado = '${'No Asignado'}';`;
+    const myQueryDevolver  = `UPDATE recados SET idmensajero = null,estado='No Asignado',fecha_asignado = null,devuelto=1,comentariodevuelto='${comentarioDev}' WHERE id_recado = ${idRecado};`;
+    let activeQuery = "";
+    if(opcion ==="a")activeQuery = myQuery;
+    if(opcion ==="e")activeQuery = myQuery1;
+    if(opcion ==="d")activeQuery = myQueryDevolver;
     dbconnection.query(activeQuery,values,(error,result)=>{
         if(error){
             console.log(error);

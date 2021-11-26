@@ -28,7 +28,8 @@ import {
     setAddDeleteAccesos,
     setAyudaCorrespondence,
     SetArchivarCorrespondence,
-    getCorrespondenciaPendienteAprobacionConsultaGeneral
+    getCorrespondenciaPendienteAprobacionConsultaGeneral,
+    setDevolverCorrespondence
 } from './correspondencecontrollers.js';
 
 const router = express.Router();
@@ -62,5 +63,6 @@ router.put('/finishcorrespondence',validatetoken,setFinishCorrespondence);
 router.put('/editmensajerocorrespondence',validatetoken,setEditMensajeroCorrespondence);
 router.put('/adddeleteacceso',validatetoken,setAddDeleteAccesos);
 router.put('/ayudarasignacion',validatetoken,setAyudaCorrespondence);
+router.put('/devolvercorrespondencia',validatetoken,setDevolverCorrespondence);
 
 export {router as correspondenceRouter};
