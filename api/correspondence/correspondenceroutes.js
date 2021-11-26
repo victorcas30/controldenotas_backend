@@ -41,7 +41,7 @@ router.get('/correspondencetoapproval/:iddepartamento/:idusuario',validatetoken,
 router.get('/correspondenciapendienteaprobacioncg/:iddepartamento/:idusuario',validatetoken,getCorrespondenciaPendienteAprobacionConsultaGeneral);
 router.get('/correspondencetoapprovalcobros/:iddepartamento/:idusuario',validatetoken,getcorrespondenceToApprovalCobros);
 router.get('/correspondence/status/:idusuario/:estado',validatetoken,getCorrespondenceAsignedToUser);
-router.get('/correspondenceinroute/:idmensajero/:iddepartamento/:idusuario',validatetoken,getCorrespondenceInRoute);
+router.get('/correspondenceinroute/:idmensajero/:iddepartamento/:idusuario/:estado',validatetoken,getCorrespondenceInRoute);
 router.get('/reportecorrespondenciapendiente',validatetoken,getCorrespondencePendienteReport);
 router.get('/correspondenciarecibida/:fecha/:ampm',validatetoken,setGetCorrespondencePendienteReport);
 router.get('/trabajopendienteporuser/:idusuario',validatetoken,setGetCorresPendingByUserReport);

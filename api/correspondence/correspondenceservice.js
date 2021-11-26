@@ -349,7 +349,7 @@ const correspondenceToApproval = (values,callBack)=>{
     AND 
         cr.estado IN (3,4)
     `;
-    const filterDepto =  ` AND de.idcyr_departamento = ${iddepartamento}`;//rafa
+    const filterDepto =  ` AND de.idcyr_departamento = ${iddepartamento}`;
     const filterUser  =  ` AND asig.idusuario = ${idusuario}`;
     const endQUery    =  ` ORDER BY fechaasignacioncomplete ASC`;
     let finalQuery  = '';
@@ -548,20 +548,23 @@ const sendCorrespondence = (values,callBack)=>{
 }
 
 const correspondenceInRoute = (values,callBack)=>{//rafa
-    const {idmensajero,iddepartamento,idusuario} = values;
+    const {idmensajero,iddepartamento,idusuario,estado} = values;
     const myQuery = `
         SELECT
         cr.idcorrespondencia_recibida as id, 
         UPPER(td.descripcion) as tipodocumento,
         DATE_FORMAT(cr.fecha_ingreso_sistema,'%d-%m-%Y') as fecha_ingreso_sistema,
         DATE_FORMAT(asig.fechadespachadacobros,'%d-%m-%Y') as fechadespachadacobros,
+        DATE_FORMAT(asig.fechafinalizada,'%d-%m-%Y') as fechafinalizada,
         DATE_FORMAT(asig.fechadespachadacobros,'%h:%i %p') as horadespachadacobros,
         DATE_FORMAT(cr.fecha_ingreso_sistema,'%h:%i %p') as hora_ingreso_sistema,
+        DATE_FORMAT(asig.fechafinalizada,'%h:%i %p') as horafinalizada,
         DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%Y') as fechasellodocumento,
         DATE_FORMAT(cr.fechasellocyr,'%d-%m-%Y') as fechasellocyr,
         DATE_FORMAT(asig.fechaasignacion,'%d-%m-%Y') as fechaasignacion,
         asig.fechaasignacion as fechaasignacioncomplete,
         asig.fechadespachadacobros as fechadespachadacobrosfl,
+        asig.fechafinalizada as fechafinalizadafl,
         cr.horasellocyr,
         UPPER(us.usuario) as usuario,
         UPPER(cr.asegurado) as asegurado,
@@ -594,7 +597,7 @@ const correspondenceInRoute = (values,callBack)=>{//rafa
     WHERE 
         cr.eliminado = 0
     AND 
-        cr.estado IN (6)
+        cr.estado IN (${estado})
     `;
 
     const filterMensa =  ` AND ce.idmensajero = ${idmensajero}`;
@@ -610,6 +613,7 @@ const correspondenceInRoute = (values,callBack)=>{//rafa
 
     dbconnection.query(finalQuery,values,(error,result)=>{
         if(error){
+            console.log(error);
             return callBack(error,result);
         }else{
             return callBack(error,result);
