@@ -463,6 +463,8 @@ const correspondenceToApprovalCobros = (values,callBack)=>{
         DATE_FORMAT(cr.fechasellocyr,'%d-%m-%Y') as fechasellocyr,
         DATE_FORMAT(asig.fechaasignacion,'%d-%m-%Y') as fechaasignacion,
         DATE_FORMAT(asig.fechaasignacion,'%h:%i %p') as horaasignacion,
+        DATE_FORMAT(asig.fechaterminada,'%d-%m-%Y') as fechaterminada,
+        DATE_FORMAT(asig.fechaterminada,'%h:%i %p') as horaterminada,
         asig.fechaasignacion as fechaasignacioncomplete,
         asig.idasignacion,
         asig.tipoarchivada,
@@ -562,6 +564,7 @@ const correspondenceInRoute = (values,callBack)=>{//rafa
         asig.fechaasignacion as fechaasignacioncomplete,
         asig.fechadespachadacobros as fechadespachadacobrosfl,
         asig.fechafinalizada as fechafinalizadafl,
+        asig.idasignacion,
         cr.horasellocyr,
         UPPER(us.usuario) as usuario,
         UPPER(cr.asegurado) as asegurado,
@@ -619,11 +622,11 @@ const correspondenceInRoute = (values,callBack)=>{//rafa
 }
 
 const finishCorrespondence = (values,callBack)=>{
-    const {idusuario,idcorrespondencia,fechafinalizada} = values;
+    const {idusuario,idcorrespondencia,fechafinalizada,fechafinalizadasilvia,finalizadaampm} = values;
     const myQuerys = `
         INSERT INTO vida_estado_correspondencia(idcorrespondencia,estado,fecharegistro,idusuarioaccion) VALUES(${idcorrespondencia},${7},'${fechafinalizada}',${idusuario});
         UPDATE correspondencia_recibida SET estado= 7 WHERE idcorrespondencia_recibida= ${idcorrespondencia};
-        UPDATE asignaciones SET fechafinalizada = '${fechafinalizada}'  WHERE idcorrespondencia= ${idcorrespondencia};
+        UPDATE asignaciones SET fechafinalizada = '${fechafinalizada}',fechafinalizadasilvia='${fechafinalizadasilvia}',finalizadaampm='${finalizadaampm}'  WHERE idcorrespondencia= ${idcorrespondencia};
     `;
     dbconnection.query(myQuerys,values,(error,result)=>{
         if(error){
