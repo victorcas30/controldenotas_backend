@@ -29,7 +29,8 @@ import {
     correspondenciaPendienteAprobacionConsultaGeneral,
     devolverCorrespondence,
     pendienteFinalizarPormi,
-    finalizarMiCorrespondencia
+    finalizarMiCorrespondencia,
+    sendCorrespondenceExpress
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -378,6 +379,19 @@ const setFinalizarMiCorrespondencia = (req,res)=>{
     });
 }
 
+const setSendCorrespondenceExpress = (req,res)=>{
+    const values = req.body;
+    sendCorrespondenceExpress(values,(error,result)=>{
+        if(error){
+            const response = {insertId:0,message:'Error al registrar correspondencia'}
+            res.status(500).json({success:false,result:response});
+        }else{
+            const response = {insertId:result.insertId,message:'Correspondencia Registrada'}
+            res.status(200).json({success:true,result:response});
+        }
+    });
+}
+
 export {
     createCorrespondenceReceived,
     getCorrespondenceRecieviedByUser,
@@ -409,5 +423,6 @@ export {
     getCorrespondenciaPendienteAprobacionConsultaGeneral,
     setDevolverCorrespondence,
     getPendienteFinalizarPormi,
-    setFinalizarMiCorrespondencia
+    setFinalizarMiCorrespondencia,
+    setSendCorrespondenceExpress
 };

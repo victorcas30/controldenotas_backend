@@ -31,7 +31,8 @@ import {
     getCorrespondenciaPendienteAprobacionConsultaGeneral,
     setDevolverCorrespondence,
     getPendienteFinalizarPormi,
-    setFinalizarMiCorrespondencia
+    setFinalizarMiCorrespondencia,
+    setSendCorrespondenceExpress
 } from './correspondencecontrollers.js';
 
 const router = express.Router();
@@ -52,6 +53,7 @@ router.get('/userstoreport',validatetoken,setGetUsersToReport);
 router.get('/accesos/:idrol',validatetoken,getAccesosByRol);
 router.get('/correspondenciafinalizarpormi/:idusuario',validatetoken,getPendienteFinalizarPormi);
 router.post('/correspondence',validatetoken,createCorrespondenceReceived);
+router.post('/enviarcorrespondenciaexpress',validatetoken,setSendCorrespondenceExpress);
 router.post('/sendcorrespondence',validatetoken,setCorrespondenceSend);
 router.post('/archivarcorrespondencia',validatetoken,SetArchivarCorrespondence);
 router.put('/correspondence',validatetoken,setEditCorrespondenceById);

@@ -1194,6 +1194,79 @@ const finalizarMiCorrespondencia = (values,callBack)=>{
     });
 }
 
+const sendCorrespondenceExpress = (values,callBack) =>{
+    values.cbdevoluciondocs = (values.cbdevoluciondocs ==='')?0:1;
+    values.aseguradora = (values.aseguradora ==='')?'':values.aseguradora;
+    values.cbcc = (values.cbcc === true)? 1:0;
+    values.cbrutaespecial = (values.cbrutaespecial === true)?1:0;
+    const{
+        asegurado,
+        referencia,
+        destino,
+        aseguradora,
+        cbdevoluciondocs,
+        cbcc,
+        cbrutaespecial,
+        atencion,
+        destino_otro,
+        comentario,
+        idusuario,
+        fecharegistro,
+        iddepartamento
+    } = values;
+    const myInsertQuery = `INSERT INTO correspondencia_recibida(
+    tipodocumento,
+    fechasellodocumento,
+    fechasellocyr,
+    horasellocyr,
+    recibidopor,
+    asegurado,
+    referencia,
+    fechavencimientorenov,
+    procedencia,
+    aseg_remi,
+    entregadoa,
+    formadeingreso,
+    fecha_ingreso_sistema,
+    idusuarioregistra,
+    estado,
+    fecha_recibida_jefe_depto,
+    envioexpress
+    ) VALUES(19,'${fecharegistro}','${fecharegistro}','00:00',${idusuario},'${asegurado}','${referencia}','0000-00-00','otro','${asegurado}',${iddepartamento},'F','${fecharegistro}','${idusuario}','4','${fecharegistro}','1')`;
+   
+    dbconnection.query(myInsertQuery,values,(error,result)=>{
+        console.log(values);
+        const idcorrespondencia = result.insertId;
+        const myOtherQuery = `
+            INSERT INTO asignaciones(idusuario,idcorrespondencia,fechaasignacion,idusuarioasigna) VALUES(${idusuario},${idcorrespondencia},'${fecharegistro}',${idusuario});
+            INSERT INTO correspondenciaenviada(
+                idcorrespondencia,
+                asegurado,
+                referencia,
+                destino,
+                aseguradora,
+                cbdevoluciondocs,
+                cbcc,
+                cbrutaespecial,
+                atencion,
+                destino_otro,
+                comentario,
+                idusuario,
+                fecharegistro
+            ) VALUES(${idcorrespondencia},'${asegurado}','${referencia}','${destino}',${aseguradora},'${cbdevoluciondocs}','${cbcc}','${cbrutaespecial}','${atencion}','${destino_otro}','${comentario}',${idusuario},'${fecharegistro}');
+            UPDATE asignaciones SET fechaterminada = '${fecharegistro}',devuelta=0,comentariodevuelta=null,fechadevuelta=null WHERE idcorrespondencia= ${idcorrespondencia};
+            `;
+            dbconnection.query(myOtherQuery,values,(error1,result1)=>{
+                console.log(error1);
+            if(error || error1){
+                return callBack(error+''+error1,result);
+            }else{
+                return callBack(null,result);
+            }
+        });
+    });
+}
+
 
 
 export {
@@ -1227,5 +1300,6 @@ export {
     correspondenciaPendienteAprobacionConsultaGeneral,
     devolverCorrespondence,
     pendienteFinalizarPormi,
-    finalizarMiCorrespondencia
+    finalizarMiCorrespondencia,
+    sendCorrespondenceExpress
 };
