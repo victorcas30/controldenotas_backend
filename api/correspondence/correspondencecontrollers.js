@@ -28,7 +28,8 @@ import {
     archivarCorrespondence,
     correspondenciaPendienteAprobacionConsultaGeneral,
     devolverCorrespondence,
-    pendienteFinalizarPormi
+    pendienteFinalizarPormi,
+    finalizarMiCorrespondencia
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -366,6 +367,17 @@ const getPendienteFinalizarPormi = (req,res) =>{
     });
 }
 
+const setFinalizarMiCorrespondencia = (req,res)=>{
+    const values = req.body;
+    finalizarMiCorrespondencia(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al finalizar la correspondencia'});
+        }else{
+            res.status(200).json({success:true,message:'Correspondencia finalizada'});
+        }
+    });
+}
+
 export {
     createCorrespondenceReceived,
     getCorrespondenceRecieviedByUser,
@@ -396,5 +408,6 @@ export {
     SetArchivarCorrespondence,
     getCorrespondenciaPendienteAprobacionConsultaGeneral,
     setDevolverCorrespondence,
-    getPendienteFinalizarPormi
+    getPendienteFinalizarPormi,
+    setFinalizarMiCorrespondencia
 };

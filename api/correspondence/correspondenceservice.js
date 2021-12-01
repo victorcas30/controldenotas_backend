@@ -1165,7 +1165,7 @@ const pendienteFinalizarPormi = (values,callBack)=>{
     WHERE 
         cr.eliminado = 0
     AND 
-        cr.estado IN (4,5,6)
+        cr.estado IN (4,5,6,7)
     AND asig.idusuario = ${idusuario}
     AND recibidapormi = '0'
     `;
@@ -1176,6 +1176,20 @@ const pendienteFinalizarPormi = (values,callBack)=>{
         }else{
             console.log(myQuery);
             return callBack(error,result);
+        }
+    });
+}
+
+const finalizarMiCorrespondencia = (values,callBack)=>{
+    const {idasignacion,fecha} = values;
+    const myQuerys = `
+        UPDATE asignaciones SET fecharecibidapormi = '${fecha}',recibidapormi='1' WHERE idasignacion= ${idasignacion};
+    `;
+    dbconnection.query(myQuerys,values,(error,result)=>{
+        if(error){
+            return callBack(error,result);
+        }else{
+            return callBack(null,result);
         }
     });
 }
@@ -1212,5 +1226,6 @@ export {
     archivarCorrespondence,
     correspondenciaPendienteAprobacionConsultaGeneral,
     devolverCorrespondence,
-    pendienteFinalizarPormi
+    pendienteFinalizarPormi,
+    finalizarMiCorrespondencia
 };

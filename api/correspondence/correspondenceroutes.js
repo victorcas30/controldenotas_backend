@@ -30,7 +30,8 @@ import {
     SetArchivarCorrespondence,
     getCorrespondenciaPendienteAprobacionConsultaGeneral,
     setDevolverCorrespondence,
-    getPendienteFinalizarPormi
+    getPendienteFinalizarPormi,
+    setFinalizarMiCorrespondencia
 } from './correspondencecontrollers.js';
 
 const router = express.Router();
@@ -66,5 +67,6 @@ router.put('/editmensajerocorrespondence',validatetoken,setEditMensajeroCorrespo
 router.put('/adddeleteacceso',validatetoken,setAddDeleteAccesos);
 router.put('/ayudarasignacion',validatetoken,setAyudaCorrespondence);
 router.put('/devolvercorrespondencia',validatetoken,setDevolverCorrespondence);
+router.put('/finalizarmicorrespondencia',validatetoken,setFinalizarMiCorrespondencia);
 
 export {router as correspondenceRouter};
