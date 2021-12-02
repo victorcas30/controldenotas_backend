@@ -115,6 +115,57 @@ const asignareliminarRecados = (values,callBack)=>{
     });
 }
 
+const recadosConsultaHistorial = (values,callBack)=>{
+    console.log(JSON.stringify(values,null,2));
+    const {filtro,tipofiltro} = values; 
+    const myQuery = `
+        SELECT 
+            r.id_recado, 
+            r.id_user, 
+            UPPER(r.recado) as recado, 
+            UPPER(u.usuario) as usuario, 
+            DATE_FORMAT(r.fecha_registro,'%d-%m-%Y') as fecha_registro, 
+            DATE_FORMAT(r.fecha_registro,'%h:%i:%s %p') as hora_registro, 
+            DATE_FORMAT(r.fecha_asignado,'%d-%m-%Y') as fecha_asignado, 
+            DATE_FORMAT(r.fecha_asignado,'%h:%i:%s %p') as hora_asignado, 
+            DATE_FORMAT(r.fecha_completado,'%d-%m-%Y') as fecha_completado, 
+            DATE_FORMAT(r.fecha_completado,'%h:%i:%s %p') as hora_completado, 
+            UPPER(r.estado) as estado, 
+            r.fecha_completado as fecha_completado_full, 
+            r.id_user_asigno, 
+            r.activo, 
+            r.urgente,
+            UPPER(m.nombre) as mensajero,
+            r.devuelto,
+            UPPER(r.comentariodevuelto) as comentariodevuelto
+        FROM recados r
+        INNER JOIN usuarios u ON u.idusuario = r.id_user
+        LEFT JOIN mensajeros m ON r.idmensajero = m.idmensajero
+        WHERE r.activo = '1'
+        AND r.estado = 'Finalizado'
+    `;
+    let miFiltro = (tipofiltro === "m") ? filtro.split('-') : filtro ;
+    const filterMes    =  ` AND YEAR(r.fecha_completado) = ${miFiltro[0]} AND MONTH(r.fecha_completado) = ${miFiltro[1]}`;
+    const filterTexto  =  ` AND r.recado LIKE '%${miFiltro}%'`;
+    const filterUser   =  ` AND r.id_user = ${miFiltro}`;
+    const endQuery     =  ` ORDER BY fecha_completado_full ASC;`;
+    let finalQuery  = '';
+    if(tipofiltro === 'm') finalQuery = myQuery + filterMes;
+    if(tipofiltro === 't') finalQuery = myQuery + filterTexto;
+    if(tipofiltro === 'u') finalQuery = myQuery + filterUser;
+    finalQuery   = finalQuery+endQuery;
+    dbconnection.query(finalQuery,(error,result)=>{
+        if(error){
+            console.log(finalQuery);
+            console.log(error);
+            return callBack(error,[]);
+        }else{
+            return callBack(null,result);
+        }
+    });
+}
+ 
+
 
 
 export {
@@ -122,5 +173,6 @@ export {
     myRecados,
     editarRecados,
     asignarRecados,
-    asignareliminarRecados
+    asignareliminarRecados,
+    recadosConsultaHistorial
 }

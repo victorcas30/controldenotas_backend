@@ -1,4 +1,11 @@
-import { recados,myRecados,editarRecados,asignarRecados,asignareliminarRecados } from "./recadosservice.js";
+import { 
+    recados,
+    myRecados,
+    editarRecados,
+    asignarRecados,
+    asignareliminarRecados,
+    recadosConsultaHistorial 
+} from "./recadosservice.js";
 
 const createRecado = (req,res)=>{
     delete req.body.idRecado;
@@ -60,10 +67,21 @@ const setAsignarEliminarRecados = (req,res)=>{
     });
 }
 
+const getRecadosConsultaHistorial = (req,res) =>{
+    const values = req.params;
+    recadosConsultaHistorial(values,(error,result)=>{
+        if(error){
+            return res.status(500).json({success:false,recados:[]});
+        }
+            return res.status(200).json({success:true,recados:result});
+    });
+}
+
 export {
     createRecado,
     getMyRecados,
     setEditarRecado,
     getAsignarRecados,
-    setAsignarEliminarRecados
+    setAsignarEliminarRecados,
+    getRecadosConsultaHistorial
 }
