@@ -282,6 +282,7 @@ const correspondenceAsignedToUser = (values,callBack)=>{
         cr.eliminado = 0
     AND 
         cr.estado IN (3,4)
+    AND cr.envioexpress = 0
     ORDER BY 
         fechaasignacioncomplete ASC
     `;
@@ -1167,7 +1168,7 @@ const pendienteFinalizarPormi = (values,callBack)=>{
     AND 
         cr.estado IN (4,5,6,7)
     AND asig.idusuario = ${idusuario}
-    AND recibidapormi = '0'
+    AND asig.recibidapormi = '0'
     `;
     dbconnection.query(myQuery,values,(error,result)=>{
         if(error){
@@ -1235,7 +1236,6 @@ const sendCorrespondenceExpress = (values,callBack) =>{
     ) VALUES(19,'${fecharegistro}','${fecharegistro}','00:00',${idusuario},'${asegurado}','${referencia}','0000-00-00','otro','${asegurado}',${iddepartamento},'F','${fecharegistro}','${idusuario}','4','${fecharegistro}','1')`;
    
     dbconnection.query(myInsertQuery,values,(error,result)=>{
-        console.log(values);
         const idcorrespondencia = result.insertId;
         const myOtherQuery = `
             INSERT INTO asignaciones(idusuario,idcorrespondencia,fechaasignacion,idusuarioasigna) VALUES(${idusuario},${idcorrespondencia},'${fecharegistro}',${idusuario});
@@ -1253,11 +1253,10 @@ const sendCorrespondenceExpress = (values,callBack) =>{
                 comentario,
                 idusuario,
                 fecharegistro
-            ) VALUES(${idcorrespondencia},'${asegurado}','${referencia}','${destino}',${aseguradora},'${cbdevoluciondocs}','${cbcc}','${cbrutaespecial}','${atencion}','${destino_otro}','${comentario}',${idusuario},'${fecharegistro}');
+            ) VALUES(${idcorrespondencia},'${asegurado}','${referencia}','${destino}','${aseguradora}','${cbdevoluciondocs}','${cbcc}','${cbrutaespecial}','${atencion}','${destino_otro}','${comentario}',${idusuario},'${fecharegistro}');
             UPDATE asignaciones SET fechaterminada = '${fecharegistro}',devuelta=0,comentariodevuelta=null,fechadevuelta=null WHERE idcorrespondencia= ${idcorrespondencia};
             `;
             dbconnection.query(myOtherQuery,values,(error1,result1)=>{
-                console.log(error1);
             if(error || error1){
                 return callBack(error+''+error1,result);
             }else{

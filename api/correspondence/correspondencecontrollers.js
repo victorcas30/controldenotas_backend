@@ -383,11 +383,9 @@ const setSendCorrespondenceExpress = (req,res)=>{
     const values = req.body;
     sendCorrespondenceExpress(values,(error,result)=>{
         if(error){
-            const response = {insertId:0,message:'Error al registrar correspondencia'}
-            res.status(500).json({success:false,result:response});
+            res.status(500).json({success:false,message:'Error al registrar correspondencia'});
         }else{
-            const response = {insertId:result.insertId,message:'Correspondencia Registrada'}
-            res.status(200).json({success:true,result:response});
+            res.status(200).json({success:true,message:'Correspondencia registrada'});
         }
     });
 }
