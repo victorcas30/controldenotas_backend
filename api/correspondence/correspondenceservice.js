@@ -784,6 +784,7 @@ const getCorresPending = (callBack) =>{
         cr.eliminado = 0
     AND 
         cr.estado IN (3,4)
+    AND cr.envioexpress = 0
     ORDER BY 
         fechaasignacion ASC
     `;
@@ -932,6 +933,7 @@ const corresPendingByUserReport = (values,callBack) =>{
         cr.estado IN (3,4)
     AND 
         asig.idusuario = ${values[0]}
+    AND cr.envioexpress = 0
     ORDER BY 
         fechaasignacion ASC
     `;
