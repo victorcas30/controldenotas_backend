@@ -1177,7 +1177,6 @@ const pendienteFinalizarPormi = (values,callBack)=>{
             console.log(error);
             return callBack(error,result);
         }else{
-            console.log(myQuery);
             return callBack(error,result);
         }
     });

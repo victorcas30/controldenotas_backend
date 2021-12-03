@@ -139,7 +139,7 @@ const loginUser = (values,callBack)=>{
             u.activo = 1
     `;
     dbconnection.query(myLoginQuery,values,(error,user)=>{
-        const queryAccesos = `SELECT o.idopcion,o.nombre,o.icon,o.path FROM opciones o INNER JOIN accesos a ON a.idopcion=o.idopcion WHERE a.idrol = ${user[0].idrol};`;
+        const queryAccesos = `SELECT o.idopcion,o.nombre,o.icon,o.path,o.descripcion FROM opciones o INNER JOIN accesos a ON a.idopcion=o.idopcion WHERE a.idrol = ${user[0].idrol} ORDER BY o.orden ASC;`;
         dbconnection.query(queryAccesos,values,(error1,accesos)=>{
             if(error || error1){
                 return callBack(error+' '+error1,null);
@@ -154,7 +154,7 @@ const loginUser = (values,callBack)=>{
 }
 
 const opcion = (values,callBack)=>{
-    const insertQuery = "INSERT INTO opciones(nombre,icon,path) VALUES(?,?,?)";
+    const insertQuery = "INSERT INTO opciones(nombre,icon,path,descripcion) VALUES(?,?,?,?)";
     dbconnection.query(insertQuery,values,(error,result)=>{
         if(error){
             callBack(error,result);
@@ -165,7 +165,7 @@ const opcion = (values,callBack)=>{
 }
 
 const opciones = (callBack) =>{
-    const myQuery = 'SELECT idopcion,nombre,icon,path FROM opciones';
+    const myQuery = 'SELECT idopcion,nombre,icon,path,descripcion FROM opciones';
     dbconnection.query(myQuery,(error,result)=>{
         if(!error){
            return callBack(null,result);
@@ -176,7 +176,7 @@ const opciones = (callBack) =>{
 }
 
 const updateopcion = (values,callBack)=>{
-    const updateQuery = "UPDATE opciones SET nombre=?,icon=?,path=? WHERE idopcion = ?";
+    const updateQuery = "UPDATE opciones SET nombre=?,icon=?,path=?,descripcion=? WHERE idopcion = ?";
     dbconnection.query(updateQuery,values,(error,result)=>{
         if(error){
             callBack(error,result);
