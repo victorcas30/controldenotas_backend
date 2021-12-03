@@ -301,8 +301,10 @@ CREATE TABLE `opciones` (
   `nombre` varchar(250) DEFAULT NULL,
   `icon` varchar(45) DEFAULT NULL,
   `path` varchar(100) DEFAULT NULL,
+  `descripcion` varchar(500) DEFAULT NULL,
+  `orden` int(11) DEFAULT NULL,
   PRIMARY KEY (`idopcion`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -311,7 +313,7 @@ CREATE TABLE `opciones` (
 
 LOCK TABLES `opciones` WRITE;
 /*!40000 ALTER TABLE `opciones` DISABLE KEYS */;
-INSERT INTO `opciones` VALUES (1,'Home','ImHome3','/home'),(2,'En oficina','ImOffice','/inoffice'),(3,'Mis Asignaciones','ImList2','/misasignaciones'),(4,'Recados','CgUserList','/asignarmensajes'),(5,'Mis Recados','BiMessage','/misrecados'),(6,'Recibir Correspondencia','HiOutlineInboxIn','/recibir'),(7,'Aprovar correspondencia','RiMailSendLine','/aprovarcorrespondencia'),(8,'Reportes','VscFilePdf','/reportes'),(9,'Usuarios','FaUsersCog','/usuarios'),(10,'Consultas','AiOutlineFileSearch','/consultas');
+INSERT INTO `opciones` VALUES (1,'Home','ImHome3','/home','Pantalla principal del sistema',1),(2,'En oficina','ImOffice','/inoffice','Recibir y asignar correspondencia',2),(3,'Mis Asignaciones','ImList2','/misasignaciones','Mis asignaciones',3),(4,'Recados','CgUserList','/asignarmensajes','Asignar y crear recados',4),(5,'Mis Recados','BiMessage','/misrecados','Recados',5),(6,'Recibir Correspondencia','HiOutlineInboxIn','/recibir','Registrar la correspondencia física o electrónica',6),(7,'Aprovar correspondencia','RiMailSendLine','/aprovarcorrespondencia','Aprovar y asignar correspondencia a los mensajeros',7),(8,'Reportes','VscFilePdf','/reportes','Generar reportes',8),(9,'Usuarios','FaUsersCog','/usuarios','Administración de usuarios',10),(10,'Consultas','AiOutlineFileSearch','/consultas','Consultar la correspondencia que ha sido registrada',9),(11,'tttt','tttt','tttt',NULL,NULL);
 /*!40000 ALTER TABLE `opciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -495,4 +497,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-02 16:45:24
+-- Dump completed on 2021-12-03 16:57:08
