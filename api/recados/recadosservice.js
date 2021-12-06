@@ -141,11 +141,11 @@ const recadosConsultaHistorial = (values,callBack)=>{
         FROM recados r
         INNER JOIN usuarios u ON u.idusuario = r.id_user
         LEFT JOIN mensajeros m ON r.idmensajero = m.idmensajero
-        WHERE r.activo = '1'
+        WHERE r.activo = '0'
         AND r.estado = 'Finalizado'
     `;
     let miFiltro = (tipofiltro === "m") ? filtro.split('-') : filtro ;
-    const filterMes    =  ` AND YEAR(r.fecha_completado) = ${miFiltro[0]} AND MONTH(r.fecha_completado) = ${miFiltro[1]}`;
+    const filterMes    =  ` AND YEAR(r.fecha_completado) = '${miFiltro[0]}' AND MONTH(r.fecha_completado) = '${miFiltro[1]}'`;
     const filterTexto  =  ` AND r.recado LIKE '%${miFiltro}%'`;
     const filterUser   =  ` AND r.id_user = ${miFiltro}`;
     const endQuery     =  ` ORDER BY fecha_completado_full ASC;`;
@@ -156,8 +156,6 @@ const recadosConsultaHistorial = (values,callBack)=>{
     finalQuery   = finalQuery+endQuery;
     dbconnection.query(finalQuery,(error,result)=>{
         if(error){
-            console.log(finalQuery);
-            console.log(error);
             return callBack(error,[]);
         }else{
             return callBack(null,result);
