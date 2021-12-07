@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/recados',validatetoken,createRecado);
 router.get('/recados/:idusuario',validatetoken,getMyRecados);
-router.get('/recados/:filtro/:tipofiltro',validatetoken,getRecadosConsultaHistorial);
+router.get('/recados/:filtro/:tipofiltro/:idusuario',validatetoken,getRecadosConsultaHistorial);
 router.get('/recados',validatetoken,getAsignarRecados);
 router.put('/recados',validatetoken,setEditarRecado);
 router.put('/asignareliminarrecados',validatetoken,setAsignarEliminarRecados);

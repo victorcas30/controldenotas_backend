@@ -116,8 +116,7 @@ const asignareliminarRecados = (values,callBack)=>{
 }
 
 const recadosConsultaHistorial = (values,callBack)=>{
-    console.log(JSON.stringify(values,null,2));
-    const {filtro,tipofiltro} = values; 
+    const {filtro,tipofiltro,idusuario} = values; 
     const myQuery = `
         SELECT 
             r.id_recado, 
@@ -145,15 +144,17 @@ const recadosConsultaHistorial = (values,callBack)=>{
         AND r.estado = 'Finalizado'
     `;
     let miFiltro = (tipofiltro === "m") ? filtro.split('-') : filtro ;
-    const filterMes    =  ` AND YEAR(r.fecha_completado) = '${miFiltro[0]}' AND MONTH(r.fecha_completado) = '${miFiltro[1]}'`;
+    const filterMes    =  ` AND YEAR(r.fecha_registro) = '${miFiltro[0]}' AND MONTH(r.fecha_registro) = '${miFiltro[1]}'`;
     const filterTexto  =  ` AND r.recado LIKE '%${miFiltro}%'`;
     const filterUser   =  ` AND r.id_user = ${miFiltro}`;
-    const endQuery     =  ` ORDER BY fecha_completado_full ASC;`;
+    const isByUser     =  ` AND r.id_user = ${idusuario}`;
+    const endQuery     =  ` ORDER BY fecha_registro DESC;`;
     let finalQuery  = '';
     if(tipofiltro === 'm') finalQuery = myQuery + filterMes;
     if(tipofiltro === 't') finalQuery = myQuery + filterTexto;
     if(tipofiltro === 'u') finalQuery = myQuery + filterUser;
-    finalQuery   = finalQuery+endQuery;
+    
+    finalQuery   = (idusuario === '0') ? finalQuery+endQuery :finalQuery+isByUser+endQuery;
     dbconnection.query(finalQuery,(error,result)=>{
         if(error){
             return callBack(error,[]);
