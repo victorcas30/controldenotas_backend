@@ -30,7 +30,8 @@ import {
     devolverCorrespondence,
     pendienteFinalizarPormi,
     finalizarMiCorrespondencia,
-    sendCorrespondenceExpress
+    sendCorrespondenceExpress,
+    busquedaGeneralPorTexto
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -390,6 +391,17 @@ const setSendCorrespondenceExpress = (req,res)=>{
     });
 }
 
+const getBusquedaGeneralPorTexto = (req,res) =>{
+    const values = req.params;
+    busquedaGeneralPorTexto(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al ejecutar la consulta'});
+        }else{
+            res.status(200).json({success:true,resultado:result});
+        }
+    });
+}
+
 export {
     createCorrespondenceReceived,
     getCorrespondenceRecieviedByUser,
@@ -422,5 +434,6 @@ export {
     setDevolverCorrespondence,
     getPendienteFinalizarPormi,
     setFinalizarMiCorrespondencia,
-    setSendCorrespondenceExpress
+    setSendCorrespondenceExpress,
+    getBusquedaGeneralPorTexto
 };
