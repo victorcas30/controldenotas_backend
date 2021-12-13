@@ -53,7 +53,7 @@ router.get('/trabajopendienteporuser/:idusuario',validatetoken,setGetCorresPendi
 router.get('/userstoreport',validatetoken,setGetUsersToReport);
 router.get('/accesos/:idrol',validatetoken,getAccesosByRol);
 router.get('/correspondenciafinalizarpormi/:idusuario',validatetoken,getPendienteFinalizarPormi);
-router.get('/consultageneral/:texto',validatetoken,getBusquedaGeneralPorTexto);
+router.get('/consultageneral/:texto/:activepage',validatetoken,getBusquedaGeneralPorTexto);
 router.post('/correspondence',validatetoken,createCorrespondenceReceived);
 router.post('/enviarcorrespondenciaexpress',validatetoken,setSendCorrespondenceExpress);
 router.post('/sendcorrespondence',validatetoken,setCorrespondenceSend);

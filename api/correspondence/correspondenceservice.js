@@ -1192,7 +1192,10 @@ const sendCorrespondenceExpress = (values,callBack) =>{
 }
 
 const busquedaGeneralPorTexto = (values,callBack)=>{
-    const {texto} = values;
+    const {texto,activepage} = values;
+    const limit  = (activepage <= 1) ? 0 : (activepage -1) * 5;
+    const offset = (activepage === 1) ? 0 : 5
+    console.log(`activepage ${activepage} limit ${limit} offset ${offset}`);
     const myQuery = `
         SELECT COUNT(idcorrespondencia_recibida) as total FROM correspondencia_recibida WHERE CONCAT(asegurado,' ',referencia) like '%${texto}%';
         SELECT
@@ -1244,14 +1247,14 @@ const busquedaGeneralPorTexto = (values,callBack)=>{
         CONCAT(cr.asegurado,' ',cr.referencia) like '%${texto}%'
     `;
 
-    const endQUery    =  ` ORDER BY fechaasignacioncomplete DESC;`;  
+    const endQUery    =  ` ORDER BY fechaasignacioncomplete DESC limit ${limit},5;`;  
     let finalQuery    = myQuery+endQUery;
     dbconnection.query(finalQuery,values,(error,result)=>{
         if(error){
             console.log(error);
             return callBack(error,result);
         }else{
-            console.log(result);
+            console.log(finalQuery);
             return callBack(error,result);
         }
     });
