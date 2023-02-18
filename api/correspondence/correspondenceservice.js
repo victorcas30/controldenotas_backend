@@ -1106,6 +1106,48 @@ const pendienteFinalizarPormi = (values,callBack)=>{
     });
 }
 
+const getChequesRegistrados = (values,callBack)=>{
+    const {fechadesde,fechahasta,iddepartamento} = values;
+    const myquery = `
+        SELECT 
+        DATE_FORMAT(cr.fecha_ingreso_sistema,'%d-%m-%Y') as fecha_registro,
+        DATE_FORMAT(asig.fechafinalizadasilvia,'%d-%m-%Y') as fechafinalizadasilvia,
+        UPPER(de.nombre) AS departamento,
+        UPPER(a.nombre) as aseguradora,
+        UPPER(cr.asegurado) AS asegurado,
+        UPPER(td.descripcion) AS descripcion,
+        UPPER(cr.referencia) AS referencia
+        FROM correspondencia_recibida cr
+        INNER JOIN tipo_documentos td ON cr.tipodocumento = td.idtipo
+        INNER JOIN cyr_departamentos de ON de.idcyr_departamento = cr.entregadoa
+        INNER JOIN aseguradoras a on a.idaseguradora = cr.aseg_remi
+        LEFT JOIN asignaciones asig ON asig.idcorrespondencia = cr.idcorrespondencia_recibida
+        WHERE DATE(cr.fecha_ingreso_sistema) >= DATE('${fechadesde}') AND DATE(cr.fecha_ingreso_sistema) <= DATE('${fechahasta}')
+        AND td.idtipo = 1 
+        AND de.idcyr_departamento = ${iddepartamento}
+        ORDER BY cr.fecha_ingreso_sistema DESC`;
+    dbconnection.query(myquery,values,(error,result)=>{
+        if(error){
+            return callBack(error,result);
+        }else{
+            let myresult = [];
+            let numRow = 0;
+                myresult = result.map(reg =>{
+                numRow++;
+                return{
+                  numRow:numRow,
+                  fecha_registro:reg.fecha_registro,
+                  fechafinalizadacobros:reg.fechafinalizadasilvia,
+                  aseguradora:reg.aseguradora,
+                  asegurado:reg.asegurado,
+                  referencia:reg.referencia
+                }
+            });
+            return callBack(error,myresult);
+        }
+    });
+}
+
 const finalizarMiCorrespondencia = (values,callBack)=>{
     const {idasignacion,fecha} = values;
     const myQuerys = `
@@ -1193,68 +1235,72 @@ const sendCorrespondenceExpress = (values,callBack) =>{
 
 const busquedaGeneralPorTexto = (values,callBack)=>{
     const {texto,activepage} = values;
-    const limit  = (activepage <= 1) ? 0 : (activepage -1) * 5;
-    const offset = (activepage === 1) ? 0 : 5
+    const limit  = (activepage <= 1) ? 0 : (activepage -1) * 20;
+    const offset = (activepage === 1) ? 0 : 20
     console.log(`activepage ${activepage} limit ${limit} offset ${offset}`);
     const myQuery = `
         SELECT COUNT(idcorrespondencia_recibida) as total FROM correspondencia_recibida WHERE CONCAT(asegurado,' ',referencia) like '%${texto}%';
-        SELECT
-        cr.idcorrespondencia_recibida as id, 
-        UPPER(td.descripcion) as tipodocumento,
-        DATE_FORMAT(cr.fecha_ingreso_sistema,'%d-%m-%Y') as fecha_ingreso_sistema,
-        DATE_FORMAT(asig.fechadespachadacobros,'%d-%m-%Y') as fechadespachadacobros,
-        DATE_FORMAT(asig.fechafinalizada,'%d-%m-%Y') as fechafinalizada,
-        DATE_FORMAT(asig.fechadespachadacobros,'%h:%i %p') as horadespachadacobros,
-        DATE_FORMAT(cr.fecha_ingreso_sistema,'%h:%i %p') as hora_ingreso_sistema,
-        DATE_FORMAT(asig.fechafinalizada,'%h:%i %p') as horafinalizada,
-        DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%Y') as fechasellodocumento,
-        DATE_FORMAT(cr.fechasellocyr,'%d-%m-%Y') as fechasellocyr,
-        DATE_FORMAT(asig.fechaasignacion,'%d-%m-%Y') as fechaasignacion,
-        asig.fechaasignacion as fechaasignacioncomplete,
-        asig.fechadespachadacobros as fechadespachadacobrosfl,
-        asig.fechafinalizada as fechafinalizadafl,
-        asig.idasignacion,
-        cr.horasellocyr,
-        UPPER(us.usuario) as usuario,
-        UPPER(cr.asegurado) as asegurado,
-        UPPER(cr.referencia) as referencia,
-        DATE_FORMAT(fechavencimientorenov,'%d-%m-%Y') as fechavencimientorenov,
-        UPPER(cr.procedencia) as procedencia,
-        UPPER(cr.aseg_remi) as aseg_remi,
-        UPPER(ase.nombre) as aseguradora,
-        UPPER(de.nombre) as entregadoa,
-        UPPER(ce.comentario) AS comentario,
-        UPPER(ce.destino_otro) AS destino_otro,
-        UPPER(ce.destino) AS destino,
-        UPPER(ce.atencion) AS atencion,
-        UPPER(ase1.nombre) AS asegdestino,
-        UPPER(m.nombre) as mensajero,
-        cr.estado,
-        UPPER(cr.formadeingreso) as formadeingreso
-    FROM 
-        correspondencia_recibida cr
-    
-        INNER JOIN tipo_documentos td on td.idtipo = cr.tipodocumento
+        SELECT 
+            UPPER(us.usuario) AS recibidopor,
+            UPPER(de.nombre) AS departamento,
+            cr.idcorrespondencia_recibida as idcorrespondencia,
+            UPPER(cr.asegurado) AS asegurado,
+            UPPER(cr.referencia) AS referencia,
+            UPPER(cr.procedencia) AS procedencia,
+            UPPER(cr.formadeingreso) AS formadeingreso,
+            UPPER(ec.descripcion) AS estado,
+            UPPER(cr.aseg_remi) as aseg_o_remi,
+            UPPER(ase.nombre) as aseguradora,
+            UPPER(td.descripcion) as tipodocumento,
+            cr.fecha_ingreso_sistema as fechaingresosistema, 
+            DATE_FORMAT(cr.fecha_ingreso_sistema,'%d-%m-%Y') AS fecha_ingreso_sistema,
+            DATE_FORMAT(cr.fechasellodocumento,'%d-%m-%Y') AS fechasellodocumento,
+            DATE_FORMAT(cr.fechasellocyr,'%d-%m-%Y') AS fechasellocyr,
+            DATE_FORMAT(cr.fecha_recibida_jefe_depto,'%d-%m-%Y %h:%i %s %p') AS fecha_recibida_jefe_depto
+        FROM correspondencia_recibida cr
         INNER JOIN cyr_departamentos de on de.idcyr_departamento = cr.entregadoa
-        LEFT JOIN asignaciones asig on asig.idcorrespondencia = cr.idcorrespondencia_recibida
-        LEFT JOIN usuarios us on us.idusuario = asig.idusuario
-        LEFT JOIN correspondenciaenviada ce on asig.idcorrespondencia = ce.idcorrespondencia
-        LEFT JOIN mensajeros m on m.idmensajero = ce.idmensajero
+        INNER JOIN usuarios us on cr.recibidopor = us.idusuario
+        INNER JOIN estados_correspondencia ec on ec.idestado = cr.estado
+        INNER JOIN tipo_documentos td on td.idtipo = cr.tipodocumento
         LEFT JOIN aseguradoras ase on ase.idaseguradora = cr.aseg_remi
-        LEFT JOIN aseguradoras ase1 on ase1.idaseguradora = ce.aseguradora
-    
     WHERE 
         CONCAT(cr.asegurado,' ',cr.referencia) like '%${texto}%'
     `;
 
-    const endQUery    =  ` ORDER BY fechaasignacioncomplete DESC limit ${limit},5;`;  
+    const endQUery    =  ` ORDER BY fechaingresosistema DESC limit ${limit},20;`;  
     let finalQuery    = myQuery+endQUery;
     dbconnection.query(finalQuery,values,(error,result)=>{
+        if(error){
+            return callBack(error,result);
+        }else{
+            return callBack(error,result);
+        }
+    });
+}
+
+const asignadaBusquedaTexto = (values,callBack)=>{
+    const {idcorrespondencia} = values;
+    const myQuery = `
+        SELECT 
+	        DATE_FORMAT(asig.fechaasignacion,"%d-%m-%Y") AS fecha_asignacion,
+            DATE_FORMAT(asig.fechaterminada,"%d-%m-%Y") AS fechaterminada,
+            DATE_FORMAT(asig.fechaaprobadacobros,"%d-%m-%Y") AS fechaaprobadacobros,
+            DATE_FORMAT(asig.fechadespachadacobros,"%d-%m-%Y") AS fechadespachadacobros,
+            DATE_FORMAT(asig.fechafinalizada,"%d-%m-%Y") AS fechafinalizada,
+            u.usuario,
+            asig.tipoarchivada,
+            asig.comentarioarchivada,
+            asig.fechafinalizadasilvia,
+            asig.fecharecibidapormi
+        FROM asignaciones asig 
+        INNER JOIN usuarios u ON asig.idusuario = u.idusuario
+        WHERE idcorrespondencia = ${idcorrespondencia};
+    `;
+    dbconnection.query(myQuery,values,(error,result)=>{
         if(error){
             console.log(error);
             return callBack(error,result);
         }else{
-            console.log(finalQuery);
             return callBack(error,result);
         }
     });
@@ -1295,5 +1341,6 @@ export {
     pendienteFinalizarPormi,
     finalizarMiCorrespondencia,
     sendCorrespondenceExpress,
-    busquedaGeneralPorTexto
+    busquedaGeneralPorTexto,
+    getChequesRegistrados
 };

@@ -31,7 +31,8 @@ import {
     pendienteFinalizarPormi,
     finalizarMiCorrespondencia,
     sendCorrespondenceExpress,
-    busquedaGeneralPorTexto
+    busquedaGeneralPorTexto,
+    getChequesRegistrados
  } from "./correspondenceservice.js";
 
 const createCorrespondenceReceived = (req,res)=>{
@@ -402,6 +403,18 @@ const getBusquedaGeneralPorTexto = (req,res) =>{
     });
 }
 
+const generarReporteCheques = (req,res) =>{
+    const values = req.params;
+    getChequesRegistrados(values,(error,result)=>{
+       if(error){
+           res.status(500).json({success:false,message:'Error al ejecutar la consulta'});
+        }else{
+            res.status(200).json({success:true,resultado:result});
+        }
+   });
+}
+
+
 export {
     createCorrespondenceReceived,
     getCorrespondenceRecieviedByUser,
@@ -435,5 +448,6 @@ export {
     getPendienteFinalizarPormi,
     setFinalizarMiCorrespondencia,
     setSendCorrespondenceExpress,
-    getBusquedaGeneralPorTexto
+    getBusquedaGeneralPorTexto,
+    generarReporteCheques
 };

@@ -33,7 +33,8 @@ import {
     getPendienteFinalizarPormi,
     setFinalizarMiCorrespondencia,
     setSendCorrespondenceExpress,
-    getBusquedaGeneralPorTexto
+    getBusquedaGeneralPorTexto,
+    generarReporteCheques
 } from './correspondencecontrollers.js';
 
 const router = express.Router();
@@ -54,6 +55,7 @@ router.get('/userstoreport',validatetoken,setGetUsersToReport);
 router.get('/accesos/:idrol',validatetoken,getAccesosByRol);
 router.get('/correspondenciafinalizarpormi/:idusuario',validatetoken,getPendienteFinalizarPormi);
 router.get('/consultageneral/:texto/:activepage',validatetoken,getBusquedaGeneralPorTexto);
+router.get('/reportecheques/:fechadesde/:fechahasta/:iddepartamento',validatetoken,generarReporteCheques);
 router.post('/correspondence',validatetoken,createCorrespondenceReceived);
 router.post('/enviarcorrespondenciaexpress',validatetoken,setSendCorrespondenceExpress);
 router.post('/sendcorrespondence',validatetoken,setCorrespondenceSend);

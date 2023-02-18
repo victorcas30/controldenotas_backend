@@ -12,7 +12,7 @@ const getUsers = (callBack) =>{
 }
 
 const usersByDepto = (values,callBack) =>{
-    const myQuery = 'SELECT idusuario,nombres,apellidos,UPPER(usuario) as usuario FROM usuarios WHERE departamento = ?';
+    const myQuery = 'SELECT idusuario,nombres,apellidos,UPPER(usuario) as usuario FROM usuarios WHERE departamento = ? AND activo=1';
     dbconnection.query(myQuery,values,(error,result)=>{
         if(!error){
            return callBack(null,result);
