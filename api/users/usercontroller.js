@@ -1,28 +1,17 @@
 import { 
-    getUsers,
     createUser,
     loginUser,
-    usersByDepto ,
-    usersRecibenCorrespondencia,
-    usersAplicaReporte,
     users,
-    opcion,
-    opciones,
-    updateopcion,
-    rol,
-    roles,
-    updateRol,
-    updateuser
+    updateuser,
+    getUnUsuario
 } from './userservice.js';
 import {hashSync,genSaltSync,compareSync} from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
+
 const createUsuario = (req,res)=>{
     const salt = genSaltSync(10);
     req.body.password = hashSync(req.body.password,salt);
-    req.body.recibe_correspondencia = (req.body.recibe_correspondencia) ? '1':'0'; 
-    req.body.aplica_reporte_trabajo_pendiente = (req.body.aplica_reporte_trabajo_pendiente) ? '1':'0';
-    req.body.activo = (req.body.activo)? '1':'0';
     const values = Object.values(req.body);
     createUser(values,(error,results)=>{
         if(error){
@@ -33,42 +22,13 @@ const createUsuario = (req,res)=>{
     });
 }
 
-const getUsuarios = (req,res) =>{
-    getUsers((error,result)=>{
-        if(error){
-            res.status(500).json({success:true,message:'Error al procesar la solicitud'});
-        }else{
-            res.status(200).json({success:true,users:result});
-        }
-    });
-}
-const getUsuariosAplicaReporte = (req,res) =>{
-    usersAplicaReporte((error,result)=>{
-        if(error){
-            res.status(500).json({success:true,message:'Error al procesar la solicitud'});
-        }else{
-            res.status(200).json({success:true,users:result});
-        }
-    });
-}
-
-const getUsersByDepto = (req,res) =>{
+const getUsuario = (req,res) =>{
     const values = Object.values(req.params);
-    usersByDepto(values,(error,result)=>{
+    getUnUsuario(values,(error,result)=>{
         if(error){
             res.status(500).json({success:false,message:'Error al procesar la solicitud'});
         }else{
             res.status(200).json({success:true,users:result});
-        }
-    });
-}
-const getUsersRecibenCorrespondencia = (req,res) =>{
-    usersRecibenCorrespondencia((error,result)=>{
-        if(error){
-            console.log(error);
-            res.status(500).json({success:false,message:'Error al procesar la solicitud'});
-        }else{
-            res.status(200).json({success:1,users:result});
         }
     });
 }
@@ -107,70 +67,6 @@ const getUsuariosAdmin = (req,res) =>{
     });
 }
 
-const createOpcion = (req,res)=>{
-    const values = Object.values(req.body);
-    opcion(values,(error,results)=>{
-        if(error){
-            res.status(500).json({success:false,message:'Error al crear opción'});
-        }else{
-            res.status(200).json({success:true,message:'Opción creada'});
-        }
-    });
-}
-
-const getOpciones = (req,res) =>{
-    opciones((error,result)=>{
-        if(error){
-            res.status(500).json({success:true,message:'Error al procesar la solicitud'});
-        }else{
-            res.status(200).json({success:true,opciones:result});
-        }
-    });
-}
-
-const setUpdateOpciones = (req,res)=>{
-    const values = Object.values(req.body);
-    updateopcion(values,(error,results)=>{
-        if(error){
-            res.status(500).json({success:false,message:'Error al actualizar opción'});
-        }else{
-            res.status(200).json({success:true,message:'Cambios guardados'});
-        }
-    });
-}
-
-const createRol = (req,res)=>{
-    const values = Object.values(req.body);
-    rol(values,(error,results)=>{
-        if(error){
-            res.status(500).json({success:false,message:'Error al crear rol'});
-        }else{
-            res.status(200).json({success:true,message:'rol creado'});
-        }
-    });
-}
-
-const getRoles = (req,res) =>{
-    roles((error,result)=>{
-        if(error){
-            res.status(500).json({success:true,message:'Error al procesar la solicitud'});
-        }else{
-            res.status(200).json({success:true,roles:result});
-        }
-    });
-}
-
-const setUpdateRoles = (req,res)=>{
-    const values = Object.values(req.body);
-    updateRol(values,(error,results)=>{
-        if(error){
-            res.status(500).json({success:false,message:'Error al actualizar rol'});
-        }else{
-            res.status(200).json({success:true,message:'Cambios guardados'});
-        }
-    });
-}
-
 const setUpdateUser = (req,res)=>{
     const values = req.body;
     updateuser(values,(error,results)=>{
@@ -182,23 +78,11 @@ const setUpdateUser = (req,res)=>{
     });
 }
 
-
-
-
 export {
-    getUsuarios,
     createUsuario,
     login,
-    getUsersByDepto,
-    getUsersRecibenCorrespondencia,
-    getUsuariosAplicaReporte,
     getUsuariosAdmin,
-    createOpcion,
-    getOpciones,
-    setUpdateOpciones,
-    createRol,
-    getRoles,
-    setUpdateRoles,
-    setUpdateUser
+    setUpdateUser,
+    getUsuario
 };
 
