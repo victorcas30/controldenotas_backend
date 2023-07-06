@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
 -- Host: localhost    Database: registrodenotas
 -- ------------------------------------------------------
@@ -7,7 +7,7 @@
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,7 +21,7 @@
 
 DROP TABLE IF EXISTS `alumnos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `alumnos` (
   `idalumno` int(11) NOT NULL AUTO_INCREMENT,
   `nombres` varchar(200) DEFAULT NULL,
@@ -49,13 +49,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `materias`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `materias` (
   `idmateria` int(11) NOT NULL AUTO_INCREMENT,
-  `materia` varchar(200) DEFAULT NULL,
-  `eliminado` varchar(1) DEFAULT '0',
+  `materia` varchar(2) DEFAULT NULL,
   PRIMARY KEY (`idmateria`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +63,6 @@ CREATE TABLE `materias` (
 
 LOCK TABLES `materias` WRITE;
 /*!40000 ALTER TABLE `materias` DISABLE KEYS */;
-INSERT INTO `materias` VALUES (1,'Informática forense','1'),(2,'Bases de datos','0');
 /*!40000 ALTER TABLE `materias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -74,7 +72,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuarios` (
   `idusuario` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(500) DEFAULT NULL,
@@ -94,6 +92,31 @@ LOCK TABLES `usuarios` WRITE;
 INSERT INTO `usuarios` VALUES (1,'Rafael adal','Parada G','rparada','$2b$10$nbSDK7kZVVeqDPUKD.O1KuVy40DxqL06r1QV.0vA1vg8x7BtXvE4i'),(2,'Alex ','Cast','vcastillo','$2b$10$fgMHbWFJLElI6u6kUrAWzONWl7w08R3kM0snf2DLqTuUO6CcPcUtG'),(3,'acastillo','Victor Alex','Castillo Mancia','$2b$10$ofaT2OtmHrzNHIB9IPJ.pOUBU9IkBRThwACmOM/ngk0vcOefXD3G2'),(4,'alopez','Alex','Lopezz','$2b$10$f1e883AE2F4tGMhlk0Os8.xRTXKASZ8hQ1XQJ57EE5uLUF4nt6AYO'),(5,'aaa','Victor Alex','Castillo Mancia','$2b$10$nk9r.v7Ty6PKlCCxP2AbCusqoI9LpRtaSs/4qN0DeI89HFAerT0zK'),(6,'Alex','Castillo','mmm','$2b$10$1M66tTlX5dKBnLn6.Q8U1OFSjNBbtdXRZPW2R/yWT72MFtBs2vW7.'),(7,'Victor Alex','Castillo Mancia','cccc','$2b$10$s/NYwF8Uu.XhBooUSftXUefBvNdnznInUPdn62T.nXdcr.LliSGiG'),(8,'alex','alex','alex','$2b$10$m/AnDTKlydGPbT0Taflc4OAv8WzyA1ZzbdePaZIbozzg1d9ZwB5qm'),(9,'dsa','das','asdas','$2b$10$5t.Z60cMOM97LGcrAdzAku.N7oOA.UZE28w/xz19OiLP0FfmYBbvG'),(10,'sad','dsa','dsad','$2b$10$.tOmWUowOnnduD4hUO2il.RBuPCJ2/AHOqU4suNAdeUn2XkNAbFA.'),(11,'sss','sss','sda','$2b$10$8nP5fe9mJ5noHyj8b2Jq0uQc86Jny1KwSwpyqCunJq7KWjNU8bCQe'),(12,'Maria','Perezz','mmaria','$2b$10$nrSnLRfViQS7Yy5ewrYhNOV0QQJQCC9gXMZXkMv9JsH7Y7vz6NkuS'),(13,'sssa','sssa','sssa','$2b$10$ae79T7gyj8DDzUB4bwPfN.5L7IIVjWZSEqMldz6wNtl5P4JjjbR.W');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `valores`
+--
+
+DROP TABLE IF EXISTS `valores`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `valores` (
+  `idvalor` int(11) NOT NULL AUTO_INCREMENT,
+  `valor` varchar(200) DEFAULT NULL,
+  `eliminado` char(1) DEFAULT '0',
+  PRIMARY KEY (`idvalor`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `valores`
+--
+
+LOCK TABLES `valores` WRITE;
+/*!40000 ALTER TABLE `valores` DISABLE KEYS */;
+INSERT INTO `valores` VALUES (1,'Honestidad','0'),(2,'Sinceridades','1');
+/*!40000 ALTER TABLE `valores` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -104,4 +127,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-05 22:45:16
+-- Dump completed on 2023-07-06 16:21:04
