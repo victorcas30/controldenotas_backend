@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `registrodenotas` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `registrodenotas`;
--- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
 -- Host: localhost    Database: registrodenotas
 -- ------------------------------------------------------
--- Server version	5.6.51-log
+-- Server version	5.6.25-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -30,6 +28,7 @@ CREATE TABLE `alumnos` (
   `apellidos` varchar(200) DEFAULT NULL,
   `celular` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
+  `eliminado` char(1) DEFAULT '0',
   PRIMARY KEY (`idalumno`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -40,8 +39,31 @@ CREATE TABLE `alumnos` (
 
 LOCK TABLES `alumnos` WRITE;
 /*!40000 ALTER TABLE `alumnos` DISABLE KEYS */;
-INSERT INTO `alumnos` VALUES (1,'Ana','Blanco','78549874','ana@gmail.com');
+INSERT INTO `alumnos` VALUES (1,'Anna','white','74451200','Anna@s.com','0');
 /*!40000 ALTER TABLE `alumnos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `materias`
+--
+
+DROP TABLE IF EXISTS `materias`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `materias` (
+  `idmateria` int(11) NOT NULL AUTO_INCREMENT,
+  `materia` varchar(2) DEFAULT NULL,
+  PRIMARY KEY (`idmateria`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `materias`
+--
+
+LOCK TABLES `materias` WRITE;
+/*!40000 ALTER TABLE `materias` DISABLE KEYS */;
+/*!40000 ALTER TABLE `materias` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -80,4 +102,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-05  9:23:20
+-- Dump completed on 2023-07-05 16:55:56

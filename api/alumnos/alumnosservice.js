@@ -28,7 +28,41 @@ const getAlumnos = (callBack)=>{
     });
 }
 
+const updateAlumno= (values,callBack)=>{
+    const updateQuery = `
+        UPDATE alumnos 
+            SET 
+                nombres='${values.nombres}',
+                apellidos='${values.apellidos}',
+                celular='${values.celular}',
+                email='${values.email}',
+                eliminado='${values.eliminado}'
+            WHERE idalumno = ${values.idalumno};`;
+    dbconnection.query(updateQuery,(error,result)=>{
+        if(error){
+            console.log(error);
+            callBack(error,result);
+            return;
+        }
+        return callBack(null,result);
+    });
+}
+
+
+const getUnAlumno = (values,callBack) =>{
+    const myQuery = 'SELECT idalumno,nombres,apellidos,celular,email,eliminado FROM alumnos WHERE idalumno = ?';
+    dbconnection.query(myQuery,values,(error,result)=>{
+        if(!error){
+           return callBack(null,result);
+        }else{
+            return callBack(error);
+        }
+    });
+}
+
 export {
     getAlumnos,
-    createAlumno
+    createAlumno,
+    updateAlumno,
+    getUnAlumno
 }

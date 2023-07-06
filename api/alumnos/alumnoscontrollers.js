@@ -1,5 +1,5 @@
 
-import { getAlumnos,createAlumno } from "./alumnosservice.js";
+import { getAlumnos,createAlumno,updateAlumno,getUnAlumno } from "./alumnosservice.js";
 
 const createElAlumno = (req,res)=>{
     const values = Object.values(req.body);
@@ -22,7 +22,34 @@ const getLosAlumnos = (req,res)=>{
     });
 }
 
+const setUpdateAlumno = (req,res)=>{
+    const values = req.body;
+    updateAlumno(values,(error,results)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al actualizar alumno'});
+        }else{
+            res.status(200).json({success:true,message:'Cambios guardados'});
+        }
+    });
+}
+
+const getAlumno = (req,res) =>{
+    const values = Object.values(req.params);
+    getUnAlumno(values,(error,result)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al procesar la solicitud'});
+        }else{
+            res.status(200).json({success:true,users:result});
+        }
+    });
+}
+
+
+
+
 export {
     createElAlumno,
-    getLosAlumnos
+    getLosAlumnos,
+    setUpdateAlumno,
+    getAlumno
 };
