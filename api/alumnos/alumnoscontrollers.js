@@ -17,7 +17,7 @@ const getLosAlumnos = (req,res)=>{
         if(errors){
             return res.status(500).json({success:false,message:errors});
         }else{
-           return res.status(200).json({success:1,cyrDeparments:result});
+           return res.status(200).json({success:1,alumnos:result});
         }
     });
 }
@@ -39,7 +39,7 @@ const getAlumno = (req,res) =>{
         if(error){
             res.status(500).json({success:false,message:'Error al procesar la solicitud'});
         }else{
-            res.status(200).json({success:true,users:result});
+            res.status(200).json({success:true,alumnos:result});
         }
     });
 }
