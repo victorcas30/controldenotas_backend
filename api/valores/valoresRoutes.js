@@ -7,6 +7,6 @@ router.post("/valores",validatetoken,crearValor);
 router.get("/valores",validatetoken,getLosValores);
 router.get("/valores/:idvalor",validatetoken,getValor);
 router.put("/valores",validatetoken,setUpdateValor);
-router.post("/valores/delete",validatetoken,setDeleteValor);
+router.put("/valores/delete",validatetoken,setDeleteValor);
 
 export {router as valoresRouter}
