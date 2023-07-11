@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: registrodenotas
 -- ------------------------------------------------------
@@ -7,7 +7,7 @@
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,7 +21,7 @@
 
 DROP TABLE IF EXISTS `alumnos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `alumnos` (
   `idalumno` int(11) NOT NULL AUTO_INCREMENT,
   `nombres` varchar(200) DEFAULT NULL,
@@ -44,17 +44,43 @@ INSERT INTO `alumnos` VALUES (1,'Anna','white','74451200','Anna@s.com','0');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `inasistencias`
+--
+
+DROP TABLE IF EXISTS `inasistencias`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `inasistencias` (
+  `idinasistencia` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(200) DEFAULT NULL,
+  `eliminado` char(1) DEFAULT '0',
+  PRIMARY KEY (`idinasistencia`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `inasistencias`
+--
+
+LOCK TABLES `inasistencias` WRITE;
+/*!40000 ALTER TABLE `inasistencias` DISABLE KEYS */;
+INSERT INTO `inasistencias` VALUES (1,'demo demo','1'),(2,'Nose','0'),(3,'Otra otra','1'),(4,'Primer Trimestre','0');
+/*!40000 ALTER TABLE `inasistencias` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `materias`
 --
 
 DROP TABLE IF EXISTS `materias`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `materias` (
   `idmateria` int(11) NOT NULL AUTO_INCREMENT,
-  `materia` varchar(2) DEFAULT NULL,
+  `materia` varchar(200) DEFAULT NULL,
+  `eliminado` char(1) DEFAULT '0',
   PRIMARY KEY (`idmateria`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +89,34 @@ CREATE TABLE `materias` (
 
 LOCK TABLES `materias` WRITE;
 /*!40000 ALTER TABLE `materias` DISABLE KEYS */;
+INSERT INTO `materias` VALUES (1,'Bases de datos','0'),(2,'Progrmacion I','0'),(3,'Progrmacion orientada a objetos','0'),(4,'Algoritmos 1','0'),(5,'Algoritmos 2','0'),(6,'Arquitectura de computadoras','1');
 /*!40000 ALTER TABLE `materias` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `trimestres`
+--
+
+DROP TABLE IF EXISTS `trimestres`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `trimestres` (
+  `idtrimestre` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(45) DEFAULT NULL,
+  `year` varchar(45) DEFAULT NULL,
+  `eliminado` char(1) DEFAULT '0',
+  PRIMARY KEY (`idtrimestre`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `trimestres`
+--
+
+LOCK TABLES `trimestres` WRITE;
+/*!40000 ALTER TABLE `trimestres` DISABLE KEYS */;
+INSERT INTO `trimestres` VALUES (1,'Trimestre update','2010','1'),(2,'Segundo Trimestre','2023','0');
+/*!40000 ALTER TABLE `trimestres` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -72,7 +125,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `usuarios` (
   `idusuario` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(500) DEFAULT NULL,
@@ -99,7 +152,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `valores`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `valores` (
   `idvalor` int(11) NOT NULL AUTO_INCREMENT,
   `valor` varchar(200) DEFAULT NULL,
@@ -127,4 +180,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-06 16:21:04
+-- Dump completed on 2023-07-10 21:58:32

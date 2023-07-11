@@ -1,4 +1,4 @@
-import { insertarMateria,getMaterias,getUnaMateria,updateMateria } from "./materiasservices.js";
+import { insertarMateria,getMaterias,getUnaMateria,updateMateria,deleteMateria } from "./materiasServices.js";
 
 const crearMateria = (req,res)=>{
     const values = Object.values(req.body);
@@ -42,11 +42,22 @@ const setUpdateMateria = (req,res)=>{
         }
     });
 }
+const setDeleteMateria = (req,res)=>{
+    const values = req.body;
+    deleteMateria(values,(error,results)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al eliminar materia'});
+        }else{
+            res.status(200).json({success:true,message:'Materia eliminada'});
+        }
+    });
+}
 
 export {
     crearMateria,
     getLasMaterias,
     getMateria,
-    setUpdateMateria
+    setUpdateMateria,
+    setDeleteMateria
 }
 

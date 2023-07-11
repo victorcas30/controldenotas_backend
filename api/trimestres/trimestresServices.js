@@ -1,7 +1,7 @@
 import dbconnection from "../../config/dbconnection.js";
 
-const insertarMateria = (values,callBack)=>{
-    const insertQuery = `INSERT INTO materias(materia) VALUES(?);`;
+const insertarTrimestre = (values,callBack)=>{
+    const insertQuery = `INSERT INTO trimestres(descripcion,year) VALUES(?,?);`;
     dbconnection.query(insertQuery,values,(error,result)=>{
         if(error){
             return callBack(error,result);  
@@ -10,8 +10,8 @@ const insertarMateria = (values,callBack)=>{
     });
 }
 
-const getMaterias = (callBack)=>{
-    const myQuery = 'SELECT * FROM materias WHERE eliminado="0"';
+const getTrimestres = (callBack)=>{
+    const myQuery = 'SELECT * FROM trimestres WHERE eliminado="0"';
     dbconnection.query(myQuery,(error,result)=>{
         if(error){
             return callBack(error);
@@ -21,8 +21,8 @@ const getMaterias = (callBack)=>{
     });
 }
 
-const getUnaMateria = (values,callBack) =>{
-    const myQuery = 'SELECT idmateria,materia FROM materias WHERE idmateria = ? AND eliminado=0';
+const getUnTrimestre = (values,callBack) =>{
+    const myQuery = 'SELECT idtrimestre,descripcion,year,eliminado FROM trimestres WHERE idtrimestre = ? AND eliminado=0';
     dbconnection.query(myQuery,values,(error,result)=>{
         if(!error){
            return callBack(null,result);
@@ -32,13 +32,13 @@ const getUnaMateria = (values,callBack) =>{
     });
 }
 
-const updateMateria= (values,callBack)=>{
+const updateTrimestre = (values,callBack)=>{
     const updateQuery = `
-        UPDATE materias 
+        UPDATE trimestres 
             SET 
-                materia='${values.materia}',
-                eliminado='${values.eliminado}'
-            WHERE idmateria = '${values.idmateria}';`;
+                descripcion='${values.descripcion}',
+                year='${values.year}'
+            WHERE idtrimestre = '${values.idtrimestre}';`;
     dbconnection.query(updateQuery,(error,result)=>{
         if(error){
             callBack(error,result);
@@ -48,12 +48,12 @@ const updateMateria= (values,callBack)=>{
     });
 }
 
-const deleteMateria= (values,callBack)=>{
+const deleteTrimestre= (values,callBack)=>{
     const updateQuery = `
-        UPDATE materias 
+        UPDATE trimestres 
             SET 
                 eliminado='1'
-            WHERE idmateria = '${values.idmateria}';`;
+            WHERE idtrimestre = '${values.idtrimestre}';`;
     dbconnection.query(updateQuery,(error,result)=>{
         if(error){
             callBack(error,result);
@@ -65,9 +65,9 @@ const deleteMateria= (values,callBack)=>{
 
 
 export {
-    insertarMateria,
-    getMaterias,
-    getUnaMateria,
-    updateMateria,
-    deleteMateria
+    insertarTrimestre,
+    getTrimestres,
+    getUnTrimestre,
+    updateTrimestre,
+    deleteTrimestre
 }

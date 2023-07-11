@@ -1,7 +1,7 @@
 import dbconnection from "../../config/dbconnection.js";
 
-const insertarMateria = (values,callBack)=>{
-    const insertQuery = `INSERT INTO materias(materia) VALUES(?);`;
+const insertarInasistencia = (values,callBack)=>{
+    const insertQuery = `INSERT INTO inasistencias(descripcion) VALUES(?);`;
     dbconnection.query(insertQuery,values,(error,result)=>{
         if(error){
             return callBack(error,result);  
@@ -10,8 +10,8 @@ const insertarMateria = (values,callBack)=>{
     });
 }
 
-const getMaterias = (callBack)=>{
-    const myQuery = 'SELECT * FROM materias WHERE eliminado="0"';
+const getInasistencias = (callBack)=>{
+    const myQuery = 'SELECT * FROM inasistencias WHERE eliminado="0"';
     dbconnection.query(myQuery,(error,result)=>{
         if(error){
             return callBack(error);
@@ -21,8 +21,8 @@ const getMaterias = (callBack)=>{
     });
 }
 
-const getUnaMateria = (values,callBack) =>{
-    const myQuery = 'SELECT idmateria,materia FROM materias WHERE idmateria = ? AND eliminado=0';
+const getUnaInasistencia = (values,callBack) =>{
+    const myQuery = 'SELECT idinasistencia,descripcion,eliminado FROM inasistencias WHERE idinasistencia = ?';
     dbconnection.query(myQuery,values,(error,result)=>{
         if(!error){
            return callBack(null,result);
@@ -32,13 +32,12 @@ const getUnaMateria = (values,callBack) =>{
     });
 }
 
-const updateMateria= (values,callBack)=>{
+const updateInasistencia= (values,callBack)=>{
     const updateQuery = `
-        UPDATE materias 
+        UPDATE inasistencias 
             SET 
-                materia='${values.materia}',
-                eliminado='${values.eliminado}'
-            WHERE idmateria = '${values.idmateria}';`;
+                descripcion='${values.descripcion}'
+            WHERE idinasistencia = '${values.idinasistencia}';`;
     dbconnection.query(updateQuery,(error,result)=>{
         if(error){
             callBack(error,result);
@@ -48,12 +47,12 @@ const updateMateria= (values,callBack)=>{
     });
 }
 
-const deleteMateria= (values,callBack)=>{
+const deleteInasistencia= (values,callBack)=>{
     const updateQuery = `
-        UPDATE materias 
+        UPDATE inasistencias 
             SET 
                 eliminado='1'
-            WHERE idmateria = '${values.idmateria}';`;
+            WHERE idinasistencia = '${values.idinasistencia}';`;
     dbconnection.query(updateQuery,(error,result)=>{
         if(error){
             callBack(error,result);
@@ -62,12 +61,14 @@ const deleteMateria= (values,callBack)=>{
         return callBack(null,result);
     });
 }
+
+
 
 
 export {
-    insertarMateria,
-    getMaterias,
-    getUnaMateria,
-    updateMateria,
-    deleteMateria
+    insertarInasistencia,
+    getInasistencias,
+    getUnaInasistencia,
+    updateInasistencia,
+    deleteInasistencia
 }
