@@ -1,4 +1,4 @@
-import { insertarValor,getValores,getUnValor,updateValor } from "./valoresservices.js";
+import { insertarValor,getValores,getUnValor,updateValor,deleteValor } from "./valoresservices.js";
 
 const crearValor = (req,res)=>{
     const values = Object.values(req.body);
@@ -43,10 +43,22 @@ const setUpdateValor = (req,res)=>{
     });
 }
 
+const setDeleteValor = (req,res)=>{
+    const values = req.body;
+    deleteValor(values,(error,results)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al eliminar valor'});
+        }else{
+            res.status(200).json({success:true,message:'Valor eliminado'});
+        }
+    });
+}
+
 export {
     crearValor,
     getLosValores,
     getValor,
-    setUpdateValor
+    setUpdateValor,
+    setDeleteValor
 }
 

@@ -27,7 +27,7 @@ const getMateria = (req,res) =>{
         if(error){
             res.status(500).json({success:false,message:'Error al procesar la solicitud'});
         }else{
-            res.status(200).json({success:true,users:result});
+            res.status(200).json({success:true,materias:result});
         }
     });
 }

@@ -36,8 +36,22 @@ const updateValor= (values,callBack)=>{
     const updateQuery = `
         UPDATE valores 
             SET 
-                valor='${values.valor}',
-                eliminado='${values.eliminado}'
+                valor='${values.valor}'
+            WHERE idvalor = '${values.idvalor}';`;
+    dbconnection.query(updateQuery,(error,result)=>{
+        if(error){
+            callBack(error,result);
+            return;
+        }
+        return callBack(null,result);
+    });
+}
+
+const deleteValor= (values,callBack)=>{
+    const updateQuery = `
+        UPDATE valores 
+            SET 
+                eliminado='1'
             WHERE idvalor = '${values.idvalor}';`;
     dbconnection.query(updateQuery,(error,result)=>{
         if(error){
@@ -53,5 +67,6 @@ export {
     insertarValor,
     getValores,
     getUnValor,
-    updateValor
+    updateValor,
+    deleteValor
 }
