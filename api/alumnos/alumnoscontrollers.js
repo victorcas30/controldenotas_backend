@@ -1,5 +1,5 @@
 
-import { getAlumnos,createAlumno,updateAlumno,getUnAlumno,deleteAlumno } from "./alumnosservice.js";
+import { getAlumnos,createAlumno,updateAlumno,getUnAlumno,deleteAlumno,getAlumnosPromise } from "./alumnosservice.js";
 
 const createElAlumno = (req,res)=>{
     const values = Object.values(req.body);
@@ -55,6 +55,15 @@ const setDeleteAlumno = (req,res)=>{
     });
 }
 
+const getAlumnosPromise1 = async(req,res)=>{
+    try{
+        const rows = await  getAlumnosPromise();
+        return res.json({success:true,result:rows});
+    }catch(error){
+        return res.json({success:false,msg:"Something went wrong"});
+    }
+}
+
 
 
 
@@ -63,5 +72,6 @@ export {
     getLosAlumnos,
     setUpdateAlumno,
     getAlumno,
-    setDeleteAlumno
+    setDeleteAlumno,
+    getAlumnosPromise1
 };

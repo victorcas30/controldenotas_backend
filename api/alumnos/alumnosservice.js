@@ -73,10 +73,20 @@ const deleteAlumno= (values,callBack)=>{
     });
 }
 
+const getAlumnosPromise = () =>{
+     return new Promise((resolve,reject)=>{
+        dbconnection.query("SELECT * FROM alumnos;",(error,result)=>{
+            if(error) return reject(error);
+            resolve(result);
+        });
+     });
+}
+
 export {
     getAlumnos,
     createAlumno,
     updateAlumno,
     getUnAlumno,
-    deleteAlumno
+    deleteAlumno,
+    getAlumnosPromise
 }

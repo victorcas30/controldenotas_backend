@@ -11,7 +11,7 @@ const insertarValor = (values,callBack)=>{
 }
 
 const getValores = (callBack)=>{
-    const myQuery = 'SELECT * FROM valores';
+    const myQuery = 'SELECT * FROM valores WHERE eliminado="0"';
     dbconnection.query(myQuery,(error,result)=>{
         if(error){
             return callBack(error);
