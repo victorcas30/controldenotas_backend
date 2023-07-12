@@ -18,7 +18,7 @@ const createAlumno = (values,callBack)=>{
 }
 
 const getAlumnos = (callBack)=>{
-    const myQuery = 'SELECT * FROM alumnos';
+    const myQuery = 'SELECT * FROM alumnos where eliminado="0"';
     dbconnection.query(myQuery,(error,result)=>{
         if(error){
             return callBack(error);
@@ -35,12 +35,10 @@ const updateAlumno= (values,callBack)=>{
                 nombres='${values.nombres}',
                 apellidos='${values.apellidos}',
                 celular='${values.celular}',
-                email='${values.email}',
-                eliminado='${values.eliminado}'
+                email='${values.email}'
             WHERE idalumno = ${values.idalumno};`;
     dbconnection.query(updateQuery,(error,result)=>{
         if(error){
-            console.log(error);
             callBack(error,result);
             return;
         }
@@ -60,9 +58,25 @@ const getUnAlumno = (values,callBack) =>{
     });
 }
 
+const deleteAlumno= (values,callBack)=>{
+    const updateQuery = `
+        UPDATE alumnos 
+            SET 
+                eliminado='1'
+            WHERE idalumno = ${values.idalumno};`;
+    dbconnection.query(updateQuery,(error,result)=>{
+        if(error){
+            callBack(error,result);
+            return;
+        }
+        return callBack(null,result);
+    });
+}
+
 export {
     getAlumnos,
     createAlumno,
     updateAlumno,
-    getUnAlumno
+    getUnAlumno,
+    deleteAlumno
 }

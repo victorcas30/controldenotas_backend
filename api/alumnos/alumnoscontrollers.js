@@ -1,5 +1,5 @@
 
-import { getAlumnos,createAlumno,updateAlumno,getUnAlumno } from "./alumnosservice.js";
+import { getAlumnos,createAlumno,updateAlumno,getUnAlumno,deleteAlumno } from "./alumnosservice.js";
 
 const createElAlumno = (req,res)=>{
     const values = Object.values(req.body);
@@ -44,6 +44,17 @@ const getAlumno = (req,res) =>{
     });
 }
 
+const setDeleteAlumno = (req,res)=>{
+    const values = req.body;
+    deleteAlumno(values,(error,results)=>{
+        if(error){
+            res.status(500).json({success:false,message:'Error al borrar alumno'});
+        }else{
+            res.status(200).json({success:true,message:'Alumno Eliminado'});
+        }
+    });
+}
+
 
 
 
@@ -51,5 +62,6 @@ export {
     createElAlumno,
     getLosAlumnos,
     setUpdateAlumno,
-    getAlumno
+    getAlumno,
+    setDeleteAlumno
 };
