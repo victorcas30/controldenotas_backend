@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `registrodenotas` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `registrodenotas`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: registrodenotas
@@ -39,8 +41,33 @@ CREATE TABLE `alumnos` (
 
 LOCK TABLES `alumnos` WRITE;
 /*!40000 ALTER TABLE `alumnos` DISABLE KEYS */;
-INSERT INTO `alumnos` VALUES (1,'Anna','white','74451200','Anna@s.com','0');
+INSERT INTO `alumnos` VALUES (1,'Anna','white','74451200','Anna@s.com','1');
 /*!40000 ALTER TABLE `alumnos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `grados`
+--
+
+DROP TABLE IF EXISTS `grados`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grados` (
+  `idgrado` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(45) DEFAULT NULL,
+  `eliminado` char(1) DEFAULT '0',
+  PRIMARY KEY (`idgrado`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `grados`
+--
+
+LOCK TABLES `grados` WRITE;
+/*!40000 ALTER TABLE `grados` DISABLE KEYS */;
+INSERT INTO `grados` VALUES (1,'Primer grado demo','1'),(2,'Segundo','0');
+/*!40000 ALTER TABLE `grados` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -64,7 +91,7 @@ CREATE TABLE `inasistencias` (
 
 LOCK TABLES `inasistencias` WRITE;
 /*!40000 ALTER TABLE `inasistencias` DISABLE KEYS */;
-INSERT INTO `inasistencias` VALUES (1,'demo demo','1'),(2,'Nose','0'),(3,'Otra otra','1'),(4,'Primer Trimestre','0');
+INSERT INTO `inasistencias` VALUES (1,'demo demo','1'),(2,'Nose','1'),(3,'Otra otra','1'),(4,'Primer Trimestre','0');
 /*!40000 ALTER TABLE `inasistencias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,6 +118,81 @@ LOCK TABLES `materias` WRITE;
 /*!40000 ALTER TABLE `materias` DISABLE KEYS */;
 INSERT INTO `materias` VALUES (1,'Bases de datos','0'),(2,'Progrmacion I','0'),(3,'Progrmacion orientada a objetos','0'),(4,'Algoritmos 1','0'),(5,'Algoritmos 2','0'),(6,'Arquitectura de computadoras','1');
 /*!40000 ALTER TABLE `materias` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `materiasgrados`
+--
+
+DROP TABLE IF EXISTS `materiasgrados`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `materiasgrados` (
+  `idmateriasgrado` int(11) NOT NULL AUTO_INCREMENT,
+  `idgrado` int(11) DEFAULT NULL,
+  `idmateria` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idmateriasgrado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `materiasgrados`
+--
+
+LOCK TABLES `materiasgrados` WRITE;
+/*!40000 ALTER TABLE `materiasgrados` DISABLE KEYS */;
+/*!40000 ALTER TABLE `materiasgrados` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `matricula`
+--
+
+DROP TABLE IF EXISTS `matricula`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `matricula` (
+  `idmatricula` int(11) NOT NULL AUTO_INCREMENT,
+  `idalumno` int(11) DEFAULT NULL,
+  `idgrado` int(11) DEFAULT NULL,
+  `year` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idmatricula`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `matricula`
+--
+
+LOCK TABLES `matricula` WRITE;
+/*!40000 ALTER TABLE `matricula` DISABLE KEYS */;
+/*!40000 ALTER TABLE `matricula` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `notastrimestre`
+--
+
+DROP TABLE IF EXISTS `notastrimestre`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `notastrimestre` (
+  `idnotastrimestre` int(11) NOT NULL AUTO_INCREMENT,
+  `idalumno` int(11) DEFAULT NULL,
+  `idtrimestre` int(11) DEFAULT NULL,
+  `idmateria` int(11) DEFAULT NULL,
+  `nota` float DEFAULT NULL,
+  PRIMARY KEY (`idnotastrimestre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `notastrimestre`
+--
+
+LOCK TABLES `notastrimestre` WRITE;
+/*!40000 ALTER TABLE `notastrimestre` DISABLE KEYS */;
+/*!40000 ALTER TABLE `notastrimestre` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -180,4 +282,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-10 21:58:32
+-- Dump completed on 2023-07-12 22:09:06
