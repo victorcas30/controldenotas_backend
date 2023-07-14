@@ -82,7 +82,7 @@ CREATE TABLE `inasistencias` (
   `descripcion` varchar(200) DEFAULT NULL,
   `eliminado` char(1) DEFAULT '0',
   PRIMARY KEY (`idinasistencia`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,7 +91,7 @@ CREATE TABLE `inasistencias` (
 
 LOCK TABLES `inasistencias` WRITE;
 /*!40000 ALTER TABLE `inasistencias` DISABLE KEYS */;
-INSERT INTO `inasistencias` VALUES (1,'demo demo','1'),(2,'Nose','1'),(3,'Otra otra','1'),(4,'Primer Trimestre','0');
+INSERT INTO `inasistencias` VALUES (1,'demo demo','1'),(2,'Nose','1'),(3,'Otra otra','1'),(4,'Primer Trimestre','0'),(5,'1','0');
 /*!40000 ALTER TABLE `inasistencias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,7 +132,7 @@ CREATE TABLE `materiasgrados` (
   `idgrado` int(11) DEFAULT NULL,
   `idmateria` int(11) DEFAULT NULL,
   PRIMARY KEY (`idmateriasgrado`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -141,6 +141,7 @@ CREATE TABLE `materiasgrados` (
 
 LOCK TABLES `materiasgrados` WRITE;
 /*!40000 ALTER TABLE `materiasgrados` DISABLE KEYS */;
+INSERT INTO `materiasgrados` VALUES (1,1,1),(2,1,2),(3,1,3),(4,1,4),(5,1,5),(6,2,1),(7,2,2),(8,2,3),(9,2,4),(10,2,5);
 /*!40000 ALTER TABLE `materiasgrados` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -282,4 +283,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-12 22:09:06
+-- Dump completed on 2023-07-13 22:33:18
