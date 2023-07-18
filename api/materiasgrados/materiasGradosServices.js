@@ -10,13 +10,46 @@ const insertarGradoConMaterias = async(data)=>{
             return dbconnection.promise().execute(insertQuery,values);
         });
         await Promise.all(promesasInsert);
-        dbconnection.promise().commit();
+       dbconnection.promise().commit();
+       return true;
     }catch(error){
         dbconnection.promise().rollback();
-    }finally{
-        dbconnection.close();
+        return false;
     }
 }
+
+const eliminarGradoConMaterias = async(data)=>{
+    try{
+       await dbconnection.promise().beginTransaction();
+       
+        const deleteQuery = `DELETE FROM materiasgrados WHERE idgrado=? AND idmateria=?`;
+        const promesasDelete = data.materias.map(idmateria=>{
+            const values = [data.idgrado,idmateria];
+            return dbconnection.promise().execute(deleteQuery,values);
+        });
+        await Promise.all(promesasDelete);
+       dbconnection.promise().commit();
+       return true;
+    }catch(error){
+        dbconnection.promise().rollback();
+        return false;
+    }
+}
+
+const materiasConYSinGrados = idGrado =>{
+    return new Promise((resolve,reject)=>{
+        const myQuery = `
+        SELECT m.idmateria,m.materia,IF(mg.idmateriasgrado is null,"false","true") AS activo 
+        FROM materias m 
+        LEFT JOIN materiasgrados mg ON m.idmateria=mg.idmateria AND mg.idgrado=${idGrado}
+        WHERE m.eliminado = "0";`;
+        dbconnection.query(myQuery,(error,result)=>{
+            return error ? reject(error):resolve(result);
+        });
+    });
+}
+
+
 
 
 const insertarGrado = (values,callBack)=>{
@@ -84,6 +117,8 @@ const deleteGrado= (values,callBack)=>{
 
 export {
     insertarGradoConMaterias,
+    eliminarGradoConMaterias,
+    materiasConYSinGrados,
     insertarGrado,
     getGrados,
     getUnGrado,

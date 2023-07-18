@@ -1,8 +1,23 @@
-import {insertarGradoConMaterias,insertarGrado,getGrados,getUnGrado,updateGrado,deleteGrado } from "./materiasGradosServices.js";
+import {insertarGradoConMaterias,materiasConYSinGrados,eliminarGradoConMaterias,insertarGrado,getGrados,getUnGrado,updateGrado,deleteGrado } from "./materiasGradosServices.js";
 
-const insertarElGradoConSusMaterias = async(req,res)=>{
+const insertarElGradoConSusMaterias = async(req,res,next)=>{
     const respuesta = await insertarGradoConMaterias(req.body);
-    return res.status(200).json({msg:"Las materias han sido registradas"});
+    if(respuesta){
+        return res.status(200).json({msg:"Materias registradas"});
+    }else{
+        return res.status(500).json({msg:"Se produjo un error al registrar materias"});
+        next();
+    }
+}
+
+const getMateriasConYSinGrados = async(req,res)=>{
+    const {idGrado} = req.params;
+    try{
+        const result = await materiasConYSinGrados(idGrado);
+        return res.status(200).json({materias:result});
+    }catch(error){
+       return res.status(500).json({msg:"Ocurrió un error"});
+    }
 }
 
 const crearGrado = (req,res)=>{
@@ -60,6 +75,7 @@ const setDeleteGrado = (req,res)=>{
 
 export {
     insertarElGradoConSusMaterias,
+    getMateriasConYSinGrados,
     crearGrado,
     getLosGrados,
     getGrado,

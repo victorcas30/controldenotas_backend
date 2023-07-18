@@ -17,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 const port = process.env.SERVER_PORT;
 
+
 app.use('/api',userRouter);
 app.use('/api',alumnosRouter);
 app.use('/api',materiasRouter);
@@ -26,7 +27,9 @@ app.use('/api',trimestresRouter);
 app.use('/api',gradosRouter);
 app.use('/api',gradosMateriasRouter);
 
-app.use(errorHandler);
+
+//app.use(errorHandler);
+
 app.listen(port,()=>{
     console.log('server running on port '+port);
 });
