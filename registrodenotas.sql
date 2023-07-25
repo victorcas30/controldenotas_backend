@@ -132,7 +132,7 @@ CREATE TABLE `materiasgrados` (
   `idgrado` int(11) DEFAULT NULL,
   `idmateria` int(11) DEFAULT NULL,
   PRIMARY KEY (`idmateriasgrado`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -141,7 +141,7 @@ CREATE TABLE `materiasgrados` (
 
 LOCK TABLES `materiasgrados` WRITE;
 /*!40000 ALTER TABLE `materiasgrados` DISABLE KEYS */;
-INSERT INTO `materiasgrados` VALUES (1,1,1),(2,1,2),(3,1,3),(4,1,4),(5,1,5),(6,2,1),(7,2,2),(8,2,3),(9,2,4),(10,2,5);
+INSERT INTO `materiasgrados` VALUES (1,2,1),(3,2,2);
 /*!40000 ALTER TABLE `materiasgrados` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,8 +154,8 @@ DROP TABLE IF EXISTS `matricula`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `matricula` (
   `idmatricula` int(11) NOT NULL AUTO_INCREMENT,
-  `idalumno` int(11) DEFAULT NULL,
   `idgrado` int(11) DEFAULT NULL,
+  `idalumno` int(11) DEFAULT NULL,
   `year` int(11) DEFAULT NULL,
   PRIMARY KEY (`idmatricula`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -283,4 +283,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-13 22:33:18
+-- Dump completed on 2023-07-24 21:09:09

@@ -3,13 +3,28 @@ import dbconnection from "../../config/dbconnection.js";
 const insertarGradoConMaterias = async(data)=>{
     try{
        await dbconnection.promise().beginTransaction();
-       
+        const materiasDelGrado = `SELECT idmateria FROM materiasgrados WHERE idgrado = ?`;
+        let materiasDelGradoRes = await dbconnection.promise().query(materiasDelGrado,[data.idgrado]);
+        let materiasDelGradoRes1 = materiasDelGradoRes[0].map(e=>e.idmateria);
+        const noestan = data.materias.filter((idmateria)=>!materiasDelGradoRes1.includes(idmateria));
         const insertQuery = `INSERT INTO materiasgrados(idgrado,idmateria) VALUES(?,?)`;
-        const promesasInsert = data.materias.map(idmateria=>{
+        const promesasInsert =noestan.map(idmateria=>{
             const values = [data.idgrado,idmateria];
             return dbconnection.promise().execute(insertQuery,values);
         });
         await Promise.all(promesasInsert);
+
+        /**............borrando las que ya no vienen..................*/
+        const yanoVienen = materiasDelGradoRes1.filter((idmateria)=>!data.materias.includes(idmateria));
+        console.log("Ya no vienen",yanoVienen);
+        const deleteQuery = `DELETE FROM materiasgrados WHERE idgrado=? AND idmateria=?`;
+        const promesasDelete =yanoVienen.map(idmateria=>{
+            const values = [data.idgrado,idmateria];
+            return dbconnection.promise().execute(deleteQuery,values);
+        });
+        await Promise.all(promesasDelete);
+        /**......................................................... */
+        
        dbconnection.promise().commit();
        return true;
     }catch(error){
