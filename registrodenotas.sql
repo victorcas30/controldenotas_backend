@@ -96,6 +96,37 @@ INSERT INTO `inasistencias` VALUES (1,'demo demo','1'),(2,'Nose','1'),(3,'Otra o
 UNLOCK TABLES;
 
 --
+-- Table structure for table `maestros`
+--
+
+DROP TABLE IF EXISTS `maestros`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `maestros` (
+  `idmaestro` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) DEFAULT NULL,
+  `apellido` varchar(100) DEFAULT NULL,
+  `direccion` varchar(100) DEFAULT NULL,
+  `dui` varchar(45) DEFAULT NULL,
+  `celular` varchar(45) DEFAULT NULL,
+  `correo` varchar(45) DEFAULT NULL,
+  `especialidad` varchar(100) DEFAULT NULL,
+  `eliminado` char(1) DEFAULT '0',
+  PRIMARY KEY (`idmaestro`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `maestros`
+--
+
+LOCK TABLES `maestros` WRITE;
+/*!40000 ALTER TABLE `maestros` DISABLE KEYS */;
+INSERT INTO `maestros` VALUES (1,'Rafael','Parada','San Pedro Nonualco','02144569-0','74561210','rafa@gmail.com','Programación','1');
+/*!40000 ALTER TABLE `maestros` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `materias`
 --
 
@@ -197,6 +228,30 @@ LOCK TABLES `notastrimestre` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `secciones`
+--
+
+DROP TABLE IF EXISTS `secciones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `secciones` (
+  `idseccion` int(11) NOT NULL,
+  `descripcion` varchar(45) DEFAULT NULL,
+  `eliminado` char(1) DEFAULT NULL,
+  PRIMARY KEY (`idseccion`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `secciones`
+--
+
+LOCK TABLES `secciones` WRITE;
+/*!40000 ALTER TABLE `secciones` DISABLE KEYS */;
+/*!40000 ALTER TABLE `secciones` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `trimestres`
 --
 
@@ -283,4 +338,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-24 21:09:09
+-- Dump completed on 2023-07-25 21:57:30
