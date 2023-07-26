@@ -16,7 +16,6 @@ const insertarGradoConMaterias = async(data)=>{
 
         /**............borrando las que ya no vienen..................*/
         const yanoVienen = materiasDelGradoRes1.filter((idmateria)=>!data.materias.includes(idmateria));
-        console.log("Ya no vienen",yanoVienen);
         const deleteQuery = `DELETE FROM materiasgrados WHERE idgrado=? AND idmateria=?`;
         const promesasDelete =yanoVienen.map(idmateria=>{
             const values = [data.idgrado,idmateria];
@@ -24,7 +23,7 @@ const insertarGradoConMaterias = async(data)=>{
         });
         await Promise.all(promesasDelete);
         /**......................................................... */
-        
+
        dbconnection.promise().commit();
        return true;
     }catch(error){
